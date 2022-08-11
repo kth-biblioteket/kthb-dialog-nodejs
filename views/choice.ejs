@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content = "width = device-width, initial-scale = 1.0, minimum-scale = 1, maximum-scale = 1, user-scalable = no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="KTH" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="apple-touch-icon" sizes="76x76" href="images/energy_icon.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <title>KTH Biblioteket</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css" href="/dialog/public/style.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.socket.io/4.4.0/socket.io.min.js"
+        integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+</head>
+
+<body style="position:fixed;width:100%;height:100%;background: #1954A6;">
+    <div style="width:100%">
+        <!--img id="map" src="images/field.jpg" /-->
+    </div>
+    <div id="errorPlaceholder"></div>
+    <div id="wrapper">
+        <!-- Language -->
+        <div id="lang" class="title">
+          <!--a href="javascript:changelang();" style="position: absolute;top: 1%;right: 5%;color:#fff"></a-->
+        </div>
+        <%let event%>
+        <%= //JSON.stringify(choicedata)%>
+        <% event = choicedata.event %>
+        <% eventname = choicedata.event.name%>
+        <% eventdescription = choicedata.event.description%>
+        
+        <!-- Caption -->
+        <div id="caption">
+          <div id="maincaption" class="title">
+            <%= eventname%>
+          </div>
+          <div id="subcaption" class="title">
+            <%= eventdescription%>
+          </div>
+        </div>
+        <!-- Category Labels -->
+        <%for (const action_ of choicedata.event.actions) { %>
+            <div class="circle-text categoryLabel shadow clickable subtitle" id="Label<%=action_.id%>" name="<%=action_.id%>" onclick="startSession('<%=action_.id%>')">
+                <span class="inner-text center-align"><%=action_.description_en%></span>
+            </div>
+        <%} %>
+
+        <!-- Modals -->
+        <div class="dialog_modal largeModal shadow hide" id="checklistModal">
+            <div id="checklistHeader">
+                <!-- TODO Lägg in bildpath från DB-->
+                <img id="checklistLogo" class="shadow" src="/dialog/public/images/habitat_icon.png" width="150" height="150" draggable="false" />
+                <!-- TODO Lägg in texter i tabell DB-->
+                <div id="checklistHeaderText">
+                    <div id="checklistPrompt" class="title frontTitle">
+                        'I promise to:
+                    </div>
+                    <div id="checklistInstruction" class="instruction">
+                        Select an alternative and press “PROMISE!” You can then choose to be reminded about what you’ve promised to change.<br/>The vote count shows what our visitors have promised to change.
+                    </div>
+                </div>
+            </div>
+            <div id="checklistBody">
+                <div id="checklistContainer">
+                    <%for (const action_ of choicedata.event.actions) { %>
+                        
+                    <%} %>
+                </div>
+                <div id="checklistSeparator">
+                </div>
+                <div id="checklistlearnMoreText" class="body">
+                </div>
+            </div>
+            <div class="closeModalButton clickable shadow">
+                <img src="/dialog/public/images/dismiss_icon.png" width="30" height="30" draggable="false" />
+            </div>
+            <div id="submitActionButton" class="hide clickable shadow">Submit
+            </div>
+        </div>
+
+        <div class="dialog_modal largeModal shadow hide" id="confirmationModal">
+            <div id="confirmationContainer">
+              <div id="confirmationTitle" class="title"></div>
+              <div id="confirmationSubtitle" class="title">Du lovar att <span id="confirmationAction"></span></div>
+              <div id="confirmationEmailQuestion" class="subtitle">
+                Enskilda handlingar är viktiga. Det finns mycket man kan göra för att förbättra sin inverkan på klimatet.<br>
+                <span id="emailPrompt">Vill du att vi skickar ett uppföljningsmail med ytterligare information om ditt löfte?</span>
+              </div>
+              <div id="confirmationEmailQuestionButtons">
+                <div id="confirmationEmailQuestionNoButton" class="clickable shadow">
+                  NEJ
+                </div>
+                <div id="confirmationEmailQuestionYesButton" class="clickable shadow">
+                  JA
+                </div>
+              </div>
+              <div id="confirmationEmailPrivacyStatement" class="body">
+                Vi sparar inte din epostadress och kommer bara att använda den till att skicka ett uppföljningsmail med ytterligare information om ditt löfte.<br />
+                Vi kommer inte att använda den till att skicka skräppost.
+              </div>
+            </div>
+            <div class="closeModalButton clickable shadow">
+              <img src="/dialog/public/images/dismiss_icon.png" width="30" height="30" draggable="false" />
+            </div>
+        </div>
+
+        <div class="dialog_modal largeModal shadow hide" id="emailModal">
+            <div id="container">
+              <div id='emailTextbox'>
+                <textarea id="write" rows="1" resizeable="no"></textarea>
+              </div>
+              <ul id="keyboard">
+                  <li class="invisibleKey" style="width: 2.5px"></li>
+                  <li class="email firstitem">@gmail.com</li>
+                  <li class="email">@yahoo.com</li>
+                  <li class="email">@hotmail.com</li>
+                  <li class="email">@kth.se</li>
+                  <li class="symbol"><span class="off">@</span><span class="on">@</span></li>
+                  <li class="email lastitem">.se</li>
+                  <li class="invisibleKey 1" style="width: 0px"></li>
+                  <li class="symbol firstitem"><span class="off">1</span><span class="on">!</span></li>
+                  <li class="symbol"><span class="off">2</span><span class="on">@</span></li>
+                  <li class="symbol"><span class="off">3</span><span class="on">#</span></li>
+                  <li class="symbol"><span class="off">4</span><span class="on">$</span></li>
+                  <li class="symbol"><span class="off">5</span><span class="on">%</span></li>
+                  <li class="symbol"><span class="off">6</span><span class="on">^</span></li>
+                  <li class="symbol"><span class="off">7</span><span class="on">&amp;</span></li>
+                  <li class="symbol"><span class="off">8</span><span class="on">*</span></li>
+                  <li class="symbol"><span class="off">9</span><span class="on">(</span></li>
+                  <li class="symbol"><span class="off">0</span><span class="on">)</span></li>
+                  <li class="symbol"><span class="off">_</span><span class="on">~</span></li>
+                  <li class="symbol"><span class="off">-</span><span class="on">_</span></li>
+                  <li class="symbol"><span class="off">=</span><span class="on">+</span></li>
+                  <li class="delete lastitem">⌫</li>
+                  <li class="invisibleKey" style="width: 56px"></li>
+                  <li class="letter">q</li>
+                  <li class="letter">w</li>
+                  <li class="letter">e</li>
+                  <li class="letter">r</li>
+                  <li class="letter">t</li>
+                  <li class="letter">y</li>
+                  <li class="letter">u</li>
+                  <li class="letter">i</li>
+                  <li class="letter">o</li>
+                  <li class="letter">p</li>
+                  <li class="symbol"><span class="off">[</span><span class="on">{</span></li>
+                  <li class="symbol"><span class="off">]</span><span class="on">}</span></li>
+                  <li class="symbol lastitem"><span class="off">\</span><span class="on">|</span></li>
+                  <li class="invisibleKey" style="width: 67.5px"></li>
+                  <li class="capslock">caps lock</li>
+                  <li class="letter">a</li>
+                  <li class="letter">s</li>
+                  <li class="letter">d</li>
+                  <li class="letter">f</li>
+                  <li class="letter">g</li>
+                  <li class="letter">h</li>
+                  <li class="letter">j</li>
+                  <li class="letter">k</li>
+                  <li class="letter">l</li>
+                  <li class="symbol"><span class="off">;</span><span class="on">:</span></li>
+                  <li class="symbol lastitem"><span class="off">'</span><span class="on">&quot;</span></li>
+                  <li class="invisibleKey" style="width: 138.5px"></li>
+                  <li class="left-shift">shift</li>
+                  <li class="letter">z</li>
+                  <li class="letter">x</li>
+                  <li class="letter">c</li>
+                  <li class="letter">v</li>
+                  <li class="letter">b</li>
+                  <li class="letter">n</li>
+                  <li class="letter">m</li>
+                  <li class="symbol"><span class="off">,</span><span class="on">&lt;</span></li>
+                  <li class="symbol"><span class="off">.</span><span class="on">&gt;</span></li>
+                  <li class="symbol lastitem"><span class="off">/</span><span class="on">?</span></li>
+                  <li class="invisibleKey" style="width: 268px"></li>
+                  <li class="space lastitem">&nbsp;</li>
+              </ul>
+            </div>
+            <div class="closeModalButton clickable shadow">
+              <img src="/dialog/public/images/dismiss_icon.png" width="30" height="30" draggable="false" />
+            </div>
+            <div id="submitEmail" class="hide clickable shadow">SKICKA!</div>
+        </div>
+
+        <div class="dialog_modal smallModal shadow hide" id="thanksModal">
+            <div id="thanksText" class="title">Tack!</div>
+        </div>
+
+        <div class="modal fade" id="choiceModal" tabindex="-1" aria-labelledby="choiceModalLabel" aria-hidden="true">
+        </div>
+
+    </div><!-- End of Wrapper-->
+
+    <script>
+
+        //////////////////////// EVENT EMITTERS ////////////////////////
+
+        function pledgeDone(data) {
+            animateTheVote();
+        }
+
+        function reminderDone(data) {
+            console.log(data);
+        }
+
+        function pledge(action_id) {
+
+            //hitta rätt action
+            let actionObject = actions.find(action => action.id === parseInt(action_id))
+
+            //Hämta gjorda val(användares check på actionchoice_id)
+            var session_choices = []
+            $("input[type=checkbox]")
+                .each(function () {
+                    if (this.checked) {
+                        session_choices.push(this.value)
+                    }
+                });
+            
+            body = {
+                "event_id": '<%- JSON.stringify(choicedata.event.id) %>',
+                "action_id": action_id,
+                "session_choices": session_choices,
+                "computerLocation":"Right"
+            }
+            console.log(body)
+            $.post({
+                url: '/dialog/api/v1/choice',
+                headers: { 'x-api-key': secret },
+                data: body,
+                dataType: 'json'
+            })
+            .always(pledgeDone)
+            .done(function(data) {
+                console.log( data );
+            })
+            .fail(function(err) {
+                alert( JSON.stringify(err), 'danger', 'errorPlaceholder' );
+            });
+            // 200 it worked
+            // anything else it didn't
+            // 500 server error out
+            // 400 bad request
+            // 401 forbidden
+            // 404 not found
+        }
+
+        function reminder(subcategory, email) {
+            console.log(subcategory);
+            // All the data you need is the emailadress and the subcategory
+            body = JSON.stringify({
+                email: email,
+                subcategory: subcategory,
+                "lang": getcurrentlangfromurl()
+            });
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '/dialog/api/v1/reminder',
+                headers: { 'x-api-key': secret },
+                contentType: 'application/json',
+                data: body
+            })
+            .always(reminderDone);
+        }
+
+        //////////////////////// GLOBAL VARS ///////////////////////
+        var THANKS_TIMEOUT;
+        var SYNONYM_INDEX;
+        var SESSION_CATEGORY; // travels, clothing, purchases, food, living
+        var SESSION_ACTION; // 0, 1, 2
+        //var categories
+        var actions
+        var secret = 'kg897n987n98n)!dskjlksjfd?435mnckjsbsekef-_klknbhjhsef';
+
+        var idleTime = 0;
+
+        function initlang() {
+            $("#confirmationEmailQuestionNoButton").bind('click', function() {
+                showModal('thanks');
+                idleTime = 0;
+            });
+
+            $("#confirmationEmailQuestionYesButton").bind('click', function() {
+                idleTime = 0;
+                showModal('email');
+            });
+        }
+        
+        function init() {
+
+            initlang();
+
+            THANKS_TIMEOUT = null;
+            SYNONYM_INDEX = 0;
+            SESSION_CATEGORY = null;
+            SESSION_ACTION = null;
+
+            if(isDeviceiPad()) {
+            console.log("ipad")
+            } else {
+            console.log("not ipad")
+            //$("#keyboard").addClass( "hide" );
+            }
+
+            $(".closeModalButton").bind('click', function() {
+                idleTime = 0;
+                endSession();
+            });
+
+            $("#submitActionButton").bind('click', function() {
+                idleTime = 0;
+                $("#checklistLogo").addClass('grow');
+                $("#submitActionButton").addClass('hide');
+                pledge(SESSION_CATEGORY, SESSION_ACTION);
+            });
+
+            $("#submitEmail").click(function() {
+                let actionObject = actions.find(action => action.id === parseInt(SESSION_CATEGORY))
+                idleTime = 0;
+                var choice_id = parseInt(SESSION_CATEGORY);
+                reminder(choice_id, $('#write').val());
+                showModal('thanks');
+            });
+            $('#write').html('');
+            $('#write').val('');
+        }
+
+        // Code for keyboard from Vasili
+        // @ https://code.tutsplus.com/tutorials/creating-a-keyboard-with-css-and-jquery--net-5774
+        function initKeyboard() {
+            $(function(){
+                var $write = $('#write'),
+                shift = false,
+                capslock = false;
+                $('.capslock').removeClass('highlighted');
+
+                $('#keyboard li').click( function() {
+                    idleTime = 0;
+                    var $this = $(this);
+                    var character = $this.html();
+
+                    // Shift keys
+                    if ($this.hasClass('left-shift')) {
+                        $('.letter').addClass('uppercase');
+                        $('.symbol span').toggle();
+                        shift = (shift === true) ? false : true;
+                        capslock = false;
+                        $('.capslock').removeClass('highlighted');
+                        $this.addClass('highlighted');
+                        return false;
+                    }
+
+                    // Caps lock
+                    if ($this.hasClass('capslock')) {
+                        $('.letter').toggleClass('uppercase');
+                        if (capslock) {
+                            capslock = false;
+                            $('.capslock').removeClass('highlighted');
+                        } else {
+                            capslock = true;
+                            $('.capslock').addClass('highlighted');
+                        }
+                        return false;
+                    }
+
+                    // Delete
+                    if ($this.hasClass('delete')) {
+                        var html = $write.html();
+                        var val = $write.val();
+                        $write.html(html.substr(0, html.length - 1));
+                        $write.val(val.substr(0, val.length - 1));
+                        if ($write.val().length === 0) {
+                            $("#submitEmail").addClass('hide');
+                        }
+                        return false;
+                    }
+
+                    // Special characters
+                    if ($this.hasClass('symbol')) character = $('span:visible', $this).html();
+                    if ($this.hasClass('space')) character = ' ';
+
+                    // Uppercase letter
+                    if ($this.hasClass('uppercase')) character = character.toUpperCase();
+
+                    // Remove shift once a key is clicked.
+                    if (shift === true) {
+                        $('.symbol span').toggle();
+                        if (capslock === false) $('.letter').toggleClass('uppercase');
+                        shift = false;
+                        $('.left-shift').removeClass('highlighted');
+                    }
+
+                    // Add the character
+                    $write.html($write.html() + character);
+                    $write.val($write.val() + character);
+                    if ($write.val().length > 0) {
+                        $("#submitEmail").removeClass('hide');
+                    } else {
+                        $("#submitEmail").addClass('hide');
+                    }
+                });
+            });
+        }
+
+        function startSession(action) {
+            idleTime = 0;
+            // Hide lure screen labels, prompt, and click events
+            $("#caption").addClass( "hide" );
+            $("#lang").addClass( "hide" );
+            $(".categoryLabel").addClass( "hide" );
+            $(".categoryLabel").unbind( "click" );
+            $(".category").unbind( "click" );
+            $("#map").css("opacity", 0.5);
+
+            // Store category selection
+            SESSION_CATEGORY = action;
+            // Present checklist modal
+            showModal('checklist');
+        }
+
+        function endSession() {
+
+            // Close modals
+            $('.dialog_modal').addClass('hide');
+
+            // Put logo back
+            $("#checklistLogo").removeClass('voted');
+            $("#checklistLogo").removeClass('grow');
+
+            // Reset lure screen
+            $(".category").bind('click', function() {
+                idleTime = 0;
+                startSession(($(this).attr('name')));
+            });
+            $(".categoryLabel").bind('click', function() {
+                idleTime = 0;
+                startSession(($(this).attr('name')));
+            });
+            $("#lang").removeClass( "hide" );
+            $(".categoryLabel").removeClass( "hide" );
+            $("#caption").removeClass( "hide" );
+            $("#map").css("opacity", 1);
+
+            // Clear thanks timeout
+            if (THANKS_TIMEOUT !== null) {
+                window.clearTimeout(THANKS_TIMEOUT);
+                THANKS_TIMEOUT = null;
+            }
+
+            // Clear divs, html, applied style
+            $("#checklistlearnMoreText").html('');
+            $(".itemCheckboxImage").attr('src', '/dialog/public/images/unchecked_box.png');
+            $('#write').html('');
+            $('#write').val('');
+            $("#submitActionButton").addClass('hide');
+
+            // Reset session selections
+            SESSION_EVENT = null;
+            SESSION_CATEGORY = null;
+            SESSION_ACTION = null;
+            SESSION_CHOICE = null;
+        }
+
+        //Visa respektive gränssnitt för dialogen(välja, maila, tack etc)
+        function showModal(modal) {
+            
+            let actionObject = actions.find(action => action.id === parseInt(SESSION_CATEGORY))
+
+            switch (modal) {
+
+                case 'checklist':
+                    // Populate checklist html
+                    $('#checklistPrompt').html(actionObject.description_en.toUpperCase());
+                    checklistContainer = '';
+                    for (var i = 0; i < actionObject.choices.length; i++) {
+                        checklistContainer += 
+                            `<div class="actionItem">
+                                <div class="cont-checkbox">
+                                    <input type="checkbox" id="myCheckbox-${i}" name="myCheckbox-${i}" value="${actionObject.choices[i].id}"/>
+                                    <label for="myCheckbox-${i}">
+                                        <img class="unchecked" id="myCheckboxImageUnchecked-${i}" src="/dialog/public/images/unchecked_box.png"/>
+                                        <img class="checked" id="myCheckboxImageChecked-${i}" src="/dialog/public/images/checked_box.png"/>
+                                        <!--span class="cover-checkbox">
+                                            <img class="itemCheckboxImage" src="/dialog/public/images/checked_box.png" draggable="false" />
+                                        </span-->
+                                    </label>
+                                </div>
+                                <div class="actionItemBody">
+                                    <div class="actionItemName title">
+                                        ${actionObject.choices[i].name} 
+                                        <span>
+                                            <button style="" class="btn btn-outline-info btn-sm" type="button" onclick="showmoreinfo(${i})">More</button>
+                                        </span>
+                                    </div>
+                                    <div class="actionItemText body">${actionObject.choices[i].description}</div>
+                                </div>
+                            </div>`
+                    }
+                    $("#checklistContainer").html(checklistContainer)
+                    $("#checklistLogo").attr('src', '/dialog/public/images/'+ actionObject.image)
+
+                    //$("#checklistlearnMoreText").html('<img src="/dialog/public/images/' + categoryObject.image + '" class="learnMoreImage"/>');
+
+                    // Show checklist modal
+                    $('#checklistModal').removeClass('hide');
+                    // Show submit button
+                    $("#submitActionButton").removeClass('hide');
+
+                    break;
+
+                case 'confirmation':
+                    // Populate confirmation html
+                    $('#confirmationAction').html(actionObject.description_en.toLowerCase());
+                    //$('#confirmationTitle').html(confirmationSynonyms[SYNONYM_INDEX]);
+                    $('#confirmationTitle').html("Toppen!");
+                    if(getcurrentlangfromurl() != 'en') {
+                        $('#emailPrompt').html("Vill du att vi skickar ett  bekräftelsemail med ytterligare information om ditt löfte att göra en insats kopplad till " + actionObject.description_sv.toLowerCase() + "?");
+                    } else {
+                        $('#emailPrompt').html("Do you want us to send a follow-up email with additional information about your promise about " + actionObject.description_en.toLowerCase() + "?");
+                    }
+                    //SYNONYM_INDEX = (SYNONYM_INDEX + 1) % confirmationSynonyms.length;
+
+                    // Hide checklist and show confirmation
+                    $('#checklistModal').addClass('hide');
+                    $('#confirmationModal').removeClass('hide');
+
+                    break;
+
+                case 'email':
+                    // Hide confirmation and show email
+                    $('#confirmationModal').addClass('hide');
+                    $('#emailModal').removeClass('hide');
+
+                    break;
+
+                case 'thanks':
+                    // Hide email or confirmation modal and show thanks modal
+                    $('#emailModal').addClass('hide');
+                    $('#confirmationModal').addClass('hide');
+                    $('#thanksModal').removeClass('hide');
+
+                    // Start timeout for thanks screen
+                    THANKS_TIMEOUT = window.setTimeout(function() { endSession(); }, 3000)
+
+                    break;
+
+                default:
+                    endSession();
+                    break;
+            }
+        }
+
+        function animateTheVote() {
+            $("#checklistLogo").addClass('voted');
+            window.setTimeout(function() {
+                showModal('confirmation');
+            }, 3000);
+        }
+
+        function timerIncrement(ms) {
+            idleTime = idleTime + ms;
+            if (idleTime > 80000) { // 80 seconds
+                idleTime = 0;
+                endSession();
+            }
+        }
+
+        function choice(index) {
+            
+        }
+
+        function showmoreinfo(index) {
+            let actionObject = actions.find(action => action.id === parseInt(SESSION_CATEGORY))
+            $("#checklistlearnMoreText").html('<img src="/dialog/public/images/' + actionObject.choices[index].image + '" class="learnMoreImage"/>');
+        }
+
+        var currentlanguage = 'sv';
+        $(document).ready(function() {
+            if(getcurrentlangfromurl() == 'sv') {
+                currentlanguage = 'en';
+            } 
+            actions = JSON.parse('<%- JSON.stringify(choicedata.event.actions) %>')
+            console.log(actions)
+            var confirmationSynonyms;
+        
+            //changelang()
+            init();
+            initKeyboard();
+            // Listener to tell when someone has walked away from the app
+            // Check every 5 seconds
+            // Increment the idle time counter every minute.
+            var idleInterval = setInterval(function() {
+                timerIncrement(5000);
+            }, 5000);
+        });
+
+        // Help Functions
+
+        function isDeviceiPad(){
+            return navigator.platform.match(/iPad/i);
+        }
+        function getcurrentlangfromurl() {
+            let language = "";
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            language = urlParams.get('language')
+            
+            if (language == null) {
+                return 'en'
+            } else {
+                return language
+            }
+        }
+
+        function alert(message, type, placeholder) {
+            var alertPlaceholder = document.getElementById(placeholder)
+            var wrapper = document.createElement('div')
+            wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+            alertPlaceholder.append(wrapper)
+            setTimeout(function () {
+                $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                    $(this).remove(); 
+                });
+            }, 2000);
+        }
+
+        function checkjwt() {
+        
+        }
+
+        function copytext(field_id) {
+            var copyText = document.getElementById(field_id);
+            text = $(copyText).val()
+            navigator.clipboard.writeText(text);
+        }
+
+        function showElement(imgFileName) {
+            $('#' + imgFileName).show()
+        }
+
+        // SOCKET
+        const thisSessionId = Math.random().toString(36).substr(2, 9);
+        const socket = io('', { path: "/dialog/socket.io" })
+        socket.on("connect", () => {
+
+        });
+        socket.emit('connectInit', thisSessionId);
+        socket.on("uploadProgress", (data) => {
+            makeProgress(data)
+        })
+    </script>
+</body>
+
+</html>

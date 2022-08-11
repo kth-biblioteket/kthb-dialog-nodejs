@@ -1,0 +1,1109 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:200,300,400,500,600);*,:after,:before {
+  box-sizing: border-box
+}
+
+.categoryLabel {
+	cursor: pointer;
+	position: absolute;
+	padding: 15px 40px;
+	text-align: center;
+	border-radius: 7px;
+  background-color: rgba(4, 70, 78, 0.85);  /* base darkest blue */
+  /*KTH*/
+  background-color: #fff !important;
+  border-color: #fff;
+  color: #1954A6;
+  border-radius: .25rem;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  vertical-align: middle;
+  padding: .5rem 1.5rem;
+  line-height: normal;
+}
+
+.circle-text {
+  width: 400px;
+  height: 280px;
+  display: block;
+  border-radius: 50%;
+  text-align: center;
+  min-width: 50px;
+  min-height: 50px;
+}
+
+.center-align {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: auto;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  -ms-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}
+
+
+/* General Style */
+body {
+  font-family: "Open Sans",Arial,"Helvetica Neue",helvetica,sans-serif;
+  overflow: hidden !important;
+  margin: 0px;
+  -webkit-user-select: none !important;
+}
+
+@font-face {
+  font-family: 'GillSansLight';
+  src: url('fonts/Gill_Sans_Light.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'GillSansBold';
+  src: url('fonts/Gill_Sans_Bold.woff') format('woff');
+}
+
+/* Webfonts: Copyright © Letters From Sweden. All rights reserved. To obtain a license, please see: https://lettersfromsweden.se */
+
+@font-face {
+  font-family: 'EksellDisplayWebMedium';
+  src: url('fonts/EksellDisplayWeb-Medium.woff') format('woff');
+}
+
+a {
+  text-decoration: none;
+}
+
+.wrap {
+  width: 270px;
+  height: 475px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #888888;
+}
+
+.frame {
+  width: 1080px;
+  height: 1920px;
+  border: 0;
+  -ms-transform: scale(0.25);
+  -moz-transform: scale(0.25);
+  -o-transform: scale(0.25);
+  -webkit-transform: scale(0.25);
+  transform: scale(0.25);
+
+  -ms-transform-origin: 0 0;
+  -moz-transform-origin: 0 0;
+  -o-transform-origin: 0 0;
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+}
+
+.header {
+  z-index: 10;
+  display: flex;
+  flex-direction: row;
+  background-color: #ffffff;
+  padding: 10px;
+}
+
+#content {
+  z-index: 1;
+  padding: 10px;
+  display: flex;
+}
+
+h2 {
+  padding: 0;
+  margin: 0;
+}
+
+.title {
+  font-size: 40px;
+  line-height: 1;
+  color: #e9efe7; /* white */
+  /*font-family1: 'EksellDisplayWebMedium';*/
+  font-family: "Open Sans",Arial,"Helvetica Neue",helvetica,sans-serif;
+}
+
+#subcaption {
+  font-size: 24px;
+  line-height: 1;
+  color: #e9efe7; /* white */
+  /*font-family1: 'EksellDisplayWebMedium';*/
+  font-family: "Open Sans",Arial,"Helvetica Neue",helvetica,sans-serif;
+  width: 50%;
+}
+
+.subtitle {
+  font-size: 40px !important;
+  color: #000 !important; /* white */
+  /*font-family1: 'EksellDisplayWebMedium' !important;*/
+  font-family: "Open Sans",Arial,"Helvetica Neue",helvetica,sans-serif;
+}
+
+.instruction {
+  /*font-family1: 'GillSansLight';*/
+  color: #bdcc9b; /* light green */
+  font-size: 26px;
+  line-height: 1.2;
+}
+
+.body {
+  /*font-family1: 'GillSansLight';/*
+  color: #bec4ba; /* light gray */
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.bodyBold {
+  /*font-family1: 'GillSansBold' !important;*/
+  color: #bdcc9b; /* light green */
+}
+
+.shadow {
+  box-shadow: 0px 0px 2px #373735;
+}
+
+.clickable {
+  background-color: #2d606f; /* base middle blue */
+  color:  #e9efe7; /* white */
+  text-align: center;
+  font-size: 28px;
+  /*font-family1: 'GillSansBold';*/
+  cursor: pointer;
+}
+
+.clickable:active, .clickable:hover {
+  background-color: #72b5b1; /* highlight blue */
+  box-shadow: 0px 0px 0px rgba(55, 55, 53, 0.5);
+}
+
+.hide {
+  display: none !important;
+}
+
+.dialog_modal {
+  background-color: rgba(4, 70, 78, 0.85);  /* base darkest blue */
+  position: absolute;
+  top: 50px;
+  bottom: 50px;
+  left: 50px;
+  right: 50px;
+  border-radius: 7px;
+  padding: 50px;
+}
+
+.smallModal {
+  top: 43%;
+  left: 40%;
+  right: 40%;
+  bottom: 43%;
+  padding: 0px;
+  padding-top: 2.5%;
+  padding-left: 6.1%;
+}
+
+.closeModalButton {
+  position: absolute;
+  top: -25px;
+  right: -25px;
+  height: 80px;
+  width: 80px;
+  padding-top: 25px;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.closeModalButton img {
+  vertical-align: baseline;
+}
+
+#map,
+#clickableOverlay {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  max-width:100%;
+  background-size: cover;
+  background-position: center;
+}
+
+
+/* Lure Screen Style */
+
+#caption {
+  position: absolute;
+  top: 8%;
+  left: 5%;
+  color: #fff;
+}
+
+#subcaption {
+  color: #fff;
+  padding-top: 10px;
+}
+
+
+#Label1 {
+  top: 45%;
+  left: 10%;
+}
+
+#Label2 {
+  top: 55%;
+  left: 35%;
+}
+
+#Label3 {
+  top: 25%;
+  left: 50%;
+}
+
+#Label4 {
+  top: 35%;
+  left: 75%;
+}
+
+
+/* Checklist Modal Style */
+
+#checklistLogo {
+  display: inline-block;
+  height: 150px;
+  width: 150px;
+  /*border-radius: 75px;*/
+  margin-right: 50px;
+  vertical-align: middle;
+  will-change: top, scale;
+  transition: transform 1s;
+}
+
+.voted {
+  position: relative;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-in;
+  animation-name: voted;
+  animation-fill-mode: forwards;
+}
+
+.grow {
+  transform: scale(1.2);
+}
+
+@keyframes voted {
+  from { top: 0px; }
+  to { top: -1000px; }
+}
+
+#checklistHeader {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+#checklistHeaderText {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+#checklistPrompt {
+  padding-bottom: 20px;
+}
+
+#checklistBody {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+}
+
+#checklistContainer {
+  padding-top: 20px;
+  flex: 2;
+}
+
+#checklistSeparator {
+  width: 5px;
+  padding-top: 30px;
+  border-radius: 2.5px;
+  background-color: #2d606f; /* base middle blue */
+  margin: 0 50px;
+}
+
+
+.actionItem {
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+  margin-bottom: 20px;
+  color: #e9efe7; /* white */
+}
+
+.actionItemCheckbox {
+  width: 50px;
+  height: 50px;
+  margin-right: 30px;
+  vertical-align: top;
+  position: relative;
+}
+
+.itemCheckboxImage {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+}
+
+.actionItemBody {
+  vertical-align: top;
+  flex: 1;
+}
+
+.actionItemName, div#checklistlearnMoreText h2 {
+  line-height: 40px;
+  padding-bottom: 15px;
+  font-size: 32px;
+  line-height: 1;
+  color: #e9efe7; /* white */
+  /*font-family1: 'EksellDisplayWebMedium';*/
+  font-weight: normal;
+  margin: 0;
+}
+
+#checklistlearnMoreText {
+  color: #d2d940; /* hightlight yellow */
+  vertical-align: top;
+  padding-top: 20px;
+  flex: 1;
+}
+
+.learnMoreImage {
+  float: left;
+  padding-right: 20px;
+  height: 430px;
+}
+
+.learnMoreText {
+  margin-top: 0px;
+}
+
+#submitActionButton {
+  position: absolute;
+  bottom: -40px;
+  right: 30px;
+  height: 80px;
+  padding: 0px 40px;
+  border-radius: 40px;
+  line-height: 90px;
+  font-size: 40px;
+}
+
+
+/* Confirmation Modal Style */
+
+#confirmationContainer {
+  width: 95%;
+  padding-top: 80px;
+  margin: auto;
+}
+
+#confirmationTitle {
+  padding-bottom: 10px;
+}
+
+#confirmationEmailQuestion {
+  padding-top: 100px;
+  padding-bottom: 60px;
+  line-height: 1.2;
+}
+
+#confirmationEmailPrivacyStatement {
+  padding-bottom: 240px;
+  font-size: 25px;
+  line-height: 30px;
+}
+
+#confirmationAction {
+  color: #d2d940; /* hightlight yellow */
+}
+
+#confirmationEmailQuestionNoButton, #confirmationEmailQuestionYesButton {
+  display: inline-block;
+  height: 80px;
+  padding: 0px 40px;
+  border-radius: 40px;
+  line-height: 80px;
+  margin-right: 50px;
+  margin-bottom: 100px;
+}
+
+
+/* Email Modal Style */
+
+#container {
+  width: 1218px;
+  margin: auto;
+}
+
+#emailTextbox {
+  margin-top: 100px;
+  margin-bottom: 100px;
+  height: 80px;
+}
+
+#write {
+  vertical-align: top;
+  display: inline-block;
+  font-size: 50px;
+  line-height: 80px;
+  /*font-family1: 'GillSansLight';*/
+  padding: 10px;
+  padding-top: 0px;
+  width: 1197px;
+  margin-right: 10px;
+  height: 70px;
+  background: #fff;
+  border-radius: 7px;
+  resize: none;
+  border: none;
+}
+
+#write:focus {
+  outline: none;
+}
+
+
+#submitEmail {
+  position: absolute;
+  bottom: -40px;
+  right: 30px;
+  height: 80px;
+  padding: 0px 40px;
+  border-radius: 40px;
+  line-height: 80px;
+}
+
+
+
+/* Keyboard Style */
+
+#keyboard {
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+
+#keyboard li {
+  float: left;
+  margin: 0 5px 5px 0;
+  width: 80px;
+  height: 80px;
+  line-height: 80px;
+  font-size: 40px;
+  /*font-family1: 'GillSansLight';*/
+  vertical-align: middle;
+  text-align: center;
+  background-color: #2d606f; /* base middle blue */
+  color:  #e9efe7; /* white */
+  text-align: center;
+  border-radius: 7px;
+}
+
+#keyboard .invisibleKey {
+  visibility: hidden;
+  margin: 0px;
+  background-color: red;
+  clear: left;
+}
+
+#keyboard .email,
+#keyboard .left-shift,
+#keyboard .capslock {
+  width: auto;
+  font-size: 32px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.lastitem {
+  margin-right: 0;
+  clear: right;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+#keyboard .space {
+  width: 681px;
+}
+
+.on {
+  display: none;
+}
+
+#keyboard li:active {
+  position: relative;
+  top: 1px;
+  left: 1px;
+  background-color: #72b5b1; /* highlight blue */
+}
+
+.highlighted {
+  background-color: #72b5b1 !important; /* highlight blue */
+}
+
+/* Thanks Modal Style */
+
+#thanksText {
+  text-align: center;
+  width: 100%;
+  margin: auto;
+}
+
+@keyframes sparkle {
+  0%   { opacity: 1; }
+  35%   { opacity: 0.0; }
+  45% {opacity: 0.0}
+  80%  { opacity: 1; }
+}
+
+.category {
+  animation-name: sparkle;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: 12s;
+  background-color: #04464e !important;
+  fill: rgba(4, 70, 78, 0.4);
+  opacity: 1;
+  will-change: opacity;
+}
+
+/* anpassa till mobil*/
+@media screen and (max-width: 699px) and (min-width: 200px) {
+  body {
+    overflow: scroll !important;
+    position: relative !important;
+  }
+
+  #wrapper {
+    overflow: hidden !important;
+  }
+
+  #lang a {
+    position: relative !important;
+    top:10px !important;
+    left:10px !important;
+  }
+
+  #caption {
+    position: relative;
+    top: 10px;
+    left: 0%;
+    color: #2d5f6f;
+    padding: 10px;
+  }
+
+  #subcaption {
+    width: 100%;
+  }
+
+  .categoryLabel {
+    position: relative;
+    margin: 10px 10px;
+    padding: 20px;
+  }
+
+  #Label1 {
+    top: 0;
+    left: 0;
+  }
+  
+  #Label2 {
+    top: 0;
+    left: 0;
+  }
+  
+  #Label3 {
+    top: 0;
+    left: 0;
+  }
+  
+  #Label4 {
+    top: 0;
+    left: 0;
+  }
+  
+  #map, #clickableOverlay {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    width: 420px;
+    height: 13  00px;
+    max-width: 100%;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .dialog_modal {
+    background-color: rgba(4, 70, 78, 0.85);
+    position: relative;
+    top: 5px;
+    bottom: 75px;
+    left: 0px;
+    right: 50px;
+    border-radius: 7px;
+    padding: 10px;
+    margin: 10px;
+  }
+
+  #checklistBody {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #checklistHeader {
+    margin-right: 40px;
+  }
+
+  .closeModalButton {
+    position: absolute;
+    top: -12px;
+    right: -4px;
+    height: 56px;
+    width: 56px;
+    padding-top: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .closeModalButton img {
+    width: 25px;
+    height: 25px;
+  }
+
+  #submitActionButton {
+    position: relative;
+    bottom: 0px;
+    right: 0px;
+    height: 80px;
+    padding: 0px 40px;
+    border-radius: 40px;
+    line-height: 90px;
+    font-size: 40px;
+    margin: 10px 0px;
+    }
+
+  #checklistSeparator {
+      width: 100%;
+      padding-top: 5px;
+      border-radius: 2.5px;
+      background-color: #2d606f;
+      margin: 0px 0px 0px 0px;
+  }
+
+  .learnMoreImage {
+    width: 100%;
+    height: 100% !important;
+  }
+
+  #keyboard {
+    display: none;
+  }
+
+  #submitEmail {
+    position: relative;
+    bottom: 0px;
+    right: 0px;
+    height: 80px;
+    padding: 0px 40px;
+    border-radius: 40px;
+    line-height: 80px;
+  }
+
+  #emailModal #container {
+    width: 100%
+  }
+
+  #write {
+    vertical-align: top;
+    display: inline-block;
+    font-size: 32px;
+    line-height: 50px;
+    font-family: verdana;
+    padding: 0px;
+    padding-top: 0px;
+    width: 100%;
+    margin-right: 0px;
+    height: 50px;
+    background: #fff;
+    border-radius: 7px;
+    resize: none;
+    border: none;
+    }
+}
+
+/* polopoly */
+
+@media screen and (max-width: 990px) and (min-width: 700px) {
+  .learnMoreImage {
+    width: 90%;
+    height: 60% !important;
+  }
+
+  .dialog_modal {
+    padding: 10px;
+    }
+}
+/* anpassa till iPad*/
+@media screen and (max-width: 1024px) and (min-width: 990px) {
+  #map, #clickableOverlay {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    width: 1024px;
+    height: 748px;
+    max-width: 100%;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .dialog_modal {
+    background-color: rgba(4, 70, 78, 0.85);
+    position: absolute;
+    top: 50px;
+    bottom: 75px;
+    left: 20px;
+    right: 50px;
+    border-radius: 7px;
+    padding: 10px;
+    }
+}
+
+@media screen and (max-width: 1080px) and (min-width: 1024px) {
+  #map, #clickableOverlay {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    width: 1080px;
+    height: 810px;
+    max-width: 100%;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .dialog_modal {
+    background-color: rgba(4, 70, 78, 0.85);
+    position: absolute;
+    top: 50px;
+    bottom: 75px;
+    left: 20px;
+    right: 50px;
+    border-radius: 7px;
+    padding: 10px;
+    }
+}
+
+@media screen and (max-width: 1600px) and (min-width: 1081px) {
+  .dialog_modal {
+    background-color: rgba(4, 70, 78, 0.85);
+    position: absolute;
+    top: 50px;
+    bottom: 75px;
+    left: 20px;
+    right: 50px;
+    border-radius: 7px;
+    padding: 10px;
+    }
+
+    #write {
+      vertical-align: top;
+      display: inline-block;
+      font-size: 40px;
+      line-height: 60px;
+      font-family: verdana;
+      padding: 10px;
+      padding-top: 0px;
+      width: 800px;
+      margin-right: 10px;
+      height: 50px;
+      background: #fff;
+      border-radius: 7px;
+      resize: none;
+      border: none;
+      }
+
+}
+
+
+@media screen and (max-width: 1601px) {
+  .circle-text {
+    width: 225px;
+    height: 170px;
+    display: block;
+    border-radius: 50%;
+    text-align: center;
+    min-width: 50px;
+    min-height: 50px;
+  }
+  
+  #map, #clickableOverlay {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    width: 1600px;
+    height: 900px;
+    max-width: 100%;
+    background-size: cover;
+    background-position: center;
+  }
+
+  #checklistLogo {
+    display: inline-block;
+    height: 100px;
+    width: 100px;
+    border-radius: 0px;
+    margin-right: 30px;
+    vertical-align: middle;
+    will-change: top, scale;
+    transition: transform 1s;
+  }
+
+  .title {
+      font-size: 40px;
+      line-height: 1;
+      color: #e9efe7;
+  }
+
+  #subcaption {
+      font-size: 16px;
+      line-height: 1;
+      color: #e9efe7; /* white */
+      /*font-family1: 'EksellDisplayWebMedium';*/
+      font-family: "Open Sans",Arial,"Helvetica Neue",helvetica,sans-serif;
+  }
+
+  .instruction {
+    /*font-family1: 'GillSansLight';*/
+    color: #bdcc9b;
+    font-size: 16px;
+    line-height: 1.2;
+  }
+  
+  #checklistContainer {
+    padding-top: 20px;
+    flex: 2;
+  }
+
+  .actionItemCheckbox {
+    width: 30px;
+    height: 30px;
+    margin-right: 30px;
+    vertical-align: top;
+    position: relative;
+  }
+  .itemCheckboxImage {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+  }
+  .actionItemName, div#checklistlearnMoreText h2 {
+    line-height: 40px;
+    padding-bottom: 15px;
+    font-size: 20px;
+    line-height: 1;
+    color: #e9efe7;
+    /*font-family1: 'EksellDisplayWebMedium';*/
+    font-weight: normal;
+    margin: 0;
+  }
+  .body {
+    /*font-family1: 'GillSansLight';*/
+    color: #bec4ba;
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  #confirmationContainer {
+    width: 95%;
+    padding-top: 50px;
+    margin: auto;
+    }
+
+
+  #confirmationEmailQuestion {
+    padding-top: 50px;
+    padding-bottom: 30px;
+    line-height: 1.2;
+    }
+
+    .subtitle {
+      font-size: 24px !important;
+      /*font-family1: 'EksellDisplayWebMedium' !important;*/
+    }
+
+      #confirmationEmailQuestionNoButton, #confirmationEmailQuestionYesButton {
+        display: inline-block;
+        height: 80px;
+        padding: 0px 40px;
+        border-radius: 40px;
+        line-height: 80px;
+        margin-right: 50px;
+        margin-bottom: 30px;
+        }
+  #submitEmail {
+          display: block !important;
+        }
+  
+    #emailTextbox {
+      margin-top: 10px;
+      margin-bottom: 5px;
+      height: 80px;
+    }
+
+    /*
+    #keyboard {
+      1display:none
+    }
+    */
+
+    #keyboard .email, #keyboard .left-shift, #keyboard .capslock {
+      width: auto;
+      font-size: 24px;
+      padding-left: 15px;
+      padding-right: 15px;
+      }
+    #keyboard li {
+      float: left;
+      margin: 0 5px 5px 0;
+      width: 60px;
+      height: 60px;
+      line-height: 64px;
+      font-size: 40px;
+      /*font-family1: 'GillSansLight';*/
+      vertical-align: middle;
+      text-align: center;
+      background-color: #2d606f;
+      color: #e9efe7;
+      text-align: center;
+      border-radius: 7px;
+  }
+
+  .invisibleKey {
+    width: 0px !important;
+  }
+
+  #thanksModal {
+    text-align: center;
+  }
+
+  #thanksText {
+    line-height: 640px;
+    font-size: 80px;
+  }
+
+  .learnMoreImage {
+    height: 260px;
+  }
+}
+
+.cont-checkbox {
+  width: 50px;
+  height: 50px;
+  margin-right: 30px;
+}
+
+input {
+  display: none;
+}
+
+input:checked + label .checked {
+  display: inline-block;
+}
+
+input:checked + label .unchecked {
+  display: none;
+}
+
+label .checked {
+  display: none;
+}
+
+label .unchecked {
+  display: inline-block;
+}
+
+input:checked + label .cover-checkbox svg {
+  stroke-dashoffset: 0;
+}
+
+label {
+  display: inline-block;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  /*opacity: 0.6;*/
+}
+
+label img {
+  width: 100%;
+  height: 100%;
+
+  /*
+  object-fit: cover;
+  clip-path: polygon(0% 0%, 100% 0, 100% 81%, 50% 100%, 0 81%);
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+  */
+}
+
+label .cover-checkbox {
+  position: absolute;
+  right: 5px;
+  top: 3px;
+  z-index: 1;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--box-shadow);
+  border: 2px solid #fff;
+  transition: transform var(--transition),
+    opacity calc(var(--transition) * 1.2) linear;
+  opacity: 0;
+  transform: scale(0);
+}
+
+label .cover-checkbox svg {
+  width: 13px;
+  height: 11px;
+  display: inline-block;
+  vertical-align: top;
+  fill: none;
+  margin: 5px 0 0 3px;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 16px;
+  transition: stroke-dashoffset 0.4s ease var(--transition);
+  stroke-dashoffset: 16px;
+}
+
+label .info {
+  text-align: center;
+  margin-top: 0.2rem;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
