@@ -23,8 +23,8 @@
 }
 
 .circle-text {
-  width: 400px;
-  height: 280px;
+  width: 360px;
+  height: 300px;
   display: block;
   border-radius: 50%;
   text-align: center;
@@ -45,8 +45,9 @@
 
 /* General Style */
 body {
+  background: #1954A6;
+  color:#fff;
   font-family: "Open Sans",Arial,"Helvetica Neue",helvetica,sans-serif;
-  overflow: hidden !important;
   margin: 0px;
   -webkit-user-select: none !important;
 }
@@ -78,6 +79,13 @@ a {
   padding: 0;
   overflow: hidden;
   border: 1px solid #888888;
+}
+
+#wrapper {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  padding: 40px
 }
 
 .frame {
@@ -134,8 +142,8 @@ h2 {
 }
 
 .subtitle {
-  font-size: 40px !important;
-  color: #000 !important; /* white */
+  font-size: 40px;
+  color: #000 !important;
   /*font-family1: 'EksellDisplayWebMedium' !important;*/
   font-family: "Open Sans",Arial,"Helvetica Neue",helvetica,sans-serif;
 }
@@ -145,6 +153,12 @@ h2 {
   color: #bdcc9b; /* light green */
   font-size: 26px;
   line-height: 1.2;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
 }
 
 .body {
@@ -165,10 +179,9 @@ h2 {
 
 .clickable {
   background-color: #2d606f; /* base middle blue */
-  color:  #e9efe7; /* white */
+  color:  #000;
   text-align: center;
-  font-size: 28px;
-  /*font-family1: 'GillSansBold';*/
+  font-size: 40px;
   cursor: pointer;
 }
 
@@ -183,13 +196,15 @@ h2 {
 
 .dialog_modal {
   background-color: rgba(4, 70, 78, 0.85);  /* base darkest blue */
-  position: absolute;
-  top: 50px;
-  bottom: 50px;
-  left: 50px;
-  right: 50px;
+  position: relative;
+  1top: 50px;
+  1bottom: 50px;
+  1left: 50px;
+  1right: 50px;
   border-radius: 7px;
-  padding: 50px;
+  padding: 10px;
+  1width:90%;
+  flex-grow: 1;
 }
 
 .smallModal {
@@ -333,9 +348,12 @@ h2 {
 .actionItem {
   display: flex;
   flex-direction: row;
-  cursor: pointer;
   margin-bottom: 20px;
   color: #e9efe7; /* white */
+}
+
+.actionItemText {
+  display: flex;
 }
 
 .actionItemCheckbox {
@@ -354,13 +372,13 @@ h2 {
 
 .actionItemBody {
   vertical-align: top;
-  flex: 1;
+  padding-left: 10px;
 }
 
 .actionItemName, div#checklistlearnMoreText h2 {
   line-height: 40px;
   padding-bottom: 15px;
-  font-size: 32px;
+  font-size: 2vw;
   line-height: 1;
   color: #e9efe7; /* white */
   /*font-family1: 'EksellDisplayWebMedium';*/
@@ -378,22 +396,25 @@ h2 {
 .learnMoreImage {
   float: left;
   padding-right: 20px;
-  height: 430px;
+  width: 100%;
 }
 
 .learnMoreText {
   margin-top: 0px;
 }
 
+
+
 #submitActionButton {
   position: absolute;
-  bottom: -40px;
-  right: 30px;
+  bottom: -20px;
+  right: -20px;
   height: 80px;
   padding: 0px 40px;
   border-radius: 40px;
   line-height: 90px;
   font-size: 40px;
+  color:#fff
 }
 
 
@@ -410,13 +431,15 @@ h2 {
 }
 
 #confirmationEmailQuestion {
-  padding-top: 100px;
-  padding-bottom: 60px;
+  padding-top: 20px;
+    padding-bottom: 20px;
+  font-size: 25px;
   line-height: 1.2;
 }
 
 #confirmationEmailPrivacyStatement {
-  padding-bottom: 240px;
+  padding-top: 20px;
+    padding-bottom: 20px;
   font-size: 25px;
   line-height: 30px;
 }
@@ -432,7 +455,7 @@ h2 {
   border-radius: 40px;
   line-height: 80px;
   margin-right: 50px;
-  margin-bottom: 100px;
+  color:#fff;
 }
 
 
@@ -578,15 +601,119 @@ h2 {
   will-change: opacity;
 }
 
+.cont-checkbox {
+  margin-right: 30px;
+}
+
+input {
+  display: none;
+}
+
+input:checked + label .checked {
+  display: inline-block;
+}
+
+input:checked + label .unchecked {
+  display: none;
+}
+
+label .checked {
+  display: none;
+}
+
+label .unchecked {
+  display: inline-block;
+}
+
+input:checked + label .cover-checkbox svg {
+  stroke-dashoffset: 0;
+}
+
+label {
+  display: flex;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  overflow: hidden;;
+  position: relative;
+  /*opacity: 0.6;*/
+}
+
+label img {
+  width: 2vw;
+  height: 2vw;
+}
+
+.actionItemTextPadding {
+  width: 2vw;
+}
+
+.showmoreinfo {
+  cursor: pointer;
+}
+
+label .cover-checkbox {
+  position: absolute;
+  right: 5px;
+  top: 3px;
+  z-index: 1;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--box-shadow);
+  border: 2px solid #fff;
+  transition: transform var(--transition),
+    opacity calc(var(--transition) * 1.2) linear;
+  opacity: 0;
+  transform: scale(0);
+}
+
+label .cover-checkbox svg {
+  width: 13px;
+  height: 11px;
+  display: inline-block;
+  vertical-align: top;
+  fill: none;
+  margin: 5px 0 0 3px;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 16px;
+  transition: stroke-dashoffset 0.4s ease var(--transition);
+  stroke-dashoffset: 16px;
+}
+
+label .info {
+  text-align: center;
+  margin-top: 0.2rem;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  padding: 6px 0px;
+  border-radius: 15px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.42857;
+}
+
 /* anpassa till mobil*/
 @media screen and (max-width: 699px) and (min-width: 200px) {
+  /*
   body {
     overflow: scroll !important;
     position: relative !important;
   }
+  */
 
   #wrapper {
-    overflow: hidden !important;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    height: unset;
   }
 
   #lang a {
@@ -632,7 +759,24 @@ h2 {
     top: 0;
     left: 0;
   }
+
+  .clickable {
+    font-size: 30px;
+  }
+
+  .actionItemName, div#checklistlearnMoreText h2 {
+    font-size: 5vw;
+  }
+
+  label img {
+    width: 5vw;
+    height: 5vw;
+  }
   
+  .actionItemTextPadding {
+    width: 5vw;
+  }
+
   #map, #clickableOverlay {
     position: fixed;
     top: 0px;
@@ -640,22 +784,10 @@ h2 {
     bottom: 0px;
     right: 0px;
     width: 420px;
-    height: 13  00px;
+    height: 233px;
     max-width: 100%;
     background-size: cover;
     background-position: center;
-  }
-
-  .dialog_modal {
-    background-color: rgba(4, 70, 78, 0.85);
-    position: relative;
-    top: 5px;
-    bottom: 75px;
-    left: 0px;
-    right: 50px;
-    border-radius: 7px;
-    padding: 10px;
-    margin: 10px;
   }
 
   #checklistBody {
@@ -704,11 +836,6 @@ h2 {
       margin: 0px 0px 0px 0px;
   }
 
-  .learnMoreImage {
-    width: 100%;
-    height: 100% !important;
-  }
-
   #keyboard {
     display: none;
   }
@@ -743,44 +870,69 @@ h2 {
     resize: none;
     border: none;
     }
+
+    .circle-text {
+      width: 300px;
+      height: 240px;
+      display: block;
+      border-radius: 50%;
+      text-align: center;
+      min-width: 50px;
+      min-height: 50px;
+    }
 }
 
 /* polopoly */
 
 @media screen and (max-width: 990px) and (min-width: 700px) {
-  .learnMoreImage {
-    width: 90%;
-    height: 60% !important;
-  }
-
-  .dialog_modal {
-    padding: 10px;
-    }
+  
 }
+
 /* anpassa till iPad*/
-@media screen and (max-width: 1024px) and (min-width: 990px) {
+@media screen and (max-width: 1024px) and (min-width: 700px) {
   #map, #clickableOverlay {
     position: absolute;
     top: 0px;
     left: 0px;
     bottom: 0px;
     right: 0px;
-    width: 1024px;
-    height: 748px;
-    max-width: 100%;
     background-size: cover;
     background-position: center;
   }
 
+  .clickable {
+    font-size: 20px;
+  }
+
+  .circle-text {
+    width: 190px;
+    height: 150px;
+  }
+
+  /*
   .dialog_modal {
     background-color: rgba(4, 70, 78, 0.85);
-    position: absolute;
+    1position: absolute;
     top: 50px;
     bottom: 75px;
-    left: 20px;
-    right: 50px;
+    1left: 20px;
+    1right: 50px;
     border-radius: 7px;
     padding: 10px;
+  }
+  */
+
+    .actionItemName, div#checklistlearnMoreText h2 {
+      font-size: 3vw;
+    }
+
+    label img {
+      width: 3vw;
+      height: 3vw;
+    }
+
+    .actionItemTextPadding {
+      width: 3vw;
     }
 }
 
@@ -798,19 +950,21 @@ h2 {
     background-position: center;
   }
 
-  .dialog_modal {
-    background-color: rgba(4, 70, 78, 0.85);
-    position: absolute;
-    top: 50px;
-    bottom: 75px;
-    left: 20px;
-    right: 50px;
-    border-radius: 7px;
-    padding: 10px;
-    }
 }
 
-@media screen and (max-width: 1600px) and (min-width: 1081px) {
+@media screen and (max-width: 1440px) and (min-width: 1025px){
+  .clickable {
+    font-size: 26px;
+  }
+
+  .circle-text {
+    width: 260px;
+    height: 180px;
+  }
+}
+
+@media screen and (max-width: 1600px) and (min-width: 1440px) {
+  /*
   .dialog_modal {
     background-color: rgba(4, 70, 78, 0.85);
     position: absolute;
@@ -821,7 +975,7 @@ h2 {
     border-radius: 7px;
     padding: 10px;
     }
-
+  */
     #write {
       vertical-align: top;
       display: inline-block;
@@ -841,7 +995,7 @@ h2 {
 
 }
 
-
+/*
 @media screen and (max-width: 1601px) {
   .circle-text {
     width: 225px;
@@ -878,7 +1032,6 @@ h2 {
   }
 
   .title {
-      font-size: 40px;
       line-height: 1;
       color: #e9efe7;
   }
@@ -886,13 +1039,11 @@ h2 {
   #subcaption {
       font-size: 16px;
       line-height: 1;
-      color: #e9efe7; /* white */
-      /*font-family1: 'EksellDisplayWebMedium';*/
+      color: #e9efe7;
       font-family: "Open Sans",Arial,"Helvetica Neue",helvetica,sans-serif;
   }
 
   .instruction {
-    /*font-family1: 'GillSansLight';*/
     color: #bdcc9b;
     font-size: 16px;
     line-height: 1.2;
@@ -918,16 +1069,12 @@ h2 {
   }
   .actionItemName, div#checklistlearnMoreText h2 {
     line-height: 40px;
-    padding-bottom: 15px;
-    font-size: 20px;
     line-height: 1;
     color: #e9efe7;
-    /*font-family1: 'EksellDisplayWebMedium';*/
     font-weight: normal;
     margin: 0;
   }
   .body {
-    /*font-family1: 'GillSansLight';*/
     color: #bec4ba;
     font-size: 14px;
     line-height: 1.2;
@@ -948,7 +1095,6 @@ h2 {
 
     .subtitle {
       font-size: 24px !important;
-      /*font-family1: 'EksellDisplayWebMedium' !important;*/
     }
 
       #confirmationEmailQuestionNoButton, #confirmationEmailQuestionYesButton {
@@ -960,7 +1106,7 @@ h2 {
         margin-right: 50px;
         margin-bottom: 30px;
         }
-  #submitEmail {
+    #submitEmail {
           display: block !important;
         }
   
@@ -969,12 +1115,6 @@ h2 {
       margin-bottom: 5px;
       height: 80px;
     }
-
-    /*
-    #keyboard {
-      1display:none
-    }
-    */
 
     #keyboard .email, #keyboard .left-shift, #keyboard .capslock {
       width: auto;
@@ -989,7 +1129,6 @@ h2 {
       height: 60px;
       line-height: 64px;
       font-size: 40px;
-      /*font-family1: 'GillSansLight';*/
       vertical-align: middle;
       text-align: center;
       background-color: #2d606f;
@@ -1012,98 +1151,7 @@ h2 {
   }
 
   .learnMoreImage {
-    height: 260px;
+    height: 20vw;
   }
 }
-
-.cont-checkbox {
-  width: 50px;
-  height: 50px;
-  margin-right: 30px;
-}
-
-input {
-  display: none;
-}
-
-input:checked + label .checked {
-  display: inline-block;
-}
-
-input:checked + label .unchecked {
-  display: none;
-}
-
-label .checked {
-  display: none;
-}
-
-label .unchecked {
-  display: inline-block;
-}
-
-input:checked + label .cover-checkbox svg {
-  stroke-dashoffset: 0;
-}
-
-label {
-  display: inline-block;
-  cursor: pointer;
-  border-radius: var(--border-radius);
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  /*opacity: 0.6;*/
-}
-
-label img {
-  width: 100%;
-  height: 100%;
-
-  /*
-  object-fit: cover;
-  clip-path: polygon(0% 0%, 100% 0, 100% 81%, 50% 100%, 0 81%);
-  -webkit-filter: grayscale(100%);
-  filter: grayscale(100%);
-  */
-}
-
-label .cover-checkbox {
-  position: absolute;
-  right: 5px;
-  top: 3px;
-  z-index: 1;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--box-shadow);
-  border: 2px solid #fff;
-  transition: transform var(--transition),
-    opacity calc(var(--transition) * 1.2) linear;
-  opacity: 0;
-  transform: scale(0);
-}
-
-label .cover-checkbox svg {
-  width: 13px;
-  height: 11px;
-  display: inline-block;
-  vertical-align: top;
-  fill: none;
-  margin: 5px 0 0 3px;
-  stroke: #fff;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 16px;
-  transition: stroke-dashoffset 0.4s ease var(--transition);
-  stroke-dashoffset: 16px;
-}
-
-label .info {
-  text-align: center;
-  margin-top: 0.2rem;
-  font-weight: 600;
-  font-size: 0.8rem;
-}
+*/

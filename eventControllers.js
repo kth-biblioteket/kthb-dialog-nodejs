@@ -102,10 +102,14 @@ async function generateChoiceApp(req, res, next) {
              data.event.actions[i].choices = await eventModel.readActionChoices(actions[i].id)
         } 
 
+        let labels = {
+            "submitActionButtonText": "Submit"
+        }
         //Skapa dataobjekt att skicka till webbapp
         choicedata = {
             "url": req.protocol + '://' + req.get('host') + req.originalUrl,
-            "event": data.event
+            "event": data.event,
+            "labels": labels
         }
         res.render('choice', choicedata);
 

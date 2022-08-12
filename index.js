@@ -118,7 +118,7 @@ apiRoutes.get("/admin", VerifyToken, eventController.readEventsPaginated)
 apiRoutes.get("/choice/:event_id", eventController.generateChoiceApp)
 
 //DialogResultsApp
-apiRoutes.get("/results/:event_id", VerifyToken, eventController.generateChoiceResultsApp)
+apiRoutes.get("/results/:event_id", eventController.generateChoiceResultsApp)
 
 apiRoutes.post(process.env.API_PATH + "/event", VerifyToken, async function (req, res, next) {
     try {
@@ -333,7 +333,10 @@ apiRoutes.get(process.env.API_PATH + "/choice/:event_id", async function (req, r
 apiRoutes.post(process.env.API_PATH + "/choice/", async function (req, res) {
     let error = false;
     //Gå igenom resultat och spara
-    for(let i;i<req.body.session_choices.length;i++) {
+    if (!req.body.session_choices) {
+        res.status(400).send("no choices given")
+    } else {
+        for(let i=0;i<req.body.session_choices.length;i++) {
             let create = await eventController.createActionChoices(req.body.session_choices[i])
             if(create.status == 0) {
                 error = true;
@@ -344,12 +347,13 @@ apiRoutes.post(process.env.API_PATH + "/choice/", async function (req, res) {
                 error = true;
                 res.status(400).send(create.message)
             }
-    }
+        }
 
-    if (!error) {
-        //Skicka socketmeddelande om att en dialog utförts(fångas upp av ResultatApp)
-        io.emit("FromAPI", '{"category" : "' + req.body.category + '", "computerLocation" : "' + req.body.computerLocation + '" }')
-        res.sendStatus(200);
+        if (!error) {
+            //Skicka socketmeddelande om att en dialog utförts(fångas upp av ResultatApp)
+            io.emit("FromAPI", '{"category" : "' + req.body.category + '", "computerLocation" : "' + req.body.computerLocation + '" }')
+            res.sendStatus(200);
+        }
     }
 });
   
@@ -394,7 +398,10 @@ apiRoutes.post(process.env.API_PATH + "/reminder", async function (req, res) {
         to: req.body.email,
         subject: process.env.MAILFROM_SUBJECT_SV,
         template: 'email_' + req.body.lang,
-        //html: htmlbody,
+        context:{
+            name: "Anka",
+            company: 'KTH Bibilioteket'
+        },
         generateTextFromHTML: true
         };
     } else {
@@ -406,7 +413,10 @@ apiRoutes.post(process.env.API_PATH + "/reminder", async function (req, res) {
         to: req.body.email,
         subject: process.env.MAILFROM_SUBJECT_EN,
         template: 'email_' + req.body.lang,
-        //html: htmlbody,
+        context:{
+            name: "Anka",
+            company: 'KTH Library'
+        },
         generateTextFromHTML: true
         };
     }

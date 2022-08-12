@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.bootstrap5.min.css">
     <link rel="stylesheet" type="text/css" href="/dialog/public/style.css">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
@@ -34,7 +36,7 @@
     <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
 </head>
 
-<body style="position:fixed;width:100%;height:100%;background: #1954A6;">
+<body style="">
     <div style="width:100%">
         <!--img id="map" src="images/field.jpg" /-->
     </div>
@@ -61,7 +63,7 @@
         </div>
         <!-- Category Labels -->
         <%for (const action_ of choicedata.event.actions) { %>
-            <div class="circle-text categoryLabel shadow clickable subtitle" id="Label<%=action_.id%>" name="<%=action_.id%>" onclick="startSession('<%=action_.id%>')">
+            <div class="circle-text categoryLabel shadow clickable" id="Label<%=action_.id%>" name="<%=action_.id%>" onclick="startSession('<%=action_.id%>')">
                 <span class="inner-text center-align"><%=action_.description_en%></span>
             </div>
         <%} %>
@@ -83,9 +85,6 @@
             </div>
             <div id="checklistBody">
                 <div id="checklistContainer">
-                    <%for (const action_ of choicedata.event.actions) { %>
-                        
-                    <%} %>
                 </div>
                 <div id="checklistSeparator">
                 </div>
@@ -95,7 +94,7 @@
             <div class="closeModalButton clickable shadow">
                 <img src="/dialog/public/images/dismiss_icon.png" width="30" height="30" draggable="false" />
             </div>
-            <div id="submitActionButton" class="hide clickable shadow">Submit
+            <div id="submitActionButton" class="hide clickable shadow"><%= choicedata.labels.submitActionButtonText%>
             </div>
         </div>
 
@@ -103,7 +102,7 @@
             <div id="confirmationContainer">
               <div id="confirmationTitle" class="title"></div>
               <div id="confirmationSubtitle" class="title">Du lovar att <span id="confirmationAction"></span></div>
-              <div id="confirmationEmailQuestion" class="subtitle">
+              <div id="confirmationEmailQuestion">
                 Enskilda handlingar är viktiga. Det finns mycket man kan göra för att förbättra sin inverkan på klimatet.<br>
                 <span id="emailPrompt">Vill du att vi skickar ett uppföljningsmail med ytterligare information om ditt löfte?</span>
               </div>
@@ -202,7 +201,7 @@
             <div id="submitEmail" class="hide clickable shadow">SKICKA!</div>
         </div>
 
-        <div class="dialog_modal smallModal shadow hide" id="thanksModal">
+        <div class="dialog_modal shadow hide" id="thanksModal">
             <div id="thanksText" class="title">Tack!</div>
         </div>
 
@@ -501,19 +500,16 @@
                                     <label for="myCheckbox-${i}">
                                         <img class="unchecked" id="myCheckboxImageUnchecked-${i}" src="/dialog/public/images/unchecked_box.png"/>
                                         <img class="checked" id="myCheckboxImageChecked-${i}" src="/dialog/public/images/checked_box.png"/>
-                                        <!--span class="cover-checkbox">
-                                            <img class="itemCheckboxImage" src="/dialog/public/images/checked_box.png" draggable="false" />
-                                        </span-->
+                                        <div class="actionItemBody">
+                                            <div class="actionItemName title">
+                                                ${actionObject.choices[i].name}
+                                            </div>
+                                        </div>
                                     </label>
-                                </div>
-                                <div class="actionItemBody">
-                                    <div class="actionItemName title">
-                                        ${actionObject.choices[i].name} 
-                                        <span>
-                                            <button style="" class="btn btn-outline-info btn-sm" type="button" onclick="showmoreinfo(${i})">More</button>
-                                        </span>
+                                    <div class="actionItemText">
+                                        <div class="actionItemTextPadding" style="">&nbsp;</div>
+                                        <div style="padding-left:10px;width:100%">${actionObject.choices[i].description} <span style="" class="showmoreinfo" type="" onclick="showmoreinfo(${i})"><i class="fa fa-info-circle"></i></span></div>
                                     </div>
-                                    <div class="actionItemText body">${actionObject.choices[i].description}</div>
                                 </div>
                             </div>`
                     }
