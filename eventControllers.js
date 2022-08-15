@@ -121,7 +121,27 @@ async function generateChoiceApp(req, res, next) {
 
 // Funktion som genererar en dialogapp för ipad/skärm/webb
 async function generateChoiceResultsApp(req, res, next) {
-    res.render('results');
+
+    let event
+    let data = []
+
+    try {
+        //Hämta event
+        event = await eventModel.readEventId(req.params.event_id)
+        for (let event_ of event) { 
+            data.event = event_
+        }
+
+        //Skapa dataobjekt att skicka till webbapp
+        choiceresultsdata = {
+            "url": req.protocol + '://' + req.get('host') + req.originalUrl,
+            "event": data.event
+        }
+        res.render('results', choiceresultsdata);
+
+    } catch(err) {
+        res.send("error: " + err.message)
+    }
 }
 
 async function login(req, res) {
@@ -208,9 +228,9 @@ async function deleteEvent(id) {
     }
 }
 
-async function createActionChoices(actionchoice_id) {
+async function createActionChoices(actionchoice_id, uuid) {
     try {
-        let result = await eventModel.createActionChoices(actionchoice_id)
+        let result = await eventModel.createActionChoices(actionchoice_id, uuid)
         return result
     } catch (err) {
         console.log("error in controller createActionChoices")

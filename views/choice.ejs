@@ -34,6 +34,8 @@
     <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.bootstrap5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/uuid@latest/dist/umd/uuidv4.min.js"></script>
 </head>
 
 <body style="">
@@ -62,12 +64,13 @@
           </div>
         </div>
         <!-- Category Labels -->
+        <div id="circlelabels">
         <%for (const action_ of choicedata.event.actions) { %>
-            <div class="circle-text categoryLabel shadow clickable" id="Label<%=action_.id%>" name="<%=action_.id%>" onclick="startSession('<%=action_.id%>')">
+            <div class="circle-label circle-text categoryLabel shadow clickable" id="Label<%=action_.id%>" name="<%=action_.id%>" onclick="startSession('<%=action_.id%>')">
                 <span class="inner-text center-align"><%=action_.description_en%></span>
             </div>
         <%} %>
-
+        </div>
         <!-- Modals -->
         <div class="dialog_modal largeModal shadow hide" id="checklistModal">
             <div id="checklistHeader">
@@ -219,11 +222,12 @@
         }
 
         function reminderDone(data) {
-            console.log(data);
         }
 
         function pledge(action_id) {
-
+            //skapa ett unikt id för att samla ihop alla svar för sessionen
+            
+            uuid = uuidv4();
             //hitta rätt action
             let actionObject = actions.find(action => action.id === parseInt(action_id))
 
@@ -240,9 +244,9 @@
                 "event_id": '<%- JSON.stringify(choicedata.event.id) %>',
                 "action_id": action_id,
                 "session_choices": session_choices,
-                "computerLocation":"Right"
+                "computerLocation":"Right",
+                "uuid": uuid
             }
-            console.log(body)
             $.post({
                 url: '/dialog/api/v1/choice',
                 headers: { 'x-api-key': secret },
@@ -251,7 +255,6 @@
             })
             .always(pledgeDone)
             .done(function(data) {
-                console.log( data );
             })
             .fail(function(err) {
                 alert( JSON.stringify(err), 'danger', 'errorPlaceholder' );
@@ -265,7 +268,6 @@
         }
 
         function reminder(subcategory, email) {
-            console.log(subcategory);
             // All the data you need is the emailadress and the subcategory
             body = JSON.stringify({
                 email: email,
@@ -490,12 +492,16 @@
 
                 case 'checklist':
                     // Populate checklist html
+                    console.log(actionObject.choices)
                     $('#checklistPrompt').html(actionObject.description_en.toUpperCase());
                     checklistContainer = '';
                     for (var i = 0; i < actionObject.choices.length; i++) {
                         checklistContainer += 
                             `<div class="actionItem">
-                                <div class="cont-checkbox">
+                                <div class="cont-checkbox">`
+                                //Checkbox
+                                if (actionObject.choices[i].actionchoicetype_id == 1) {
+                                    checklistContainer += `
                                     <input type="checkbox" id="myCheckbox-${i}" name="myCheckbox-${i}" value="${actionObject.choices[i].id}"/>
                                     <label for="myCheckbox-${i}">
                                         <img class="unchecked" id="myCheckboxImageUnchecked-${i}" src="/dialog/public/images/unchecked_box.png"/>
@@ -509,8 +515,23 @@
                                     <div class="actionItemText">
                                         <div class="actionItemTextPadding" style="">&nbsp;</div>
                                         <div style="padding-left:10px;width:100%">${actionObject.choices[i].description} <span style="" class="showmoreinfo" type="" onclick="showmoreinfo(${i})"><i class="fa fa-info-circle"></i></span></div>
-                                    </div>
-                                </div>
+                                    </div>`
+                                }
+                                //Fritext
+                                if (actionObject.choices[i].actionchoicetype_id == 4) {
+                                    checklistContainer += `<div class="actionItemBody">
+                                                                <label for="myTextarea-${i}">
+                                                                    <div class="">
+                                                                        <div class="">
+                                                                            ${actionObject.choices[i].name}
+                                                                        </div>
+                                                                    </div>
+                                                                </label>
+                                                                <textarea id="myTextarea-${i}" name="myTextarea-${i}" value="${actionObject.choices[i].id}"/></textarea>
+                                                            </div>`
+                                }
+                                checklistContainer += 
+                                `</div>
                             </div>`
                     }
                     $("#checklistContainer").html(checklistContainer)
@@ -597,7 +618,6 @@
                 currentlanguage = 'en';
             } 
             actions = JSON.parse('<%- JSON.stringify(choicedata.event.actions) %>')
-            console.log(actions)
             var confirmationSynonyms;
         
             //changelang()

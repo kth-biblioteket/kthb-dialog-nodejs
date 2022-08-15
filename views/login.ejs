@@ -56,13 +56,13 @@
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     sessionStorage.setItem("token", JSON.parse(this.responseText).token);
-                    location.href = "/dialog/api/v1/admin"
+                    location.href = "/dialog/admin"
                 }
                 if (this.readyState == 4 && this.status !== 200) {
                     document.getElementById("errormessage").innerHTML = "Wrong credentials!";
                 }
             };
-            xhttp.open("POST", "/dialog/api/v1/login");
+            xhttp.open("POST", "/dialog/login");
             xhttp.setRequestHeader("Content-type", "application/json");
             xhttp.send(JSON.stringify(credentials));
         }

@@ -149,7 +149,8 @@ const readActions = (event_id) => {
 const readActionChoices = (action_id) => {
     return new Promise(function (resolve, reject) {
         const sql = `SELECT * FROM actionchoices       
-                    WHERE action_id = ?`;
+                    WHERE action_id = ? 
+                    ORDER BY sortorder`;
         database.db.query(database.mysql.format(sql,[action_id]),(err, result) => {
             if(err) {
                 console.error(err);
@@ -161,11 +162,11 @@ const readActionChoices = (action_id) => {
 };
 
 //Lägg till useractionchoices(gjorda val av användare)
-const createActionChoices = (actionchoice_id) => {
+const createActionChoices = (actionchoice_id, uuid) => {
     return new Promise(function (resolve, reject) {
-        const sql = `INSERT INTO useractionchoices (actionchoice_id)
-                    VALUES(?)`;
-        database.db.query(database.mysql.format(sql,[actionchoice_id]),(err, result) => {
+        const sql = `INSERT INTO useractionchoices (actionchoice_id, uuid)
+                    VALUES(?, ?)`;
+        database.db.query(database.mysql.format(sql,[actionchoice_id, uuid]),(err, result) => {
             if(err) {
                 console.error(err);
                 reject(err.message)

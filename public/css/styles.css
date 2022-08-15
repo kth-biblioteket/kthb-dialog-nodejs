@@ -124,6 +124,14 @@ h2 {
   margin: 0;
 }
 
+textarea {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+
+	width: 100%;
+}
+
 .title {
   font-size: 40px;
   line-height: 1;
@@ -197,13 +205,8 @@ html, body {
 .dialog_modal {
   background-color: rgba(4, 70, 78, 0.85);  /* base darkest blue */
   position: relative;
-  1top: 50px;
-  1bottom: 50px;
-  1left: 50px;
-  1right: 50px;
   border-radius: 7px;
   padding: 10px;
-  1width:90%;
   flex-grow: 1;
 }
 
@@ -260,22 +263,22 @@ html, body {
 }
 
 
-#Label1 {
+#circlelabels>div:nth-child(1) {
   top: 45%;
   left: 10%;
 }
 
-#Label2 {
+#circlelabels>div:nth-child(2) {
   top: 55%;
   left: 35%;
 }
 
-#Label3 {
+#circlelabels>div:nth-child(3) {
   top: 25%;
   left: 50%;
 }
 
-#Label4 {
+#circlelabels>div:nth-child(4) {
   top: 35%;
   left: 75%;
 }
@@ -347,7 +350,7 @@ html, body {
 
 .actionItem {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   margin-bottom: 20px;
   color: #e9efe7; /* white */
 }
@@ -740,22 +743,22 @@ label .info {
     padding: 20px;
   }
 
-  #Label1 {
+  #circlelabels>div:nth-child(1) {
     top: 0;
     left: 0;
   }
   
-  #Label2 {
+  #circlelabels>div:nth-child(2) {
     top: 0;
     left: 0;
   }
   
-  #Label3 {
+  #circlelabels>div:nth-child(3) {
     top: 0;
     left: 0;
   }
   
-  #Label4 {
+  #circlelabels>div:nth-child(4) {
     top: 0;
     left: 0;
   }
@@ -798,6 +801,7 @@ label .info {
 
   #checklistHeader {
     margin-right: 40px;
+    flex-direction: column;
   }
 
   .closeModalButton {

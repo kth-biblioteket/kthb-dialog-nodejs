@@ -59,11 +59,13 @@ apiRoutes.get('/public/results.css', function(req, res) {
     res.sendFile(__dirname + "/public/css/" + "results.css");
 });
 
+apiRoutes.get('/public/admin.css', function(req, res) {
+    res.sendFile(__dirname + "/public/css/" + "admin.css");
+});
+
 apiRoutes.get('/public/chartjs-plugin-doughnutlabel-rebourne.js', function(req, res) {
     res.sendFile(__dirname + "/public/js/" + "chartjs-plugin-doughnutlabel-rebourne.js");
 });
-
-
 
 apiRoutes.get('/public/styles_pdf.css', function(req, res) {
     res.sendFile(__dirname + "/public/css/" + "styles_pdf.css");
@@ -337,7 +339,7 @@ apiRoutes.post(process.env.API_PATH + "/choice/", async function (req, res) {
         res.status(400).send("no choices given")
     } else {
         for(let i=0;i<req.body.session_choices.length;i++) {
-            let create = await eventController.createActionChoices(req.body.session_choices[i])
+            let create = await eventController.createActionChoices(req.body.session_choices[i],req.body.uuid)
             if(create.status == 0) {
                 error = true;
                 res.status(400).send(create.message)
