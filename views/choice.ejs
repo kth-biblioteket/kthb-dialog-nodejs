@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<%= choicedata.language%>">
 <head>
     <meta name="viewport" content = "width = device-width, initial-scale = 1.0, minimum-scale = 1, maximum-scale = 1, user-scalable = no" />
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -321,7 +321,7 @@
             body = JSON.stringify({
                 email: email,
                 subcategory: subcategory,
-                "lang": getcurrentlangfromurl()
+                "lang": getcurrentlangfromHTML_Tag()
             });
             $.ajax({
                 type: 'POST',
@@ -556,7 +556,7 @@
 
                 case 'checklist':
                     // Populate checklist html
-                    language = getcurrentlangfromurl()
+                    language = getcurrentlangfromHTML_Tag()
                     $('#checklistPrompt').html(language == 'sv' ? actionObject.description_sv.toUpperCase() : actionObject.description_en.toUpperCase());
                     checklistContainer = '';
                     for (var i = 0; i < actionObject.choices.length; i++) {
@@ -664,7 +664,7 @@
                     $('#confirmationAction').html(actionObject.description_en.toLowerCase());
                     //$('#confirmationTitle').html(confirmationSynonyms[SYNONYM_INDEX]);
                     $('#confirmationTitle').html("Toppen!");
-                    if(getcurrentlangfromurl() != 'en') {
+                    if(getcurrentlangfromHTML_Tag() != 'en') {
                         $('#emailPrompt').html("Vill du att vi skickar ett  bekräftelsemail med ytterligare information om ditt löfte att göra en insats kopplad till " + actionObject.description_sv.toLowerCase() + "?");
                     } else {
                         $('#emailPrompt').html("Do you want us to send a follow-up email with additional information about your promise about " + actionObject.description_en.toLowerCase() + "?");
@@ -725,9 +725,9 @@
             let labels = JSON.parse(`<%- JSON.stringify(choicedata.labels) %>`)
             let actions = event.actions
             alert("Lang", 'success', 'errorPlaceholder' );
-            lang_ = getcurrentlangfromurl()
+            lang_ = getcurrentlangfromHTML_Tag()
+
             if (lang_ == 'en') {
-                
                 history.replaceState({
                     id: 'KTHB',
                     source: 'web'
@@ -785,7 +785,7 @@
 
         var currentlanguage = 'sv';
         $(document).ready(function() {
-            if(getcurrentlangfromurl() == 'sv') {
+            if(getcurrentlangfromHTML_Tag() == 'sv') {
                 currentlanguage = 'en';
             } 
             actions = JSON.parse(`<%- JSON.stringify(choicedata.event.actions) %>`)
@@ -809,9 +809,21 @@
         }
 
         function getcurrentlangfromurl() {
+            $('html').attr('lang')
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
             language = urlParams.get('language')
+            
+            if (language == null) {
+                return 'en'
+            } else {
+                return language
+            }
+        }
+
+        function getcurrentlangfromHTML_Tag() {
+            $('html').attr('lang')
+            language = $('html').attr('lang')
             
             if (language == null) {
                 return 'en'
