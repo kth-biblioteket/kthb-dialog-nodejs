@@ -4,7 +4,9 @@
 
 #lang {
   display: flex;
-  align-items: end;
+  -webkit-justify-content: flex-end;
+  align-items: flex-end;
+  -webkit-align-items: flex-end;
   flex-direction: column;
   font-size: 24px;
   padding: 10px 10px 0px 0px;
