@@ -114,13 +114,16 @@ async function generateChoiceApp(req, res, next) {
         
 
         // Hämta KTH-skolor
-        let kthschools = await axios.get(language=='sv' ? 'https://www.kth.se/api/kopps/v2/schools' : 'https://www.kth.se/api/kopps/v2/schools?l=en')
+        let kthschools = await axios.get('https://www.kth.se/api/kopps/v2/schools')
+        let kthschools_en = await axios.get('https://www.kth.se/api/kopps/v2/schools?l=en')
 
         let labels = {
             "submitActionButtonText_en": "Submit",
             "submitActionButtonText_sv": "Skicka",
-            "instruction_sv": "Välj dina alternativ och tryck på “SKICKA!”",
-            "instruction_en": "Select your alternatives and press “SUBMIT!”"
+            "instruction_sv": "Välj dina alternativ och tryck på ”Skicka!”",
+            "instruction_en": "Select your alternatives and press ”Submit!”",
+            "emailinstruction_sv": "Skriv in din mailadress och tryck på ”Skicka!”",
+            "emailinstruction_en": "Enter your emailadress and press ”Submit!”"
         }
         //Skapa dataobjekt att skicka till webbapp
         choicedata = {
@@ -128,7 +131,8 @@ async function generateChoiceApp(req, res, next) {
             "language": language,
             "event": data.event,
             "labels": labels,
-            "kthschools": kthschools.data
+            "kthschools": kthschools.data,
+            "kthschools_en": kthschools_en.data
         }
         res.render('choice', choicedata);
 

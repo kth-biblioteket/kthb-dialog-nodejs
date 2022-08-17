@@ -46,14 +46,13 @@
     <div id="errorPlaceholder"></div>
     <!-- Language -->
     <div id="lang" class="title">
-        <a href="javascript:changelang('<%= choicedata.event.id%>','<%= choicedata.language%>' );"><%- choicedata.language =='sv' ? 'English' : 'Swedish' %></a>
+        <a href="javascript:changelang();"><%- choicedata.language =='sv' ? 'English' : 'Svenska' %></a>
     </div>
     <div id="wrapper">
         <%let event%>
         <% event = choicedata.event %>
         <% choicedata.language =='sv' ? eventname = choicedata.event.name : eventname = choicedata.event.name_en%>
         <% choicedata.language =='sv' ? eventdescription = choicedata.event.description : eventdescription = choicedata.event.description_en %>
-        <% //eventdescription = choicedata.event.description%>
         
         <!-- Caption -->
         <div id="caption">
@@ -129,8 +128,8 @@
 
         <div class="dialog_modal largeModal shadow hide" id="emailModal">
             <div id="checklistHeaderText">
-                <div id="checklistInstruction" class="instruction">
-                    Skriv in din mailadress och tryck på “SKICKA!”
+                <div id="checklistEmailInstruction" class="instruction">
+                    <%- choicedata.language =='sv' ? choicedata.labels.emailinstruction_sv : choicedata.labels.emailinstruction_en %>
                 </div>
             </div>
             <div id="container">
@@ -557,7 +556,7 @@
 
                 case 'checklist':
                     // Populate checklist html
-                    language = '<%- choicedata.language %>'
+                    language = getcurrentlangfromurl()
                     $('#checklistPrompt').html(language == 'sv' ? actionObject.description_sv.toUpperCase() : actionObject.description_en.toUpperCase());
                     checklistContainer = '';
                     for (var i = 0; i < actionObject.choices.length; i++) {
@@ -639,11 +638,13 @@
                         </div>`
                     //Skola
                     let kthschools = JSON.parse('<%- JSON.stringify(choicedata.kthschools) %>')
+                    let kthschools_en = JSON.parse('<%- JSON.stringify(choicedata.kthschools_en) %>')
+                    let currents_kthschools = language == 'sv' ? kthschools : kthschools_en
                     checklistContainer += 
                     `<select id="school" class="form-select mb-2" aria-label="School">
                         <option value="" selected>${language == 'sv' ? 'Välj en skola' : 'Pick a school'}</option>`
-                        for (var i = 0; i < kthschools.length; i++) {                        
-                            checklistContainer +=`<option value="${kthschools[i].code}">${kthschools[i].name}</option>`
+                        for (var i = 0; i < currents_kthschools.length; i++) {                        
+                            checklistContainer +=`<option value="${currents_kthschools[i].code}">${currents_kthschools[i].name}</option>`
                         }
                     checklistContainer +=`
                     </select>`
@@ -719,14 +720,65 @@
             }
         }
 
-        function changelang(event_id, language) {
-            if (language == 'sv') {
-                language = 'en'
-            } else {
-                language = 'sv'
-            }
-            window.location.assign( '/dialog/choice/1?language=' + language );
+        function changelang() {
+            //window.location.assign( '/dialog/choice/1?language=' + language );
             //window.location='/dialog/choice/1?language=' + language
+            
+
+            let event = JSON.parse(`<%- JSON.stringify(choicedata.event) %>`)
+            let labels = JSON.parse(`<%- JSON.stringify(choicedata.labels) %>`)
+            console.log("currlang: " + getcurrentlangfromurl())
+            let actions = event.actions
+            lang_ = getcurrentlangfromurl()
+            if (lang_ == 'en') {
+                console.log("change to en")
+                history.replaceState({
+                    id: 'KTHB',
+                    source: 'web'
+                }, 'KTH Biblioteket', '/dialog/choice/1?language=sv');
+                $('#lang a').text('English')
+                $('#maincaption').html(event.name)
+                $('#subcaption').html(event.description)
+                let circlelabels_html ='';
+                for (i=0; i<actions.length; i++) {
+                    
+                    circlelabels_html += `<div class="circle-label circle-text categoryLabel shadow clickable" id="Label${actions[i].id}" name="${actions[i].id}" onclick="startSession('${actions[i].id}')">
+                        <span class="inner-text center-align">${actions[i].description_sv}</span>
+                    </div>`
+                    
+                }
+                $('#circlelabels').html(circlelabels_html)
+                $('#checklistPrompt').text()
+                $('#checklistInstruction').html(labels.instruction_sv)
+                $('#checklistEmailInstruction').html(labels.emailinstruction_sv)
+                $('#submitActionButton').text(labels.submitActionButtonText_sv)
+                $('#submitEmail').text()
+                $('#thanksText').text()
+                $('#confirmationContainer').html();
+            }
+            if (lang_ == 'sv'){
+                history.replaceState({
+                    id: 'KTHB',
+                    source: 'web'
+                }, 'KTH Library', '/dialog/choice/1?language=en');
+                $('#lang a').text('Svenska')
+                $('#maincaption').html(event.name_en)
+                $('#subcaption').html(event.description_en)
+                let circlelabels_html ='';
+                for (i=0; i<actions.length; i++) {
+                    circlelabels_html += `<div class="circle-label circle-text categoryLabel shadow clickable" id="Label${actions[i].id}" name="${actions[i].id}" onclick="startSession('${actions[i].id}')">
+                        <span class="inner-text center-align">${actions[i].description_en}</span>
+                    </div>`
+                }
+                $('#circlelabels').html(circlelabels_html)
+                $('#checklistPrompt').text()
+                $('#checklistInstruction').html(labels.instruction_en)
+                $('#checklistEmailInstruction').html(labels.emailinstruction_sv)
+                $('#submitActionButton').text(labels.submitActionButtonText_en)
+                $('#submitEmail').text()
+                $('#thanksText').text()
+                $('#confirmationContainer').html();
+            }
         }
 
         function showmoreinfo(index) {
@@ -758,6 +810,7 @@
         function isDeviceiPad(){
             return navigator.platform.match(/iPad/i);
         }
+
         function getcurrentlangfromurl() {
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
