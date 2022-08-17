@@ -46,7 +46,7 @@
     <div id="errorPlaceholder"></div>
     <!-- Language -->
     <div id="lang" class="title">
-        <a href="javascript:changelang();"><%- choicedata.language =='sv' ? 'English' : 'Svenska' %></a>
+        <span onclick="changelang()"><%- choicedata.language =='sv' ? 'English' : 'Svenska' %></span>
     </div>
     <div id="wrapper">
         <%let event%>
@@ -721,31 +721,25 @@
         }
 
         function changelang() {
-            //window.location.assign( '/dialog/choice/1?language=' + language );
-            //window.location='/dialog/choice/1?language=' + language
-            
-
             let event = JSON.parse(`<%- JSON.stringify(choicedata.event) %>`)
             let labels = JSON.parse(`<%- JSON.stringify(choicedata.labels) %>`)
-            console.log("currlang: " + getcurrentlangfromurl())
             let actions = event.actions
             lang_ = getcurrentlangfromurl()
             if (lang_ == 'en') {
-                console.log("change to en")
+                
                 history.replaceState({
                     id: 'KTHB',
                     source: 'web'
                 }, 'KTH Biblioteket', '/dialog/choice/1?language=sv');
+                
                 $('#lang a').text('English')
                 $('#maincaption').html(event.name)
                 $('#subcaption').html(event.description)
                 let circlelabels_html ='';
                 for (i=0; i<actions.length; i++) {
-                    
                     circlelabels_html += `<div class="circle-label circle-text categoryLabel shadow clickable" id="Label${actions[i].id}" name="${actions[i].id}" onclick="startSession('${actions[i].id}')">
                         <span class="inner-text center-align">${actions[i].description_sv}</span>
                     </div>`
-                    
                 }
                 $('#circlelabels').html(circlelabels_html)
                 $('#checklistPrompt').text()
@@ -757,10 +751,12 @@
                 $('#confirmationContainer').html();
             }
             if (lang_ == 'sv'){
+                
                 history.replaceState({
                     id: 'KTHB',
                     source: 'web'
                 }, 'KTH Library', '/dialog/choice/1?language=en');
+                
                 $('#lang a').text('Svenska')
                 $('#maincaption').html(event.name_en)
                 $('#subcaption').html(event.description_en)
