@@ -725,7 +725,8 @@
             } else {
                 language = 'sv'
             }
-            location.href='/dialog/choice/1?language=' + language
+            window.location.assign( '/dialog/choice/1?language=' + language );
+            //window.location='/dialog/choice/1?language=' + language
         }
 
         function showmoreinfo(index) {
