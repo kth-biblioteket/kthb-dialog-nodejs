@@ -724,15 +724,16 @@
             let event = JSON.parse(`<%- JSON.stringify(choicedata.event) %>`)
             let labels = JSON.parse(`<%- JSON.stringify(choicedata.labels) %>`)
             let actions = event.actions
-            alert("Lang", 'success', 'errorPlaceholder' );
             lang_ = getcurrentlangfromHTML_Tag()
 
             if (lang_ == 'en') {
+                /*
                 history.replaceState({
                     id: 'KTHB',
                     source: 'web'
                 }, 'KTH Biblioteket', '/dialog/choice/1?language=sv');
-                
+                */
+                $('html').attr('lang', 'sv')
                 $('#lang a').text('English')
                 $('#maincaption').html(event.name)
                 $('#subcaption').html(event.description)
@@ -752,12 +753,13 @@
                 $('#confirmationContainer').html();
             }
             if (lang_ == 'sv'){
-                
+                /*
                 history.replaceState({
                     id: 'KTHB',
                     source: 'web'
                 }, 'KTH Library', '/dialog/choice/1?language=en');
-                
+                */
+                $('html').attr('lang', 'en')
                 $('#lang a').text('Svenska')
                 $('#maincaption').html(event.name_en)
                 $('#subcaption').html(event.description_en)
