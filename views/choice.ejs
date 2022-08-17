@@ -103,22 +103,22 @@
         <div class="dialog_modal largeModal shadow hide" id="confirmationModal">
             <div id="confirmationContainer">
               <div id="confirmationTitle" class="title"></div>
-              <div id="confirmationSubtitle" class="title">Du lovar att <span id="confirmationAction"></span></div>
+              <div id="confirmationSubtitle" class="title"><span id="confirmationAction"></span></div>
               <div id="confirmationEmailQuestion">
-                Enskilda handlingar är viktiga. Det finns mycket man kan göra för att förbättra sin inverkan på klimatet.<br>
-                <span id="emailPrompt">Vill du att vi skickar ett uppföljningsmail med ytterligare information om ditt löfte?</span>
+                <%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailQuestion_sv : choicedata.labels.confirmationEmailQuestion_en%>
+                <br>
+                <span id="emailPrompt"><%- choicedata.language =='sv' ? choicedata.labels.emailPrompt_sv : choicedata.labels.emailPrompt_en%></span>
               </div>
               <div id="confirmationEmailQuestionButtons">
                 <div id="confirmationEmailQuestionNoButton" class="clickable shadow">
-                  NEJ
+                    <%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailQuestionNoButton_sv : choicedata.labels.confirmationEmailQuestionNoButton_en%>
                 </div>
                 <div id="confirmationEmailQuestionYesButton" class="clickable shadow">
-                  JA
+                    <%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailQuestionYesButton_sv : choicedata.labels.confirmationEmailQuestionYesButton_en%>
                 </div>
               </div>
               <div id="confirmationEmailPrivacyStatement" class="body">
-                Vi sparar inte din epostadress och kommer bara att använda den till att skicka ett uppföljningsmail med ytterligare information om ditt löfte.<br />
-                Vi kommer inte att använda den till att skicka skräppost.
+                <%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailPrivacyStatement_sv : choicedata.labels.confirmationEmailPrivacyStatement_en%>
               </div>
             </div>
             <div class="closeModalButton clickable shadow">
@@ -209,7 +209,7 @@
         </div>
 
         <div class="dialog_modal shadow hide" id="thanksModal">
-            <div id="thanksText" class="title">Tack!</div>
+            <div id="thanksText" class="title"><%- choicedata.language =='sv' ? choicedata.labels.thanksText_sv : choicedata.labels.thanksText_en%></div>
         </div>
 
         <div class="modal fade" id="choiceModal" tabindex="-1" aria-labelledby="choiceModalLabel" aria-hidden="true">
@@ -748,9 +748,15 @@
                 $('#checklistInstruction').html(labels.instruction_sv)
                 $('#checklistEmailInstruction').html(labels.emailinstruction_sv)
                 $('#submitActionButton').text(labels.submitActionButtonText_sv)
-                $('#submitEmail').text()
-                $('#thanksText').text()
-                $('#confirmationContainer').html();
+                $('#submitEmail').text(labels.submitEmailButtonText_sv)
+                $('#thanksText').text(labels.submitEmailButtonText_sv)
+                $('#confirmationEmailQuestion').html(labels.confirmationEmailQuestion_sv);
+                $('#emailPrompt').html(labels.emailPrompt_sv);
+                $('#confirmationEmailQuestionNoButton').html(labels.confirmationEmailQuestionNoButton_sv);
+                $('#confirmationEmailQuestionYesButton').html(labels.confirmationEmailQuestionYesButton_sv);
+                $('#confirmationEmailPrivacyStatement').html(labels.confirmationEmailPrivacyStatement_sv);
+                $('#confirmationEmailQuestion').html(labels.confirmationEmailQuestion_sv);
+                
             }
             if (lang_ == 'sv'){
                 /*
@@ -772,11 +778,16 @@
                 $('#circlelabels').html(circlelabels_html)
                 $('#checklistPrompt').text()
                 $('#checklistInstruction').html(labels.instruction_en)
-                $('#checklistEmailInstruction').html(labels.emailinstruction_sv)
+                $('#checklistEmailInstruction').html(labels.emailinstruction_en)
                 $('#submitActionButton').text(labels.submitActionButtonText_en)
-                $('#submitEmail').text()
-                $('#thanksText').text()
-                $('#confirmationContainer').html();
+                $('#submitEmail').text(labels.submitEmailButtonText_en)
+                $('#thanksText').text(labels.submitEmailButtonText_en)
+                $('#confirmationEmailQuestion').html(labels.confirmationEmailQuestion_en);
+                $('#emailPrompt').html(labels.emailPrompt_en);
+                $('#confirmationEmailQuestionNoButton').html(labels.confirmationEmailQuestionNoButton_en);
+                $('#confirmationEmailQuestionYesButton').html(labels.confirmationEmailQuestionYesButton_en);
+                $('#confirmationEmailPrivacyStatement').html(labels.confirmationEmailPrivacyStatement_en);
+                $('#confirmationEmailQuestion').html(labels.confirmationEmailQuestion_en);
             }
         }
 

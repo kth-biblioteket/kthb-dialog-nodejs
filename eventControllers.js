@@ -120,10 +120,26 @@ async function generateChoiceApp(req, res, next) {
         let labels = {
             "submitActionButtonText_en": "Submit",
             "submitActionButtonText_sv": "Skicka",
+            "submitEmailButtonText_en": "Submit",
+            "submitEmailButtonText_sv": "Skicka",
+            "thanksText_en": "Thanks!",
+            "thanksText_sv": "Tack!",
             "instruction_sv": "Välj dina alternativ och tryck på ”Skicka!”",
             "instruction_en": "Select your alternatives and press ”Submit!”",
             "emailinstruction_sv": "Skriv in din mailadress och tryck på ”Skicka!”",
-            "emailinstruction_en": "Enter your emailadress and press ”Submit!”"
+            "emailinstruction_en": "Enter your emailadress and press ”Submit!”",
+            "confirmationSubtitle_sv": "Du valde att...",
+            "confirmationSubtitle_en": "You chose to...",
+            "confirmationEmailQuestion_sv" : "Valen du gör",
+            "confirmationEmailQuestion_en" : "Your choices...",
+            "emailPrompt_sv": "Vill du att vi skickar ett uppföljningsmail med ytterligare information?",
+            "emailPrompt_en": "Da you want us to send you a confirmation mail...",
+            "confirmationEmailQuestionNoButton_sv": "Nej",
+            "confirmationEmailQuestionNoButton_en": "No",
+            "confirmationEmailQuestionYesButton_sv": "Ja",
+            "confirmationEmailQuestionYesButton_en": "Yes",
+            "confirmationEmailPrivacyStatement_sv": "Vi sparar inte din epostadress och kommer bara att använda den till att skicka ett uppföljningsmail med ytterligare information.<br />Vi kommer inte att använda den till att skicka skräppost.",
+            "confirmationEmailPrivacyStatement_en": "We do not save your email and will only use it..."
         }
         //Skapa dataobjekt att skicka till webbapp
         choicedata = {
