@@ -16,6 +16,7 @@ const eventController = require('./eventControllers');
 const fileUpload = require('express-fileupload');
 const { randomUUID } = require('crypto');
 const cookieParser = require("cookie-parser");
+const axios = require('axios');
 
 const app = express();
 
@@ -121,6 +122,9 @@ apiRoutes.get("/choice/:event_id", eventController.generateChoiceApp)
 
 //DialogResultsApp
 apiRoutes.get("/results/:event_id", eventController.generateChoiceResultsApp)
+
+//Hämta KTH-skolor
+apiRoutes.get(process.env.API_PATH + "/kthschools",eventController.getkthschools)
 
 apiRoutes.post(process.env.API_PATH + "/event", VerifyToken, async function (req, res, next) {
     try {
@@ -338,8 +342,56 @@ apiRoutes.post(process.env.API_PATH + "/choice/", async function (req, res) {
     if (!req.body.session_choices) {
         res.status(400).send("no choices given")
     } else {
+        //Main action choices
         for(let i=0;i<req.body.session_choices.length;i++) {
-            let create = await eventController.createActionChoices(req.body.session_choices[i],req.body.uuid)
+            let create = await eventController.createUserActionChoices(req.body.session_choices[i], req.body.uuid)
+            if(create.status == 0) {
+                error = true;
+                res.status(400).send(create.message)
+            }
+
+            if (typeof create !== 'object' && create.indexOf('error') !== -1) {
+                error = true;
+                res.status(400).send(create.message)
+            }
+        }
+
+        //De subchoices som valts(hur presentera?)
+        if (!error && req.body.session_subchoices) {
+            for(let i=0;i<req.body.session_subchoices.length;i++) {
+                let create = await eventController.createUserSubActionChoices(req.body.session_subchoices[i], req.body.uuid)
+                if(create.status == 0) {
+                    error = true;
+                    res.status(400).send(create.message)
+                }
+
+                if (typeof create !== 'object' && create.indexOf('error') !== -1) {
+                    error = true;
+                    res.status(400).send(create.message)
+                }
+            }
+        }
+
+        //De val där det skrivits in fritext under en action
+        if (!error && req.body.session_textareas) {
+            for(let i=0;i<req.body.session_textareas.length;i++) {
+                if(req.body.session_textareas[i].message !== "") {
+                    let create = await eventController.createUserActionMessages(req.body.session_textareas[i].subchoice_id, req.body.session_textareas[i].message, req.body.uuid)
+                    if(create.status == 0) {
+                        error = true;
+                        res.status(400).send(create.message)
+                    }
+        
+                    if (typeof create !== 'object' && create.indexOf('error') !== -1) {
+                        error = true;
+                        res.status(400).send(create.message)
+                    }
+                }
+            }
+        }
+
+        if (!error) {
+            let create = await eventController.createUserActionData(req.body.usertype, req.body.school, req.body.uuid)
             if(create.status == 0) {
                 error = true;
                 res.status(400).send(create.message)

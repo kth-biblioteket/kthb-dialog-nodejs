@@ -2,6 +2,18 @@
   box-sizing: border-box
 }
 
+#lang {
+  display: flex;
+  align-items: end;
+  flex-direction: column;
+  font-size: 24px;
+  padding: 10px 10px 0px 0px;
+}
+
+#lang a {
+  color: #fff;
+}
+
 .categoryLabel {
 	cursor: pointer;
 	position: absolute;
@@ -189,7 +201,7 @@ html, body {
   background-color: #2d606f; /* base middle blue */
   color:  #000;
   text-align: center;
-  font-size: 40px;
+  font-size: 25px;
   cursor: pointer;
 }
 
@@ -283,6 +295,13 @@ html, body {
   left: 75%;
 }
 
+.alert {
+  position: absolute;
+    z-index: 99;
+    bottom: 0;
+    right: 50% 
+}
+
 
 /* Checklist Modal Style */
 
@@ -316,7 +335,7 @@ html, body {
 
 #checklistHeader {
   display: flex;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 }
 
 #checklistHeaderText {
@@ -344,14 +363,32 @@ html, body {
   padding-top: 30px;
   border-radius: 2.5px;
   background-color: #2d606f; /* base middle blue */
-  margin: 0 50px;
+  margin: 0 10px;
 }
 
+.subactions>div {
+  float: left;
+  padding-left: 30px;
+}
+
+.subactions label img {
+  width: 14px;
+  height: 14px;
+}
+
+.subactions .usermessages {
+  width: 100%;
+}
+
+.subactionItemName {
+  font-size: 14px;
+
+}
 
 .actionItem {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: 0.5rem;
   color: #e9efe7; /* white */
 }
 
@@ -379,7 +416,7 @@ html, body {
 }
 
 .actionItemName, div#checklistlearnMoreText h2 {
-  line-height: 40px;
+  1line-height: 40px;
   padding-bottom: 15px;
   font-size: 2vw;
   line-height: 1;
@@ -415,7 +452,7 @@ html, body {
   height: 80px;
   padding: 0px 40px;
   border-radius: 40px;
-  line-height: 90px;
+  line-height: 80px;
   font-size: 40px;
   color:#fff
 }
@@ -465,27 +502,27 @@ html, body {
 /* Email Modal Style */
 
 #container {
-  width: 1218px;
+  width: 100%;
   margin: auto;
 }
 
 #emailTextbox {
-  margin-top: 100px;
+  margin-top: 10px;
   margin-bottom: 100px;
-  height: 80px;
+  1height: 80px;
 }
 
 #write {
   vertical-align: top;
   display: inline-block;
   font-size: 50px;
-  line-height: 80px;
+  line-height: 70px;
   /*font-family1: 'GillSansLight';*/
   padding: 10px;
   padding-top: 0px;
-  width: 1197px;
+  width: 100%;
   margin-right: 10px;
-  height: 70px;
+  height: 80px;
   background: #fff;
   border-radius: 7px;
   resize: none;
@@ -505,6 +542,9 @@ html, body {
   padding: 0px 40px;
   border-radius: 40px;
   line-height: 80px;
+  font-size: 40px;
+  color: #fff;
+  1display: none;
 }
 
 
@@ -512,6 +552,7 @@ html, body {
 /* Keyboard Style */
 
 #keyboard {
+  width:80%;
   margin: 0 auto;
   padding: 0;
   list-style: none;
@@ -560,7 +601,7 @@ html, body {
 }
 
 #keyboard .space {
-  width: 681px;
+  width: 50%;
 }
 
 .on {
@@ -605,10 +646,10 @@ html, body {
 }
 
 .cont-checkbox {
-  margin-right: 30px;
+  margin-right: 0px;
 }
 
-input {
+input[type=checkbox] {
   display: none;
 }
 
@@ -636,7 +677,7 @@ label {
   display: flex;
   cursor: pointer;
   border-radius: var(--border-radius);
-  overflow: hidden;;
+  1overflow: hidden;;
   position: relative;
   /*opacity: 0.6;*/
 }
@@ -719,12 +760,6 @@ label .info {
     height: unset;
   }
 
-  #lang a {
-    position: relative !important;
-    top:10px !important;
-    left:10px !important;
-  }
-
   #caption {
     position: relative;
     top: 10px;
@@ -764,7 +799,7 @@ label .info {
   }
 
   .clickable {
-    font-size: 30px;
+    font-size: 25px;
   }
 
   .actionItemName, div#checklistlearnMoreText h2 {
@@ -804,7 +839,7 @@ label .info {
     flex-direction: column;
   }
 
-  .closeModalButton {
+  .ccloseModalButton {
     position: absolute;
     top: -12px;
     right: -4px;
@@ -815,7 +850,7 @@ label .info {
     cursor: pointer;
   }
 
-  .closeModalButton img {
+  .ccloseModalButton img {
     width: 25px;
     height: 25px;
   }
@@ -889,6 +924,9 @@ label .info {
 /* polopoly */
 
 @media screen and (max-width: 990px) and (min-width: 700px) {
+  #keyboard {
+    display: none;
+  }
   
 }
 
@@ -913,6 +951,15 @@ label .info {
     height: 150px;
   }
 
+  #checklistLogo {
+    height: 120px;
+    width: 120px;
+  }
+
+  .title {
+    font-size: 3vw 
+  }
+
   /*
   .dialog_modal {
     background-color: rgba(4, 70, 78, 0.85);
@@ -927,20 +974,81 @@ label .info {
   */
 
     .actionItemName, div#checklistlearnMoreText h2 {
-      font-size: 3vw;
+      font-size: 2vw;
     }
 
     label img {
-      width: 3vw;
-      height: 3vw;
+      width: 2vw;
+      height: 2vw;
     }
 
     .actionItemTextPadding {
-      width: 3vw;
+      width: 2vw;
     }
+
+    .instruction {
+      font-size: 2vw;
+    }
+
+    #emailTextbox {
+      margin-top: 10px;
+      margin-bottom: 100px;
+      1height: 80px;
+    }
+
+    #submitEmail {
+      position: absolute;
+      bottom: -30px;
+      right: 30px;
+      height: 80px;
+      padding: 0px 40px;
+      border-radius: 40px;
+      line-height: 80px;
+      font-size: 40px;
+      color:#fff;
+    }
+  
+    #emailModal #container {
+      width: 100%
+    }
+  
+    #write {
+      vertical-align: top;
+      display: inline-block;
+      font-size: 32px;
+      line-height: 50px;
+      font-family: verdana;
+      padding: 0px;
+      padding-top: 0px;
+      width: 100%;
+      margin-right: 0px;
+      height: 50px;
+      background: #fff;
+      border-radius: 7px;
+      resize: none;
+      border: none;
+      }
+
+      #keyboard {
+        width: 100%;
+      }
+
+      #keyboard li {
+        width: 55px;
+        height: 55px;
+        line-height: 55px;
+        font-size: 30px;
+      }
+    
+      #keyboard .email, #keyboard .left-shift, #keyboard .capslock {
+        width: auto;
+        font-size: 25px;
+        padding-left: 20px;
+        padding-right: 20px;
+      } 
 }
 
-@media screen and (max-width: 1080px) and (min-width: 1024px) {
+@media screen and (max-width: 1240px) and (min-width: 1024px) {
   #map, #clickableOverlay {
     position: absolute;
     top: 0px;
@@ -954,32 +1062,54 @@ label .info {
     background-position: center;
   }
 
+  #keyboard {
+    width: 80%;
+  }
+  #keyboard li {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 20px;
+  }
+
+  #keyboard .email, #keyboard .left-shift, #keyboard .capslock {
+    width: auto;
+    font-size: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }  
+
 }
 
 @media screen and (max-width: 1440px) and (min-width: 1025px){
   .clickable {
-    font-size: 26px;
+    font-size: 25px;
   }
 
   .circle-text {
     width: 260px;
     height: 180px;
   }
+
+  #keyboard {
+    width: 80%;
+  }
+  #keyboard li {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 25px;
+  }
+
+  #keyboard .email, #keyboard .left-shift, #keyboard .capslock {
+    width: auto;
+    font-size: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
 }
 
 @media screen and (max-width: 1600px) and (min-width: 1440px) {
-  /*
-  .dialog_modal {
-    background-color: rgba(4, 70, 78, 0.85);
-    position: absolute;
-    top: 50px;
-    bottom: 75px;
-    left: 20px;
-    right: 50px;
-    border-radius: 7px;
-    padding: 10px;
-    }
-  */
     #write {
       vertical-align: top;
       display: inline-block;
@@ -988,7 +1118,7 @@ label .info {
       font-family: verdana;
       padding: 10px;
       padding-top: 0px;
-      width: 800px;
+      width: 100%;
       margin-right: 10px;
       height: 50px;
       background: #fff;
@@ -997,165 +1127,41 @@ label .info {
       border: none;
       }
 
-}
-
-/*
-@media screen and (max-width: 1601px) {
-  .circle-text {
-    width: 225px;
-    height: 170px;
-    display: block;
-    border-radius: 50%;
-    text-align: center;
-    min-width: 50px;
-    min-height: 50px;
-  }
-  
-  #map, #clickableOverlay {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    bottom: 0px;
-    right: 0px;
-    width: 1600px;
-    height: 900px;
-    max-width: 100%;
-    background-size: cover;
-    background-position: center;
-  }
-
-  #checklistLogo {
-    display: inline-block;
-    height: 100px;
-    width: 100px;
-    border-radius: 0px;
-    margin-right: 30px;
-    vertical-align: middle;
-    will-change: top, scale;
-    transition: transform 1s;
-  }
-
-  .title {
-      line-height: 1;
-      color: #e9efe7;
-  }
-
-  #subcaption {
-      font-size: 16px;
-      line-height: 1;
-      color: #e9efe7;
-      font-family: "Open Sans",Arial,"Helvetica Neue",helvetica,sans-serif;
-  }
-
-  .instruction {
-    color: #bdcc9b;
-    font-size: 16px;
-    line-height: 1.2;
-  }
-  
-  #checklistContainer {
-    padding-top: 20px;
-    flex: 2;
-  }
-
-  .actionItemCheckbox {
-    width: 30px;
-    height: 30px;
-    margin-right: 30px;
-    vertical-align: top;
-    position: relative;
-  }
-  .itemCheckboxImage {
-    position: absolute;
-    bottom: 0px;
-    left: 0px;
-    width: 100%;
-  }
-  .actionItemName, div#checklistlearnMoreText h2 {
-    line-height: 40px;
-    line-height: 1;
-    color: #e9efe7;
-    font-weight: normal;
-    margin: 0;
-  }
-  .body {
-    color: #bec4ba;
-    font-size: 14px;
-    line-height: 1.2;
-  }
-
-  #confirmationContainer {
-    width: 95%;
-    padding-top: 50px;
-    margin: auto;
-    }
-
-
-  #confirmationEmailQuestion {
-    padding-top: 50px;
-    padding-bottom: 30px;
-    line-height: 1.2;
-    }
-
-    .subtitle {
-      font-size: 24px !important;
-    }
-
-      #confirmationEmailQuestionNoButton, #confirmationEmailQuestionYesButton {
-        display: inline-block;
-        height: 80px;
-        padding: 0px 40px;
-        border-radius: 40px;
-        line-height: 80px;
-        margin-right: 50px;
-        margin-bottom: 30px;
-        }
-    #submitEmail {
-          display: block !important;
-        }
-  
-    #emailTextbox {
-      margin-top: 10px;
-      margin-bottom: 5px;
-      height: 80px;
-    }
-
-    #keyboard .email, #keyboard .left-shift, #keyboard .capslock {
-      width: auto;
-      font-size: 24px;
-      padding-left: 15px;
-      padding-right: 15px;
+      #keyboard {
+        width: 80%;
       }
-    #keyboard li {
-      float: left;
-      margin: 0 5px 5px 0;
-      width: 60px;
-      height: 60px;
-      line-height: 64px;
-      font-size: 40px;
-      vertical-align: middle;
-      text-align: center;
-      background-color: #2d606f;
-      color: #e9efe7;
-      text-align: center;
-      border-radius: 7px;
-  }
+      #keyboard li {
+        width: 60px;
+        height: 60px;
+        line-height: 60px;
+        font-size: 30px;
+      }
+    
+      #keyboard .email, #keyboard .left-shift, #keyboard .capslock {
+        width: auto;
+        font-size: 15px;
+        padding-left: 15px;
+        padding-right: 15px;
+      }
 
-  .invisibleKey {
-    width: 0px !important;
-  }
-
-  #thanksModal {
-    text-align: center;
-  }
-
-  #thanksText {
-    line-height: 640px;
-    font-size: 80px;
-  }
-
-  .learnMoreImage {
-    height: 20vw;
-  }
 }
-*/
+
+
+@media screen and (max-width: 1920px) and (min-width: 1601px){
+  #keyboard {
+    width: 80%;
+  }
+  #keyboard li {
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    font-size: 40px;
+  }
+
+  #keyboard .email, #keyboard .left-shift, #keyboard .capslock {
+    width: auto;
+    font-size: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }  
+}

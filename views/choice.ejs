@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta name="viewport" content = "width = device-width, initial-scale = 1.0, minimum-scale = 1, maximum-scale = 1, user-scalable = no" />
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -38,21 +38,22 @@
     <script src="https://cdn.jsdelivr.net/npm/uuid@latest/dist/umd/uuidv4.min.js"></script>
 </head>
 
-<body style="">
+<body>
+    <!--textarea><%= JSON.stringify(choicedata) %></textarea-->
     <div style="width:100%">
         <!--img id="map" src="images/field.jpg" /-->
     </div>
     <div id="errorPlaceholder"></div>
+    <!-- Language -->
+    <div id="lang" class="title">
+        <a href="javascript:changelang('<%= choicedata.event.id%>','<%= choicedata.language%>' );"><%- choicedata.language =='sv' ? 'English' : 'Swedish' %></a>
+    </div>
     <div id="wrapper">
-        <!-- Language -->
-        <div id="lang" class="title">
-          <!--a href="javascript:changelang();" style="position: absolute;top: 1%;right: 5%;color:#fff"></a-->
-        </div>
         <%let event%>
-        <%= //JSON.stringify(choicedata)%>
         <% event = choicedata.event %>
-        <% eventname = choicedata.event.name%>
-        <% eventdescription = choicedata.event.description%>
+        <% choicedata.language =='sv' ? eventname = choicedata.event.name : eventname = choicedata.event.name_en%>
+        <% choicedata.language =='sv' ? eventdescription = choicedata.event.description : eventdescription = choicedata.event.description_en %>
+        <% //eventdescription = choicedata.event.description%>
         
         <!-- Caption -->
         <div id="caption">
@@ -67,7 +68,7 @@
         <div id="circlelabels">
         <%for (const action_ of choicedata.event.actions) { %>
             <div class="circle-label circle-text categoryLabel shadow clickable" id="Label<%=action_.id%>" name="<%=action_.id%>" onclick="startSession('<%=action_.id%>')">
-                <span class="inner-text center-align"><%=action_.description_en%></span>
+                <span class="inner-text center-align"><%- choicedata.language =='sv' ? action_.description_sv :action_.description_en %></span>
             </div>
         <%} %>
         </div>
@@ -79,10 +80,9 @@
                 <!-- TODO Lägg in texter i tabell DB-->
                 <div id="checklistHeaderText">
                     <div id="checklistPrompt" class="title frontTitle">
-                        'I promise to:
                     </div>
                     <div id="checklistInstruction" class="instruction">
-                        Select an alternative and press “PROMISE!” You can then choose to be reminded about what you’ve promised to change.<br/>The vote count shows what our visitors have promised to change.
+                        <%- choicedata.language =='sv' ? choicedata.labels.instruction_sv : choicedata.labels.instruction_en %>
                     </div>
                 </div>
             </div>
@@ -97,7 +97,7 @@
             <div class="closeModalButton clickable shadow">
                 <img src="/dialog/public/images/dismiss_icon.png" width="30" height="30" draggable="false" />
             </div>
-            <div id="submitActionButton" class="hide clickable shadow"><%= choicedata.labels.submitActionButtonText%>
+            <div id="submitActionButton" class="hide clickable shadow"><%- choicedata.language =='sv' ? choicedata.labels.submitActionButtonText_sv : choicedata.labels.submitActionButtonText_en%>
             </div>
         </div>
 
@@ -128,6 +128,11 @@
         </div>
 
         <div class="dialog_modal largeModal shadow hide" id="emailModal">
+            <div id="checklistHeaderText">
+                <div id="checklistInstruction" class="instruction">
+                    Skriv in din mailadress och tryck på “SKICKA!”
+                </div>
+            </div>
             <div id="container">
               <div id='emailTextbox'>
                 <textarea id="write" rows="1" resizeable="no"></textarea>
@@ -201,7 +206,7 @@
             <div class="closeModalButton clickable shadow">
               <img src="/dialog/public/images/dismiss_icon.png" width="30" height="30" draggable="false" />
             </div>
-            <div id="submitEmail" class="hide clickable shadow">SKICKA!</div>
+            <div id="submitEmail" class="clickable shadow hide"><%- choicedata.language =='sv' ? choicedata.labels.submitActionButtonText_sv : choicedata.labels.submitActionButtonText_en%></div>
         </div>
 
         <div class="dialog_modal shadow hide" id="thanksModal">
@@ -232,11 +237,42 @@
             let actionObject = actions.find(action => action.id === parseInt(action_id))
 
             //Hämta gjorda val(användares check på actionchoice_id)
-            var session_choices = []
-            $("input[type=checkbox]")
+            let session_choices = []
+            let session_subchoices = []
+            let session_textareas = []
+            let school;
+            let user_type;
+
+            user_type = $('input[name="usertype"]:checked').val();
+
+            if (typeof user_type === "undefined") {
+                user_type = "";
+            }
+
+            school = $("#school").val();
+
+            $(".mainactioncheckbox")
                 .each(function () {
                     if (this.checked) {
                         session_choices.push(this.value)
+                    }
+                });
+
+            //Spara endast om mainaction är checked
+            $(".subactioncheckbox")
+                .each(function () {
+                    if($(this).parent().parent().parent().find('.mainactioncheckbox').prop('checked')) {
+                        if (this.checked) {
+                            session_subchoices.push(this.value)
+                        }
+                    }
+                });
+
+            //Spara endast om mainaction är checked
+            $(".usermessages")
+                .each(function () {
+                    if($(this).parent().parent().parent().find('.mainactioncheckbox').prop('checked')) {
+                        session_textareas.push({subchoice_id: $(this).find("input").val(), message: $(this).find("textarea").val()})
                     }
                 });
             
@@ -244,21 +280,35 @@
                 "event_id": '<%- JSON.stringify(choicedata.event.id) %>',
                 "action_id": action_id,
                 "session_choices": session_choices,
+                "session_subchoices": session_subchoices,
+                "session_textareas": session_textareas,
+                "usertype": user_type, 
+                "school": school,
                 "computerLocation":"Right",
                 "uuid": uuid
             }
-            $.post({
-                url: '/dialog/api/v1/choice',
-                headers: { 'x-api-key': secret },
-                data: body,
-                dataType: 'json'
-            })
-            .always(pledgeDone)
-            .done(function(data) {
-            })
-            .fail(function(err) {
-                alert( JSON.stringify(err), 'danger', 'errorPlaceholder' );
-            });
+
+            //verify at least one choice made
+            if (session_choices.length > 0) {
+                console.log(body)
+                
+                $.post({
+                    url: '/dialog/api/v1/choice',
+                    headers: { 'x-api-key': secret },
+                    data: body
+                })
+                .always(pledgeDone)
+                .done(function(data) {
+                })
+                .fail( function(data) {
+                    alert( JSON.stringify(data['responseText']), 'danger', 'errorPlaceholder' );
+                });
+                
+            }
+            else {
+                alert("Please make a choice", 'danger', 'errorPlaceholder' );
+                $("#submitActionButton").removeClass('hide');
+            }
             // 200 it worked
             // anything else it didn't
             // 500 server error out
@@ -295,6 +345,8 @@
         var secret = 'kg897n987n98n)!dskjlksjfd?435mnckjsbsekef-_klknbhjhsef';
 
         var idleTime = 0;
+
+        let language = "";
 
         function initlang() {
             $("#confirmationEmailQuestionNoButton").bind('click', function() {
@@ -333,6 +385,7 @@
                 idleTime = 0;
                 $("#checklistLogo").addClass('grow');
                 $("#submitActionButton").addClass('hide');
+                $(".alert").remove()
                 pledge(SESSION_CATEGORY, SESSION_ACTION);
             });
 
@@ -351,6 +404,16 @@
         // @ https://code.tutsplus.com/tutorials/creating-a-keyboard-with-css-and-jquery--net-5774
         function initKeyboard() {
             $(function(){
+                $('#write').bind('input propertychange', function() {
+
+                    //$("#submitEmail").hide();
+                    $("#submitEmail").addClass('hide');
+
+                    if(this.value.length){
+                        //$("#submitEmail").show();
+                        $("#submitEmail").removeClass('hide');
+                    }
+                });
                 var $write = $('#write'),
                 shift = false,
                 capslock = false;
@@ -415,6 +478,7 @@
                     // Add the character
                     $write.html($write.html() + character);
                     $write.val($write.val() + character);
+                    console.log($write.val())
                     if ($write.val().length > 0) {
                         $("#submitEmail").removeClass('hide');
                     } else {
@@ -475,6 +539,7 @@
             $('#write').html('');
             $('#write').val('');
             $("#submitActionButton").addClass('hide');
+            $(".alert").remove()
 
             // Reset session selections
             SESSION_EVENT = null;
@@ -492,52 +557,99 @@
 
                 case 'checklist':
                     // Populate checklist html
-                    console.log(actionObject.choices)
-                    $('#checklistPrompt').html(actionObject.description_en.toUpperCase());
+                    language = '<%- choicedata.language %>'
+                    $('#checklistPrompt').html(language == 'sv' ? actionObject.description_sv.toUpperCase() : actionObject.description_en.toUpperCase());
                     checklistContainer = '';
                     for (var i = 0; i < actionObject.choices.length; i++) {
                         checklistContainer += 
                             `<div class="actionItem">
-                                <div class="cont-checkbox">`
+                                <div class="cont-checkbox mainaction">`
                                 //Checkbox
                                 if (actionObject.choices[i].actionchoicetype_id == 1) {
                                     checklistContainer += `
-                                    <input type="checkbox" id="myCheckbox-${i}" name="myCheckbox-${i}" value="${actionObject.choices[i].id}"/>
+                                    <input onclick="togglesubchoices(this)" class="mainactioncheckbox" type="checkbox" id="myCheckbox-${i}" name="myCheckbox-${i}" value="${actionObject.choices[i].id}"/>
                                     <label for="myCheckbox-${i}">
                                         <img class="unchecked" id="myCheckboxImageUnchecked-${i}" src="/dialog/public/images/unchecked_box.png"/>
                                         <img class="checked" id="myCheckboxImageChecked-${i}" src="/dialog/public/images/checked_box.png"/>
                                         <div class="actionItemBody">
                                             <div class="actionItemName title">
-                                                ${actionObject.choices[i].name}
+                                                ${language =='sv' ? actionObject.choices[i].name : actionObject.choices[i].name_en}
                                             </div>
                                         </div>
-                                    </label>
+                                    </label><!--span style="" class="showmoreinfo" type="" onclick="showmoreinfo(${i})"><i class="fa fa-info-circle"></i></span-->
                                     <div class="actionItemText">
                                         <div class="actionItemTextPadding" style="">&nbsp;</div>
-                                        <div style="padding-left:10px;width:100%">${actionObject.choices[i].description} <span style="" class="showmoreinfo" type="" onclick="showmoreinfo(${i})"><i class="fa fa-info-circle"></i></span></div>
-                                    </div>`
-                                }
-                                //Fritext
-                                if (actionObject.choices[i].actionchoicetype_id == 4) {
-                                    checklistContainer += `<div class="actionItemBody">
-                                                                <label for="myTextarea-${i}">
-                                                                    <div class="">
-                                                                        <div class="">
-                                                                            ${actionObject.choices[i].name}
-                                                                        </div>
-                                                                    </div>
-                                                                </label>
-                                                                <textarea id="myTextarea-${i}" name="myTextarea-${i}" value="${actionObject.choices[i].id}"/></textarea>
-                                                            </div>`
+                                        <div style="padding-left:10px;width:100%">${language =='sv' ? actionObject.choices[i].description : actionObject.choices[i].description_en}</div>
+                                    </div>
+                                    <div class="subactions hide">`
+                                    //Visa endast om mainaction är checked
+                                    for (var j = 0; j < actionObject.choices[i].subchoices.length; j++) {
+                                        if (actionObject.choices[i].subchoices[j].actionchoicetype_id == 4) {
+                                            checklistContainer += 
+                                        `<div class="usermessages">
+                                            <label for="myTextarea-${j}">
+                                                <div class="">
+                                                    <div class="subactionItemName">
+                                                        ${language == 'sv' ? actionObject.choices[i].subchoices[j].name : actionObject.choices[i].subchoices[j].name_en}
+                                                    </div>
+                                                </div>
+                                            </label>
+                                            <input id="subaction_id${j}" type="hidden" value="${actionObject.choices[i].subchoices[j].id}"/>
+                                            <textarea rows="3" id="myTextarea-${j}" name="myTextarea-${j}"/></textarea>
+                                        </div>`
+                                        }
+                                        if (actionObject.choices[i].subchoices[j].actionchoicetype_id == 1) {
+                                            checklistContainer += 
+                                        `<div>
+                                            <input class="subactioncheckbox" type="checkbox" id="subchoiceCheckbox-${j}" name="subchoiceCheckbox-${j}" value="${actionObject.choices[i].subchoices[j].id}"/>
+                                            <label for="subchoiceCheckbox-${j}">
+                                                <img class="unchecked" id="subchoiceCheckboxImageUnchecked-${j}" src="/dialog/public/images/unchecked_box.png"/>
+                                                <img class="checked" id="subchoiceCheckboxImageChecked-${j}" src="/dialog/public/images/checked_box.png"/>
+                                                <div class="subactionItemBody">
+                                                    <div class="subactionItemName">
+                                                        ${language == 'sv' ? actionObject.choices[i].subchoices[j].name : actionObject.choices[i].subchoices[j].name_en}
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>`
+                                        }
+                                    }
+                                    checklistContainer += 
+                                    `</div>`
                                 }
                                 checklistContainer += 
                                 `</div>
                             </div>`
                     }
+                    //Användartyp
+                    checklistContainer += 
+                        `<div class="mb-2">
+                            <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="usertype" id="res" value="res">
+                            <label class="form-check-label" for="res">
+                                ${language == 'sv' ? 'Forskare' : 'Researcher'}
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="usertype" id="phd" value="phd">
+                            <label class="form-check-label" for="phd">
+                                ${language == 'sv' ? 'Doktorand' : 'Ph. D. student'}
+                            </label>
+                        </div>
+                        </div>`
+                    //Skola
+                    let kthschools = JSON.parse('<%- JSON.stringify(choicedata.kthschools) %>')
+                    checklistContainer += 
+                    `<select id="school" class="form-select mb-2" aria-label="School">
+                        <option value="" selected>${language == 'sv' ? 'Välj en skola' : 'Pick a school'}</option>`
+                        for (var i = 0; i < kthschools.length; i++) {                        
+                            checklistContainer +=`<option value="${kthschools[i].code}">${kthschools[i].name}</option>`
+                        }
+                    checklistContainer +=`
+                    </select>`
+
                     $("#checklistContainer").html(checklistContainer)
                     $("#checklistLogo").attr('src', '/dialog/public/images/'+ actionObject.image)
-
-                    //$("#checklistlearnMoreText").html('<img src="/dialog/public/images/' + categoryObject.image + '" class="learnMoreImage"/>');
 
                     // Show checklist modal
                     $('#checklistModal').removeClass('hide');
@@ -588,6 +700,10 @@
             }
         }
 
+        function togglesubchoices(element) {
+            $(element).parent().find('.subactions').toggleClass('hide');
+        }
+
         function animateTheVote() {
             $("#checklistLogo").addClass('voted');
             window.setTimeout(function() {
@@ -603,8 +719,13 @@
             }
         }
 
-        function choice(index) {
-            
+        function changelang(event_id, language) {
+            if (language == 'sv') {
+                language = 'en'
+            } else {
+                language = 'sv'
+            }
+            location.href='/dialog/choice/1?language=' + language
         }
 
         function showmoreinfo(index) {
@@ -617,7 +738,7 @@
             if(getcurrentlangfromurl() == 'sv') {
                 currentlanguage = 'en';
             } 
-            actions = JSON.parse('<%- JSON.stringify(choicedata.event.actions) %>')
+            actions = JSON.parse(`<%- JSON.stringify(choicedata.event.actions) %>`)
             var confirmationSynonyms;
         
             //changelang()
@@ -637,7 +758,6 @@
             return navigator.platform.match(/iPad/i);
         }
         function getcurrentlangfromurl() {
-            let language = "";
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
             language = urlParams.get('language')
@@ -654,11 +774,13 @@
             var wrapper = document.createElement('div')
             wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
             alertPlaceholder.append(wrapper)
+            /*
             setTimeout(function () {
                 $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                    $(this).remove(); 
+                    //$(this).remove(); 
                 });
             }, 2000);
+            */
         }
 
         function checkjwt() {

@@ -161,12 +161,73 @@ const readActionChoices = (action_id) => {
     })
 };
 
+//Hämta subactionchoices via actionchoice_id
+const readSubActionChoices = (actionchoice_id) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `SELECT * FROM subactionchoices       
+                    WHERE actionchoice_id = ? 
+                    ORDER BY sortorder`;
+        database.db.query(database.mysql.format(sql,[actionchoice_id]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            resolve(result);
+        });
+    })
+};
+
 //Lägg till useractionchoices(gjorda val av användare)
-const createActionChoices = (actionchoice_id, uuid) => {
+const createUserActionChoices = (actionchoice_id, uuid) => {
     return new Promise(function (resolve, reject) {
         const sql = `INSERT INTO useractionchoices (actionchoice_id, uuid)
                     VALUES(?, ?)`;
         database.db.query(database.mysql.format(sql,[actionchoice_id, uuid]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            resolve(result);
+        });
+    })
+};
+
+//Lägg till useractionchoices(gjorda val av användare)
+const createUserSubActionChoices = (subactionchoice_id, uuid) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `INSERT INTO usersubactionchoices (subactionchoice_id, uuid)
+                    VALUES(?, ?)`;
+        database.db.query(database.mysql.format(sql,[subactionchoice_id, uuid]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            resolve(result);
+        });
+    })
+};
+
+//Lägg till useractiondata(data från användare)
+const createUserActionMessages = (subactionchoice_id, message, uuid) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `INSERT INTO useractionmessages (subactionchoice_id, message, uuid)
+                    VALUES(?, ?, ?)`;
+        database.db.query(database.mysql.format(sql,[subactionchoice_id, message, uuid]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            resolve(result);
+        });
+    })
+};
+
+//Lägg till useractiondata(data från användare)
+const createUserActionData = (usertype_code, schoolcode, uuid) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `INSERT INTO useractiondata (usertype_code, schoolcode, uuid)
+                    VALUES(?, ?, ?)`;
+        database.db.query(database.mysql.format(sql,[usertype_code, schoolcode, uuid]),(err, result) => {
             if(err) {
                 console.error(err);
                 reject(err.message)
@@ -373,7 +434,11 @@ module.exports = {
     readAllVoteTypes,
     readActions,
     readActionChoices,
-    createActionChoices,
+    readSubActionChoices,
+    createUserActionChoices,
+    createUserSubActionChoices,
+    createUserActionMessages,
+    createUserActionData,
     readActionChoicesResult,
     createVoteType,
     deleteVoteType,

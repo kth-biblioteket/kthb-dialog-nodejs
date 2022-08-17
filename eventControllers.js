@@ -76,8 +76,12 @@ async function generateChoiceApp(req, res, next) {
     let data = []
     let event
     let actions
+    let subactions
     let choices
     let imagebank
+    let language
+
+    language = req.query.language || 'en';
 
     try {
         imagebank = await eventModel.readImages()
@@ -100,16 +104,31 @@ async function generateChoiceApp(req, res, next) {
         //Hämta choices
         for(let i = 0; i <  data.event.actions.length; i++){ 
              data.event.actions[i].choices = await eventModel.readActionChoices(actions[i].id)
+             //Hämta subactionchoices
+            for(let j = 0; j <  data.event.actions[i].choices.length; j++){ 
+                data.event.actions[i].choices[j].subchoices = await eventModel.readSubActionChoices(data.event.actions[i].choices[j].id)
+            } 
         } 
 
+        
+        
+
+        // Hämta KTH-skolor
+        let kthschools = await axios.get(language=='sv' ? 'https://www.kth.se/api/kopps/v2/schools' : 'https://www.kth.se/api/kopps/v2/schools?l=en')
+
         let labels = {
-            "submitActionButtonText": "Submit"
+            "submitActionButtonText_en": "Submit",
+            "submitActionButtonText_sv": "Skicka",
+            "instruction_sv": "Välj dina alternativ och tryck på “SKICKA!”",
+            "instruction_en": "Select your alternatives and press “SUBMIT!”"
         }
         //Skapa dataobjekt att skicka till webbapp
         choicedata = {
             "url": req.protocol + '://' + req.get('host') + req.originalUrl,
+            "language": language,
             "event": data.event,
-            "labels": labels
+            "labels": labels,
+            "kthschools": kthschools.data
         }
         res.render('choice', choicedata);
 
@@ -119,7 +138,7 @@ async function generateChoiceApp(req, res, next) {
     
 }
 
-// Funktion som genererar en dialogapp för ipad/skärm/webb
+// Funktion som genererar en resultatapp för ipad/skärm/webb
 async function generateChoiceResultsApp(req, res, next) {
 
     let event
@@ -167,6 +186,19 @@ async function logout(req, res) {
     .clearCookie("jwt")
     .status(200)
     .json({ message: "Success" });
+}
+
+async function getkthschools(req, res) {
+    try {
+        const response = await axios.get('https://www.kth.se/api/kopps/v2/schools')
+        res
+        .status(200)
+        .send(response.data);
+    } catch(err) {
+        console.log(err)
+        res.status(401)
+        res.json({ message: err });
+    }
 }
 
 async function readEvents() {
@@ -228,12 +260,42 @@ async function deleteEvent(id) {
     }
 }
 
-async function createActionChoices(actionchoice_id, uuid) {
+async function createUserActionChoices(actionchoice_id, uuid) {
     try {
-        let result = await eventModel.createActionChoices(actionchoice_id, uuid)
+        let result = await eventModel.createUserActionChoices(actionchoice_id, uuid)
         return result
     } catch (err) {
-        console.log("error in controller createActionChoices")
+        console.log("error in controller createUserActionChoices")
+        return "error: " + err.message
+    }
+}
+
+async function createUserSubActionChoices(subactionchoice_id, uuid) {
+    try {
+        let result = await eventModel.createUserSubActionChoices(subactionchoice_id, uuid)
+        return result
+    } catch (err) {
+        console.log("error in controller createUserSubActionChoices")
+        return "error: " + err.message
+    }
+}
+
+async function createUserActionMessages(subactionchoice_id, message, uuid) {
+    try {
+        let result = await eventModel.createUserActionMessages(subactionchoice_id, message, uuid)
+        return result
+    } catch (err) {
+        console.log("error in controller createUserActionMessages")
+        return "error: " + err.message
+    }
+}
+
+async function createUserActionData(usertype_code, schoolcode, uuid) {
+    try {
+        let result = await eventModel.createUserActionData(usertype_code, schoolcode, uuid)
+        return result
+    } catch (err) {
+        console.log("error in controller createUserActionData")
         return "error: " + err.message
     }
 }
@@ -382,13 +444,17 @@ module.exports = {
     generateChoiceResultsApp,
     login,
     logout,
+    getkthschools,
     readEvents,
     readEventsByDate,
     readEventId,
     createEvent,
     updateEvent,
     deleteEvent,
-    createActionChoices,
+    createUserActionChoices,
+    createUserSubActionChoices,
+    createUserActionMessages,
+    createUserActionData,
     readActionChoicesResult, 
     createEventField,
     deleteEventField,
