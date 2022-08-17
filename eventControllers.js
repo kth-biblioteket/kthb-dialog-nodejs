@@ -133,7 +133,7 @@ async function generateChoiceApp(req, res, next) {
             "confirmationEmailQuestion_sv" : "Valen du gör",
             "confirmationEmailQuestion_en" : "Your choices...",
             "emailPrompt_sv": "Vill du att vi skickar ett uppföljningsmail med ytterligare information?",
-            "emailPrompt_en": "Da you want us to send you a confirmation mail...",
+            "emailPrompt_en": "Do you want us to send you a confirmation mail...",
             "confirmationEmailQuestionNoButton_sv": "Nej",
             "confirmationEmailQuestionNoButton_en": "No",
             "confirmationEmailQuestionYesButton_sv": "Ja",
@@ -141,6 +141,14 @@ async function generateChoiceApp(req, res, next) {
             "confirmationEmailPrivacyStatement_sv": "Vi sparar inte din epostadress och kommer bara att använda den till att skicka ett uppföljningsmail med ytterligare information.<br />Vi kommer inte att använda den till att skicka skräppost.",
             "confirmationEmailPrivacyStatement_en": "We do not save your email and will only use it..."
         }
+        let confirmationSynonyms_sv = [
+            "Toppen!",
+            "Bra!"
+        ]
+        let confirmationSynonyms_en = [
+            "Super!",
+            "Good!"
+        ]
         //Skapa dataobjekt att skicka till webbapp
         choicedata = {
             "url": req.protocol + '://' + req.get('host') + req.originalUrl,
@@ -148,7 +156,9 @@ async function generateChoiceApp(req, res, next) {
             "event": data.event,
             "labels": labels,
             "kthschools": kthschools.data,
-            "kthschools_en": kthschools_en.data
+            "kthschools_en": kthschools_en.data,
+            "confirmationSynonyms_sv": confirmationSynonyms_sv,
+            "confirmationSynonyms_en": confirmationSynonyms_en
         }
         res.render('choice', choicedata);
 

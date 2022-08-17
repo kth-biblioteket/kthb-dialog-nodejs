@@ -103,11 +103,12 @@
         <div class="dialog_modal largeModal shadow hide" id="confirmationModal">
             <div id="confirmationContainer">
               <div id="confirmationTitle" class="title"></div>
-              <div id="confirmationSubtitle" class="title"><span id="confirmationAction"></span></div>
+              <div id="confirmationSubtitle" class="title"><%- choicedata.language =='sv' ? choicedata.labels.confirmationSubtitle_sv : choicedata.labels.confirmationSubtitle_en%><span id="confirmationAction"></span></div>
               <div id="confirmationEmailQuestion">
                 <%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailQuestion_sv : choicedata.labels.confirmationEmailQuestion_en%>
-                <br>
-                <span id="emailPrompt"><%- choicedata.language =='sv' ? choicedata.labels.emailPrompt_sv : choicedata.labels.emailPrompt_en%></span>
+              </div>
+              <div id="emailPrompt">
+                  <%- choicedata.language =='sv' ? choicedata.labels.emailPrompt_sv : choicedata.labels.emailPrompt_en%>
               </div>
               <div id="confirmationEmailQuestionButtons">
                 <div id="confirmationEmailQuestionNoButton" class="clickable shadow">
@@ -662,15 +663,19 @@
                 case 'confirmation':
                     // Populate confirmation html
                     $('#confirmationAction').html(actionObject.description_en.toLowerCase());
-                    //$('#confirmationTitle').html(confirmationSynonyms[SYNONYM_INDEX]);
-                    $('#confirmationTitle').html("Toppen!");
-                    if(getcurrentlangfromHTML_Tag() != 'en') {
-                        $('#emailPrompt').html("Vill du att vi skickar ett  bekräftelsemail med ytterligare information om ditt löfte att göra en insats kopplad till " + actionObject.description_sv.toLowerCase() + "?");
-                    } else {
-                        $('#emailPrompt').html("Do you want us to send a follow-up email with additional information about your promise about " + actionObject.description_en.toLowerCase() + "?");
-                    }
-                    //SYNONYM_INDEX = (SYNONYM_INDEX + 1) % confirmationSynonyms.length;
 
+                    let confirmationSynonyms_sv = JSON.parse('<%- JSON.stringify(choicedata.confirmationSynonyms_sv) %>')
+                    let confirmationSynonyms_en = JSON.parse('<%- JSON.stringify(choicedata.confirmationSynonyms_en) %>')
+                    language = getcurrentlangfromHTML_Tag()
+                    let current_confirmationSynonyms= language == 'sv' ? confirmationSynonyms_sv : confirmationSynonyms_en
+                    $('#confirmationTitle').html(current_confirmationSynonyms[Math.floor(Math.random() * current_confirmationSynonyms.length)]);
+                    
+                    let labels = JSON.parse(`<%- JSON.stringify(choicedata.labels) %>`)
+                    if(language != 'en') {
+                        $('#emailPrompt').html(labels.emailPrompt_sv + " " + actionObject.description_sv.toLowerCase() + "?");
+                    } else {
+                        $('#emailPrompt').html(labels.emailPrompt_en + " " + actionObject.description_en.toLowerCase() + "?");
+                    }
                     // Hide checklist and show confirmation
                     $('#checklistModal').addClass('hide');
                     $('#confirmationModal').removeClass('hide');
@@ -749,7 +754,8 @@
                 $('#checklistEmailInstruction').html(labels.emailinstruction_sv)
                 $('#submitActionButton').text(labels.submitActionButtonText_sv)
                 $('#submitEmail').text(labels.submitEmailButtonText_sv)
-                $('#thanksText').text(labels.submitEmailButtonText_sv)
+                $('#thanksText').text(labels.thanksText_sv)
+                $('#confirmationSubtitle').html(labels.confirmationSubtitle_sv);
                 $('#confirmationEmailQuestion').html(labels.confirmationEmailQuestion_sv);
                 $('#emailPrompt').html(labels.emailPrompt_sv);
                 $('#confirmationEmailQuestionNoButton').html(labels.confirmationEmailQuestionNoButton_sv);
@@ -781,7 +787,8 @@
                 $('#checklistEmailInstruction').html(labels.emailinstruction_en)
                 $('#submitActionButton').text(labels.submitActionButtonText_en)
                 $('#submitEmail').text(labels.submitEmailButtonText_en)
-                $('#thanksText').text(labels.submitEmailButtonText_en)
+                $('#thanksText').text(labels.thanksText_en)
+                $('#confirmationSubtitle').html(labels.confirmationSubtitle_en);
                 $('#confirmationEmailQuestion').html(labels.confirmationEmailQuestion_en);
                 $('#emailPrompt').html(labels.emailPrompt_en);
                 $('#confirmationEmailQuestionNoButton').html(labels.confirmationEmailQuestionNoButton_en);
