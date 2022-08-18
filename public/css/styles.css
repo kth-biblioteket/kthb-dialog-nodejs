@@ -868,8 +868,8 @@ label .info {
 
 }
 
-/* anpassa till iPad*/
-@media screen and (max-width: 1024px) and (min-width: 0px) {
+/* anpassa till KTH Bibliotekets iPad*/
+@media screen and (max-width: 1080px) and (min-width: 0px) {
   #map, #clickableOverlay {
     position: absolute;
     top: 0px;
@@ -919,7 +919,6 @@ label .info {
   #emailTextbox {
     margin-top: 10px;
     margin-bottom: 100px;
-    1height: 80px;
   }
 
   #submitEmail {
