@@ -144,7 +144,7 @@ textarea {
 }
 
 .title {
-  font-size: 40px;
+  font-size: 3vw;
   line-height: 1;
   color: #e9efe7; /* white */
   /*font-family1: 'EksellDisplayWebMedium';*/
@@ -170,7 +170,7 @@ textarea {
 .instruction {
   /*font-family1: 'GillSansLight';*/
   color: #bdcc9b; /* light green */
-  font-size: 26px;
+  font-size: 2vw;
   line-height: 1.2;
 }
 
@@ -340,6 +340,7 @@ html, body {
 #checklistHeaderText {
   display: inline-block;
   vertical-align: middle;
+  margin-right: 50px;
 }
 
 #checklistPrompt {
@@ -367,7 +368,9 @@ html, body {
 
 .subactions>div {
   float: left;
-  padding-left: 30px;
+  padding-left: 3vw;
+  margin-left: 10px;
+  padding-top: 10px;
 }
 
 .subactions label img {
@@ -377,6 +380,8 @@ html, body {
 
 .subactions .usermessages {
   width: 100%;
+  padding-left: 3vw;
+  margin-left: 10px;
 }
 
 .subactionItemName {
@@ -393,6 +398,9 @@ html, body {
 
 .actionItemText {
   display: flex;
+  padding-left: 3vw;
+  margin-left: 10px;
+  padding-bottom: 10px;
 }
 
 .actionItemCheckbox {
@@ -535,8 +543,8 @@ html, body {
 
 #submitEmail {
   position: absolute;
-  bottom: -40px;
-  right: 30px;
+  bottom: -20px;
+  right: -20px;
   height: 80px;
   padding: 0px 40px;
   border-radius: 40px;
@@ -743,8 +751,242 @@ label .info {
   line-height: 1.42857;
 }
 
+@media screen and (max-width: 1920px) and (min-width: 0px){
+  #keyboard {
+    width: 80%;
+  }
+  #keyboard li {
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    font-size: 40px;
+  }
+
+  #keyboard .email, #keyboard .left-shift, #keyboard .capslock {
+    width: auto;
+    font-size: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }  
+}
+
+@media screen and (max-width: 1600px) and (min-width: 0px) {
+  #write {
+    vertical-align: top;
+    display: inline-block;
+    font-size: 40px;
+    line-height: 60px;
+    font-family: verdana;
+    padding: 10px;
+    padding-top: 0px;
+    width: 100%;
+    margin-right: 10px;
+    height: 50px;
+    background: #fff;
+    border-radius: 7px;
+    resize: none;
+    border: none;
+    }
+
+    #keyboard {
+      width: 80%;
+    }
+    #keyboard li {
+      width: 60px;
+      height: 60px;
+      line-height: 60px;
+      font-size: 30px;
+    }
+  
+    #keyboard .email, #keyboard .left-shift, #keyboard .capslock {
+      width: auto;
+      font-size: 15px;
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+}
+
+@media screen and (max-width: 1440px) and (min-width: 0px){
+  .clickable {
+    font-size: 25px;
+  }
+
+  .circle-text {
+    width: 260px;
+    height: 180px;
+  }
+
+  #keyboard {
+    width: 80%;
+  }
+  #keyboard li {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 25px;
+  }
+
+  #keyboard .email, #keyboard .left-shift, #keyboard .capslock {
+    width: auto;
+    font-size: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+@media screen and (max-width: 1366px) and (min-width: 0px) {
+}
+
+@media screen and (max-width: 1280px) and (min-width: 0px) {
+  #map, #clickableOverlay {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    width: 1080px;
+    height: 810px;
+    max-width: 100%;
+    background-size: cover;
+    background-position: center;
+  }
+
+  #keyboard {
+    width: 80%;
+  }
+  #keyboard li {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 20px;
+  }
+
+  #keyboard .email, #keyboard .left-shift, #keyboard .capslock {
+    width: auto;
+    font-size: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }  
+
+}
+
+/* anpassa till iPad*/
+@media screen and (max-width: 1024px) and (min-width: 0px) {
+  #map, #clickableOverlay {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .clickable {
+    font-size: 20px;
+  }
+
+  .circle-text {
+    width: 190px;
+    height: 150px;
+  }
+
+  #checklistLogo {
+    height: 160px;
+    width: 160px;
+    margin-right: 20px;
+  }
+
+  .title {
+    font-size: 4vw 
+  }
+
+  .actionItemName, div#checklistlearnMoreText h2 {
+    font-size: 3vw;
+  }
+
+  label img {
+    width: 3vw;
+    height: 3vw;
+  }
+
+  .actionItemTextPadding {
+    width: 3vw;
+  }
+
+  .instruction {
+    font-size: 3vw;
+  }
+
+  #emailTextbox {
+    margin-top: 10px;
+    margin-bottom: 100px;
+    1height: 80px;
+  }
+
+  #submitEmail {
+    position: absolute;
+    bottom: -30px;
+    right: 30px;
+    height: 80px;
+    padding: 0px 40px;
+    border-radius: 40px;
+    line-height: 80px;
+    font-size: 40px;
+    color:#fff;
+  }
+
+  #emailModal #container {
+    width: 100%
+  }
+
+  #write {
+    vertical-align: top;
+    display: inline-block;
+    font-size: 32px;
+    line-height: 50px;
+    font-family: verdana;
+    padding: 0px;
+    padding-top: 0px;
+    width: 100%;
+    margin-right: 0px;
+    height: 50px;
+    background: #fff;
+    border-radius: 7px;
+    resize: none;
+    border: none;
+    }
+
+    #keyboard {
+      width: 100%;
+    }
+
+    #keyboard li {
+      width: 55px;
+      height: 55px;
+      line-height: 55px;
+      font-size: 30px;
+    }
+  
+    #keyboard .email, #keyboard .left-shift, #keyboard .capslock {
+      width: auto;
+      font-size: 25px;
+      padding-left: 20px;
+      padding-right: 20px;
+    } 
+}
+
+/* polopoly */
+@media screen and (max-width: 990px) and (min-width: 0px) {
+  #keyboard {
+    display: none;
+  }
+  
+}
+
 /* anpassa till mobil*/
-@media screen and (max-width: 699px) and (min-width: 200px) {
+@media screen and (max-width: 600px) and (min-width: 0px) {
   /*
   body {
     overflow: scroll !important;
@@ -835,7 +1077,7 @@ label .info {
 
   #checklistHeader {
     margin-right: 40px;
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .ccloseModalButton {
@@ -918,249 +1160,32 @@ label .info {
       min-width: 50px;
       min-height: 50px;
     }
-}
 
-/* polopoly */
-
-@media screen and (max-width: 990px) and (min-width: 700px) {
-  #keyboard {
-    display: none;
-  }
-  
-}
-
-/* anpassa till iPad*/
-@media screen and (max-width: 1024px) and (min-width: 700px) {
-  #map, #clickableOverlay {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    bottom: 0px;
-    right: 0px;
-    background-size: cover;
-    background-position: center;
-  }
-
-  .clickable {
-    font-size: 20px;
-  }
-
-  .circle-text {
-    width: 190px;
-    height: 150px;
-  }
-
-  #checklistLogo {
-    height: 120px;
-    width: 120px;
-  }
-
-  .title {
-    font-size: 3vw 
-  }
-
-  /*
-  .dialog_modal {
-    background-color: rgba(4, 70, 78, 0.85);
-    1position: absolute;
-    top: 50px;
-    bottom: 75px;
-    1left: 20px;
-    1right: 50px;
-    border-radius: 7px;
-    padding: 10px;
-  }
-  */
-
-    .actionItemName, div#checklistlearnMoreText h2 {
-      font-size: 2vw;
-    }
-
-    label img {
-      width: 2vw;
-      height: 2vw;
-    }
-
-    .actionItemTextPadding {
-      width: 2vw;
+    .title {
+      font-size: 5vw 
     }
 
     .instruction {
-      font-size: 2vw;
+      font-size: 3vw;
+  }
+
+    #checklistLogo { 
+      height: 120px;
+      width: 120px;
     }
-
-    #emailTextbox {
-      margin-top: 10px;
-      margin-bottom: 100px;
-      1height: 80px;
-    }
-
-    #submitEmail {
-      position: absolute;
-      bottom: -30px;
-      right: 30px;
-      height: 80px;
-      padding: 0px 40px;
-      border-radius: 40px;
-      line-height: 80px;
-      font-size: 40px;
-      color:#fff;
-    }
-  
-    #emailModal #container {
-      width: 100%
-    }
-  
-    #write {
-      vertical-align: top;
-      display: inline-block;
-      font-size: 32px;
-      line-height: 50px;
-      font-family: verdana;
-      padding: 0px;
-      padding-top: 0px;
-      width: 100%;
-      margin-right: 0px;
-      height: 50px;
-      background: #fff;
-      border-radius: 7px;
-      resize: none;
-      border: none;
-      }
-
-      #keyboard {
-        width: 100%;
-      }
-
-      #keyboard li {
-        width: 55px;
-        height: 55px;
-        line-height: 55px;
-        font-size: 30px;
-      }
-    
-      #keyboard .email, #keyboard .left-shift, #keyboard .capslock {
-        width: auto;
-        font-size: 25px;
-        padding-left: 20px;
-        padding-right: 20px;
-      } 
-}
-
-@media screen and (max-width: 1240px) and (min-width: 1024px) {
-  #map, #clickableOverlay {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    bottom: 0px;
-    right: 0px;
-    width: 1080px;
-    height: 810px;
-    max-width: 100%;
-    background-size: cover;
-    background-position: center;
-  }
-
-  #keyboard {
-    width: 80%;
-  }
-  #keyboard li {
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    font-size: 20px;
-  }
-
-  #keyboard .email, #keyboard .left-shift, #keyboard .capslock {
-    width: auto;
-    font-size: 15px;
-    padding-left: 15px;
-    padding-right: 15px;
-  }  
-
-}
-
-@media screen and (max-width: 1440px) and (min-width: 1025px){
-  .clickable {
-    font-size: 25px;
-  }
-
-  .circle-text {
-    width: 260px;
-    height: 180px;
-  }
-
-  #keyboard {
-    width: 80%;
-  }
-  #keyboard li {
-    width: 50px;
-    height: 50px;
-    line-height: 50px;
-    font-size: 25px;
-  }
-
-  #keyboard .email, #keyboard .left-shift, #keyboard .capslock {
-    width: auto;
-    font-size: 15px;
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-}
-
-@media screen and (max-width: 1600px) and (min-width: 1440px) {
-    #write {
-      vertical-align: top;
-      display: inline-block;
-      font-size: 40px;
-      line-height: 60px;
-      font-family: verdana;
-      padding: 10px;
-      padding-top: 0px;
-      width: 100%;
-      margin-right: 10px;
-      height: 50px;
-      background: #fff;
-      border-radius: 7px;
-      resize: none;
-      border: none;
-      }
-
-      #keyboard {
-        width: 80%;
-      }
-      #keyboard li {
-        width: 60px;
-        height: 60px;
-        line-height: 60px;
-        font-size: 30px;
-      }
-    
-      #keyboard .email, #keyboard .left-shift, #keyboard .capslock {
-        width: auto;
-        font-size: 15px;
-        padding-left: 15px;
-        padding-right: 15px;
-      }
-
 }
 
 
-@media screen and (max-width: 1920px) and (min-width: 1601px){
-  #keyboard {
-    width: 80%;
-  }
-  #keyboard li {
-    width: 80px;
-    height: 80px;
-    line-height: 80px;
-    font-size: 40px;
-  }
 
-  #keyboard .email, #keyboard .left-shift, #keyboard .capslock {
-    width: auto;
-    font-size: 15px;
-    padding-left: 15px;
-    padding-right: 15px;
-  }  
-}
+
+
+
+
+
+
+
+
+
+
+
+

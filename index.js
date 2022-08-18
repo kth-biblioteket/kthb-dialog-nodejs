@@ -414,12 +414,6 @@ apiRoutes.post(process.env.API_PATH + "/choice/", async function (req, res) {
 //Skicka mail till användaren
 apiRoutes.post(process.env.API_PATH + "/reminder", async function (req, res) {
 
-    /*
-    require.extensions['.html'] = function (module, filename) {
-        module.exports = fs.readFileSync(filename, 'utf8');
-    };
-
-    */
     // point to the template folder
     const handlebarOptions = {
         viewEngine: {

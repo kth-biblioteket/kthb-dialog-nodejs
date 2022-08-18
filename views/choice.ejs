@@ -370,10 +370,9 @@
             SESSION_ACTION = null;
 
             if(isDeviceiPad()) {
-            console.log("ipad")
+            
             } else {
-            console.log("not ipad")
-            //$("#keyboard").addClass( "hide" );
+            
             }
 
             $(".closeModalButton").bind('click', function() {
@@ -578,8 +577,7 @@
                                         </div>
                                     </label><!--span style="" class="showmoreinfo" type="" onclick="showmoreinfo(${i})"><i class="fa fa-info-circle"></i></span-->
                                     <div class="actionItemText">
-                                        <div class="actionItemTextPadding" style="">&nbsp;</div>
-                                        <div style="padding-left:10px;width:100%">${language =='sv' ? actionObject.choices[i].description : actionObject.choices[i].description_en}</div>
+                                        <div>${language =='sv' ? actionObject.choices[i].description : actionObject.choices[i].description_en}</div>
                                     </div>
                                     <div class="subactions hide">`
                                     //Visa endast om mainaction är checked
@@ -811,9 +809,9 @@
             actions = JSON.parse(`<%- JSON.stringify(choicedata.event.actions) %>`)
             var confirmationSynonyms;
         
-            //changelang()
             init();
             initKeyboard();
+
             // Listener to tell when someone has walked away from the app
             // Check every 5 seconds
             // Increment the idle time counter every minute.
@@ -857,6 +855,7 @@
             var wrapper = document.createElement('div')
             wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
             alertPlaceholder.append(wrapper)
+
             /*
             setTimeout(function () {
                 $(".alert").fadeTo(500, 0).slideUp(500, function(){
