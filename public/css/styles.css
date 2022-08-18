@@ -423,18 +423,16 @@ html, body {
 }
 
 .actionItemName, div#checklistlearnMoreText h2 {
-  1line-height: 40px;
   padding-bottom: 15px;
   font-size: 2vw;
   line-height: 1;
-  color: #e9efe7; /* white */
-  /*font-family1: 'EksellDisplayWebMedium';*/
+  color: #e9efe7;
   font-weight: normal;
   margin: 0;
 }
 
 #checklistlearnMoreText {
-  color: #d2d940; /* hightlight yellow */
+  color: #d2d940;
   vertical-align: top;
   padding-top: 20px;
   flex: 1;
@@ -516,7 +514,6 @@ html, body {
 #emailTextbox {
   margin-top: 10px;
   margin-bottom: 100px;
-  1height: 80px;
 }
 
 #write {
@@ -551,10 +548,7 @@ html, body {
   line-height: 80px;
   font-size: 40px;
   color: #fff;
-  1display: none;
 }
-
-
 
 /* Keyboard Style */
 
@@ -688,7 +682,6 @@ label {
   display: flex;
   cursor: pointer;
   border-radius: var(--border-radius);
-  1overflow: hidden;;
   position: relative;
   /*opacity: 0.6;*/
 }
