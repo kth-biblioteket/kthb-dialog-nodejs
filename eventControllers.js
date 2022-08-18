@@ -110,9 +110,11 @@ async function generateChoiceApp(req, res, next) {
             } 
         } 
 
-        
-        
+        //Hämta usertypes
+        usertypes = await eventModel.readAllUserTypes()
+        data.usertypes = usertypes;
 
+        
         // Hämta KTH-skolor
         let kthschools = await axios.get('https://www.kth.se/api/kopps/v2/schools')
         let kthschools_en = await axios.get('https://www.kth.se/api/kopps/v2/schools?l=en')
@@ -159,19 +161,7 @@ async function generateChoiceApp(req, res, next) {
             "kthschools_en": kthschools_en.data,
             "confirmationSynonyms_sv": confirmationSynonyms_sv,
             "confirmationSynonyms_en": confirmationSynonyms_en,
-            "usertypes": 
-                        [
-                            {
-                                "code": "phd",
-                                "name_en": "Ph D student",
-                                "name_sv": "Doktorand"
-                            },
-                            {
-                                "code": "res",
-                                "name_en": "Resarcher",
-                                "name_sv": "Forskare"
-                            }                         
-                        ]
+            "usertypes": usertypes
         }
         res.render('choice', choicedata);
 

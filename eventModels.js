@@ -115,11 +115,10 @@ const deleteEvent = (id) => {
     })
 };
 
-//Hämta alla votetypes
-const readAllVoteTypes = () => {
+//Hämta alla usertypes
+const readAllUserTypes = () => {
     return new Promise(function (resolve, reject) {
-        const sql = `SELECT * FROM votetypes
-                    ORDER BY type`;
+        const sql = `SELECT * FROM usertypes`;
         database.db.query(database.mysql.format(sql,[]),(err, result) => {
             if(err) {
                 console.error(err);
@@ -129,7 +128,6 @@ const readAllVoteTypes = () => {
         });
     })
 };
-
 //Hämta actions via Eventid
 const readActions = (event_id) => {
     return new Promise(function (resolve, reject) {
@@ -431,7 +429,7 @@ module.exports = {
     createEvent,
     updateEvent,
     deleteEvent,
-    readAllVoteTypes,
+    readAllUserTypes,
     readActions,
     readActionChoices,
     readSubActionChoices,
