@@ -680,6 +680,10 @@ input:checked + label .cover-checkbox svg {
   stroke-dashoffset: 0;
 }
 
+.form-check-label {
+  white-space: nowrap;
+}
+
 label {
   display: flex;
   cursor: pointer;
