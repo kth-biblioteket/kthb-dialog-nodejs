@@ -158,7 +158,20 @@ async function generateChoiceApp(req, res, next) {
             "kthschools": kthschools.data,
             "kthschools_en": kthschools_en.data,
             "confirmationSynonyms_sv": confirmationSynonyms_sv,
-            "confirmationSynonyms_en": confirmationSynonyms_en
+            "confirmationSynonyms_en": confirmationSynonyms_en,
+            "usertypes": 
+                        [
+                            {
+                                "code": "phd",
+                                "name_en": "Ph D student",
+                                "name_sv": "Doktorand"
+                            },
+                            {
+                                "code": "res",
+                                "name_en": "Resarcher",
+                                "name_sv": "Forskare"
+                            }                         
+                        ]
         }
         res.render('choice', choicedata);
 
