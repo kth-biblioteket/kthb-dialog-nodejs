@@ -401,7 +401,7 @@ html, body {
   display: flex;
   padding-left: 3vw;
   margin-left: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 0px;
 }
 
 .actionItemCheckbox {
@@ -450,7 +450,7 @@ html, body {
 }
 
 .userinfo {
-  padding-top: 40px;
+  padding-top: 20px;
 }
 
 
