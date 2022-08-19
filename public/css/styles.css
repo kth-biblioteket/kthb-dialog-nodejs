@@ -355,7 +355,7 @@ html, body {
 
 #checklistContainer {
   padding-top: 20px;
-  flex: 2;
+  flex: 65;
 }
 
 #checklistSeparator {
@@ -364,6 +364,7 @@ html, body {
   border-radius: 2.5px;
   background-color: #2d606f; /* base middle blue */
   margin: 0 10px;
+  flex: 0.5
 }
 
 .subactions>div {
@@ -379,7 +380,7 @@ html, body {
 }
 
 .subactions .usermessages {
-  width: 100%;
+  width: 90%;
   padding-left: 3vw;
   margin-left: 10px;
 }
@@ -435,7 +436,7 @@ html, body {
   color: #d2d940;
   vertical-align: top;
   padding-top: 20px;
-  flex: 1;
+  flex: 30;
 }
 
 .learnMoreImage {
