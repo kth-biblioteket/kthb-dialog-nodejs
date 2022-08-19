@@ -277,7 +277,7 @@
     }
 
     function GETInitialVotes(first) {
-        return fetch(api_url + '/dialog/api/v1/choice/' + eventid, {
+        return fetch('/dialog/api/v1/choice/' + eventid, {
             method: 'GET',
             headers: new Headers({
                 'X-Api-Key': XApiKey
