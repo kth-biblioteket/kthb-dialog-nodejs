@@ -621,30 +621,35 @@
                     //Användartyp
                     let usertypes = JSON.parse('<%- JSON.stringify(choicedata.usertypes) %>')
                     checklistContainer += 
-                    `<div class="mb-2">`
+                    `<div class="userinfo">
+                        <div>
+                            Select your type and school(optional):
+                        </div>
+                        <div class="mb-2">`
                     for (var i = 0; i < usertypes.length; i++) {
                         checklistContainer += 
-                        `<div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="usertype" id="${usertypes[i].code}" value="${usertypes[i].code}">
-                            <label class="form-check-label" for="${usertypes[i].code}">
-                                ${language == 'sv' ? usertypes[i].name_sv : usertypes[i].name_en}
-                            </label>
-                        </div>`
+                            `<div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="usertype" id="${usertypes[i].code}" value="${usertypes[i].code}">
+                                <label class="form-check-label" for="${usertypes[i].code}">
+                                    ${language == 'sv' ? usertypes[i].name_sv : usertypes[i].name_en}
+                                </label>
+                            </div>`
                     }
                     checklistContainer += 
-                    `</div>`
+                        `</div>`
                     //Skola
                     let kthschools = JSON.parse('<%- JSON.stringify(choicedata.kthschools) %>')
                     let kthschools_en = JSON.parse('<%- JSON.stringify(choicedata.kthschools_en) %>')
                     let currents_kthschools = language == 'sv' ? kthschools : kthschools_en
                     checklistContainer += 
-                    `<select id="school" class="form-select mb-2" aria-label="School">
-                        <option value="" selected>${language == 'sv' ? 'Välj en skola' : 'Pick a school'}</option>`
-                        for (var i = 0; i < currents_kthschools.length; i++) {                        
-                            checklistContainer +=`<option value="${currents_kthschools[i].code}">${currents_kthschools[i].name}</option>`
-                        }
+                        `<select id="school" class="form-select mb-2" aria-label="School">
+                            <option value="" selected>${language == 'sv' ? 'Välj en skola' : 'Pick a school'}</option>`
+                            for (var i = 0; i < currents_kthschools.length; i++) {                        
+                                checklistContainer +=`<option value="${currents_kthschools[i].code}">${currents_kthschools[i].name}</option>`
+                            }
                     checklistContainer +=`
-                    </select>`
+                        </select>
+                    </div>`
 
                     $("#checklistContainer").html(checklistContainer)
                     $("#checklistLogo").attr('src', '/dialog/public/images/'+ actionObject.image)
