@@ -90,6 +90,10 @@ async function generateChoiceApp(req, res, next) {
         res.send("error: " + err.message)
     }
 
+    //Hämta config/data från JSON-fil
+    let choicedata_json = await axios.get('https://apps-ref.lib.kth.se/kthbdialog/config/config.json')
+
+    //Hämta config/data från DB
     try {
         //Hämta event
         event = await eventModel.readEventId(req.params.event_id)
@@ -152,6 +156,7 @@ async function generateChoiceApp(req, res, next) {
             "Good!"
         ]
         //Skapa dataobjekt att skicka till webbapp
+        
         choicedata = {
             "url": req.protocol + '://' + req.get('host') + req.originalUrl,
             "language": language,
@@ -163,6 +168,10 @@ async function generateChoiceApp(req, res, next) {
             "confirmationSynonyms_en": confirmationSynonyms_en,
             "usertypes": usertypes
         }
+        
+
+        choicedata = choicedata_json.data;
+
         res.render('choice', choicedata);
 
     } catch(err) {
@@ -264,9 +273,9 @@ async function readEventId(id) {
     }
 }
 
-async function createEvent(name, description, startdate, enddate) {
+async function createEvent(name, name_en, description, description_en, startdate, enddate) {
     try {
-        let result = await eventModel.createEvent(name, description, startdate, enddate)
+        let result = await eventModel.createEvent(name, name_en, description, description_en, startdate, enddate)
         return result
     } catch (err) {
         return {"status": 0, "message": err }
@@ -290,6 +299,34 @@ async function deleteEvent(id) {
     } catch (err) {
         console.log(err.message)
         return "error: " + err.message
+    }
+}
+
+async function readActions(event_id) {
+    try {
+        let result = await eventModel.readActions(event_id)
+        return result
+    } catch (err) {
+        console.log(err.message)
+        return "error: " + err.message
+    }
+}
+
+async function createAction(event_id, description_sv, description_en, image, rgbacolor) {
+    try {
+        let result = await eventModel.createAction(event_id, description_sv, description_en, image, rgbacolor)
+        return result
+    } catch (err) {
+        return {"status": 0, "message": err }
+    }
+}
+
+async function updateAction(description_sv, description_en, image, rgbacolor, action_id) {
+    try {
+        let result = await eventModel.updateAction(description_sv, description_en, image, rgbacolor, action_id)
+        return result
+    } catch (err) {
+        return {"status": 0, "message": err }
     }
 }
 
@@ -484,6 +521,9 @@ module.exports = {
     createEvent,
     updateEvent,
     deleteEvent,
+    readActions,
+    createAction,
+    updateAction,
     createUserActionChoices,
     createUserSubActionChoices,
     createUserActionMessages,

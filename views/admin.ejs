@@ -107,6 +107,28 @@
                                 </div>
                                 <div style="flex:2">
                                     <form>
+                                        <div class="card" style="margin-bottom:10px">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Actions</h5>
+                                                <div style="padding-bottom: 10px">
+                                                    <button id="actionModalButton" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                        data-bs-target="#actionModal" data-id="<%=event_.id%>">
+                                                        Lägg till action
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card" style="margin-bottom:10px">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Actions</h5>
+                                                <div style="padding-bottom: 10px">
+                                                    <button type="button" onclick="getActions('<%=event_.id%>')" class="btn btn-primary" data-bs-toggle="modal"
+                                                        data-bs-target="#actionsModal">
+                                                        Hantera actions
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="col-sm-10">
                                             <label for="QRGeneralUrl" class="visually-hidden">Url</label>
                                             <input type="text" placeholder="Skriv in URL" class="form-control" name="QRGeneralUrl" id="QRGeneralUrl">
@@ -202,6 +224,41 @@
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="actionsModal" tabindex="-1" aria-labelledby="actionsModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="actionsModalLabel">Actions</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="actionsmodal-body modal-body">
+    
+                        </div>
+                        <div class="modal-footer">
+                            <div style="flex:2;display:flex;flex-direction:column">
+                                <div id="uploadAlertPlaceholder"></div>
+                                <label for="imgFile">Uppdatera bildbank</label>
+                                <input style="display:none" type="text" placeholder="Ge bilden ett namn"
+                                    class="form-control" name="imgFileName" id="imgFileName">
+                                <div style="display:flex">
+                                    <input onChange="showElement('imgFileName')" type="file" class="form-control"
+                                        name="imgFile" id="imgFile">
+                                    <button style="width:50%" class="browse btn btn-primary px-4" type="button"
+                                        onclick="uploadImage()">
+                                        Ladda upp
+                                    </button>
+                                </div>
+                                <div style="visibility:hidden;margin-right:10px" id="uploadprogress" class="progress">
+                                    <div id="uploadprogress-bar" class="progress-bar" role="progressbar" aria-valuenow="0"
+                                        aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                                        <span class="sr-only">0% Complete</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable">
@@ -216,8 +273,14 @@
                             <label for="eventName">Namn</label>
                             <input type="text" placeholder="Namn" class="form-control" name="eventName" id="eventName">
 
+                            <label for="eventName_en">Namn engelska</label>
+                            <input type="text" placeholder="Namn engelska" class="form-control" name="eventName_en" id="eventName_en">
+
                             <label for="eventDescription">Beskrivning</label>
                             <input type="textarea" placeholder="Beskrivning" class="form-control" name="eventDescription" id="eventDescription">
+
+                            <label for="eventDescription_en">Beskrivning engelska</label>
+                            <input type="textarea" placeholder="Beskrivning engelska" class="form-control" name="eventDescription_en" id="eventDescription_en">
 
                             <label for="eventStartDate">Startdatum</label>
                             <input type="text" placeholder="Startdate" class="form-control" name="eventStartDate" id="eventStartDate">
@@ -236,22 +299,70 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="actionModal" tabindex="-1" aria-labelledby="actionModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="actionModalLabel">Ny action</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-footer">
+                        <div style="flex:2;display:flex;flex-direction:column">
+                            <div id="createActionPlaceholder"></div>
+                            <input type="hidden"name="event_id" id="event_id">
+                            <label for="actiondescription_sv">Beskrivning</label>
+                            <input type="textarea" placeholder="Beskrivning" class="form-control" name="actiondescription_sv" id="actiondescription_sv">
+
+                            <label for="actiondescription_en">Beskrivning engelska</label>
+                            <input type="text" placeholder="Beskrivning" class="form-control" name="actiondescription_en" id="actiondescription_en">
+
+                            <label for="actionimage">Bild</label>
+                            <input type="text" placeholder="Bild" class="form-control" name="actionimage" id="actionimage">
+
+                            <label for="actionrgbacolor">Färg i reslutat-cirkel</label>
+                            <input type="text" placeholder="Färg i reslutat-cirkel" class="form-control" name="actionrgbacolor" id="actionrgbacolor">
+                            <br>
+                            <div style="display:flex">
+                                <button style="width:50%" class="browse btn btn-primary px-4" type="button"
+                                    onclick="createDialogAction(actionModal)">
+                                    Spara
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <script>
+
+            $(document).ready(function(){
+                //Skicka med ID till öppnade modals
+                $('#actionModal').on('shown.bs.modal', function(event) {
+                    var reference_tag = $(event.relatedTarget); 
+                    var id = reference_tag.data('id')
+                    $('#actionModal #event_id').val(id)
+                })
+            });
+
             function alert(message, type, placeholder) {
                 var alertPlaceholder = document.getElementById(placeholder)
                 var wrapper = document.createElement('div')
-                wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+                var html = `<div class="alert alert-${type} alert-dismissible" role="alert">${message}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>`
+                wrapper.innerHTML = html;
                 alertPlaceholder.append(wrapper)
+                /*
                 setTimeout(function () {
                     $(".alert").fadeTo(500, 0).slideUp(500, function(){
                         $(this).remove(); 
                     });
                 }, 2000);
+                */
             }
 
             function checkjwt() {
             
             }
+
 
             function updateLang(events_id, lang, frameid) {
                 checkjwt()
@@ -275,9 +386,13 @@
                 
                 var formData = new FormData();
                 formData.append("name", document.getElementById('eventName').value);
+                formData.append("name_en", document.getElementById('eventName_en').value);
                 formData.append("description", document.getElementById('eventDescription').value);
+                formData.append("description_en", document.getElementById('eventDescription_en').value);
                 formData.append("startdate", document.getElementById('eventStartDate').value);
                 formData.append("enddate", document.getElementById('eventEndDate').value);
+                console.log(formData)
+
                 var xhttp = new XMLHttpRequest();
                 xhttp.onload = function () {
                     if (xhttp.status == 401) { 
@@ -290,13 +405,52 @@
                     if (xhttp.status == 200) {
                         alert('Event skapat', 'success', 'createEventPlaceholder')
                         document.getElementById('eventName').value = ''
+                        document.getElementById('eventName_en').value = ''
                         document.getElementById('eventDescription').value = ''
+                        document.getElementById('eventDescription_en').value = ''
                         document.getElementById('eventStartDate').value = ''
                         document.getElementById('eventEndDate').value = ''
                     }
                 };
                 xhttp.open("POST", "/dialog/api/v1/event", true);
                 xhttp.send(formData);
+            }
+
+            function createDialogAction(elementid) {
+                //checkjwt()
+
+                var formData = new FormData();
+                formData.append("event_id", document.getElementById('event_id').value);
+                formData.append("actiondescription_sv", document.getElementById('actiondescription_sv').value);
+                formData.append("actiondescription_en", document.getElementById('actiondescription_en').value);
+                formData.append("actionimage", document.getElementById('actionimage').value);
+                formData.append("actionrgbacolor", document.getElementById('actionrgbacolor').value);
+
+                console.log(formData)
+                
+                var xhttp = new XMLHttpRequest();
+                xhttp.onload = function () {
+                    if (xhttp.status == 401) { 
+                    }
+
+                    if (xhttp.status == 400) {
+                        alert('Fel! ' + xhttp.response, 'danger', 'createActionPlaceholder')
+                    }
+                    
+                    if (xhttp.status == 200) {
+                        alert('Event skapat', 'success', 'createActionPlaceholder')
+                        document.getElementById('event_id').value = ''
+                        document.getElementById('actiondescription_sv').value = ''
+                        document.getElementById('actiondescription_en').value = ''
+                        document.getElementById('eventStartDate').value = ''
+                        document.getElementById('actionimage').value = ''
+                        document.getElementById('actionrgbacolor').value = ''
+                    }
+                };
+                xhttp.open("POST", "/dialog/api/v1/event/action", true);
+                xhttp.send(formData);
+                
+                
             }
 
             function updateEvent(id, name, description, startdate, enddate) {
@@ -492,19 +646,50 @@
                 }
             }
 
-            function getImages() {
-                $('.imagebankmodal-body').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Hämtar...');
+            function getActions(event_id) {
+                $('.actionsmodal-body').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Hämtar...');
                 
                 checkjwt()
                 var xhttp = new XMLHttpRequest();
                 xhttp.onload = function () {
                     if (xhttp.status == 401) {
-                        $('.QRGeneralmodal-body').html('Fel vid hämtning')
+                        $('.actionsmodal-body').html('Fel vid hämtning')
                     }
-                    $('.imagebankmodal-body').html(xhttp.response)
+                    $('.actionsmodal-body').html(xhttp.response)
                 };
-                xhttp.open("GET", "/dialog/api/v1/calendar/images", true);
+                xhttp.open("GET", "/dialog/api/v1/event/actions/" + event_id, true);
                 xhttp.send();
+            }
+
+            function updateAction(action_id, event_id) {
+                //checkjwt()
+                var formData = new FormData();
+                selector1 = `description_sv${action_id}`
+                formData.append("actiondescription_sv", document.getElementById(selector1).value);
+                selector2 = `description_en${action_id}`
+                formData.append("actiondescription_en", document.getElementById(selector2).value);
+                selector3 = `image${action_id}`
+                formData.append("actionimage", document.getElementById(selector3).value);
+                selector4 = `rgbacolor${action_id}`
+                formData.append("actionrgbacolor", document.getElementById(selector4).value);
+
+                console.log(formData)
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.onload = function () {
+                    console.log(xhttp.status)
+                    if (xhttp.status == 401) {
+                    }
+                    if (xhttp.status == 400) {
+                        alert(`Fel! ${xhttp.response}`, 'danger', 'updateActionPlaceholder')
+                    }
+                    if (xhttp.status == 200) {
+                        alert('Event uppdaterat', 'success', 'updateActionPlaceholder')
+                        getActions(event_id)
+                    }
+                };
+                xhttp.open("PUT", "/dialog/api/v1/event/action/" + action_id, true);
+                xhttp.send(formData);
             }
 
             function updateImage(id, nameselector) {

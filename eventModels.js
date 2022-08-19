@@ -65,11 +65,11 @@ const readEventId = (id) => {
 };
 
 //Skapa ett event
-const createEvent = (name, description, startdate, enddate) => {
+const createEvent = (name, name_en, description, description_en, startdate, enddate) => {
     return new Promise(function (resolve, reject) {
-        const sql = `INSERT INTO events(name, description, startdate, enddate)
-                VALUES(?, ?, ?, ?)`;
-        database.db.query(database.mysql.format(sql,[name, description, startdate, enddate]), async function(err, result) {
+        const sql = `INSERT INTO events(name, name_en, description, description_en, startdate, enddate)
+                VALUES(?, ?, ?, ?, ?, ?)`;
+        database.db.query(database.mysql.format(sql,[name, name_en, description, description_en, startdate, enddate]), async function(err, result) {
             if(err) {
                 reject(err.message)
             } else {
@@ -128,6 +128,7 @@ const readAllUserTypes = () => {
         });
     })
 };
+
 //Hämta actions via Eventid
 const readActions = (event_id) => {
     return new Promise(function (resolve, reject) {
@@ -139,6 +140,38 @@ const readActions = (event_id) => {
                 reject(err.message)
             }
             resolve(result);
+        });
+    })
+};
+
+//Skapa en action
+const createAction = (event_id, description_sv, description_en, image, rgbacolor) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `INSERT INTO actions(event_id, description_sv, description_en, image, rgbacolor)
+                VALUES(?, ?, ?, ?, ?)`;
+        database.db.query(database.mysql.format(sql,[event_id, description_sv, description_en, image, rgbacolor]), async function(err, result) {
+            if(err) {
+                reject(err.message)
+            } else {
+                const successMessage = "The action was entered successfully."
+                resolve(result.insertId);
+            }
+        });
+    })
+};
+
+const updateAction = (description_sv, description_en, image, rgbacolor, action_id) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `UPDATE actions 
+                    set description_sv = ?, description_en = ?, image = ?, rgbacolor = ?
+                    WHERE id = ?`;
+        database.db.query(database.mysql.format(sql,[description_sv, description_en, image, rgbacolor, action_id]), async function(err, result) {
+            if(err) {
+                reject(err.message)
+            } else {
+                const successMessage = "The action was updated successfully."
+                resolve(successMessage);
+            }
         });
     })
 };
@@ -431,6 +464,8 @@ module.exports = {
     deleteEvent,
     readAllUserTypes,
     readActions,
+    createAction,
+    updateAction,
     readActionChoices,
     readSubActionChoices,
     createUserActionChoices,

@@ -39,7 +39,6 @@
 </head>
 
 <body>
-    <!--textarea><%= JSON.stringify(choicedata) %></textarea-->
     <div style="width:100%">
         <!--img id="map" src="images/field.jpg" /-->
     </div>
@@ -805,6 +804,10 @@
             if(getcurrentlangfromHTML_Tag() == 'sv') {
                 currentlanguage = 'en';
             } 
+
+            choicedata = console.log(`<%- JSON.stringify(choicedata) %>`)
+
+            //Definiera javascriptobject med data från EJS
             actions = JSON.parse(`<%- JSON.stringify(choicedata.event.actions) %>`)
             var confirmationSynonyms;
         

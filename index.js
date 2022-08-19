@@ -129,10 +129,13 @@ apiRoutes.get(process.env.API_PATH + "/kthschools",eventController.getkthschools
 apiRoutes.post(process.env.API_PATH + "/event", VerifyToken, async function (req, res, next) {
     try {
         let name = req.body.name
+        let name_en = req.body.name_en
         let description = req.body.description
+        let description_en = req.body.description_en
         let startdate = req.body.startdate
         let enddate = req.body.enddate
-        let create = await eventController.createEvent(name, description, startdate, enddate)
+
+        let create = await eventController.createEvent(name, name_en, description, description_en, startdate, enddate)
         if(create.status == 0) {
             res.status(400).send(create.message)
         } else {
@@ -160,6 +163,39 @@ apiRoutes.delete(process.env.API_PATH + "/event", VerifyToken, async function (r
     } catch(err) {
         res.send(err.message)
     } 
+});
+
+apiRoutes.post(process.env.API_PATH + "/event/action", VerifyToken, async function (req, res, next) {
+    try {
+        let event_id = req.body.event_id
+        let description_sv = req.body.actiondescription_sv
+        let description_en = req.body.actiondescription_en
+        let image = req.body.actionimage
+        let rgbacolor = req.body.actionrgbacolor
+
+        let create = await eventController.createAction(event_id, description_sv, description_en, image, rgbacolor)
+        if(create.status == 0) {
+            res.status(400).send(create.message)
+        } else {
+            res.sendStatus(200);
+        }
+    } catch(err) {
+        res.status(400).send(err)
+    }
+});
+
+apiRoutes.put(process.env.API_PATH + "/event/action/:action_id", VerifyToken, async function (req, res, next) {
+    try {
+        let action_id = req.params.action_id
+        let description_sv = req.body.actiondescription_sv
+        let description_en = req.body.actiondescription_en
+        let image = req.body.actionimage
+        let rgbacolor = req.body.actionrgbacolor
+        const update = await eventController.updateAction(description_sv, description_en, image, rgbacolor, action_id)
+        res.send(update)
+    } catch(err) {
+        res.send(err.message)
+    }
 });
 
 apiRoutes.post(process.env.API_PATH + "/event/field", VerifyToken, async function (req, res, next) {
@@ -211,6 +247,55 @@ apiRoutes.get(process.env.API_PATH + "/event/:id", async function (req, res, nex
         }
     } catch(err) {
         res.send(err.message)
+    }
+});
+
+apiRoutes.get(process.env.API_PATH + "/event/actions/:event_id", async function (req, res) {
+    try {
+        res.write(`<div style="display:flex;flex-direction:column;flex-wrap:wrap" id="actions">`)
+
+        //Hämta alla actions för event
+        let actions = await eventController.readActions(req.params.event_id)
+        actions.forEach(action => {
+            
+            const content = fs.readFileSync(__dirname + "/public/images/" + action.image)
+            res.write(`<div style="margin-bottom:10px" class="card">
+                            <div class="card-body">
+                                <div id="updateActionPlaceholder"></div>
+                                <div style="display:flex;flex-direction:row;padding-bottom:10px">
+                                    <div style="flex:1;display:flex;flex-direction:column">
+                                        <label for="description_sv${action.id}">Beskrivning</label>
+                                        <input id="description_sv${action.id}" style="margin-bottom:10px" class="form-control" type="text" value="${action.description_sv}"">
+                                        <label for="description_en${action.id}">Beskrivning engelska</label>
+                                        <input id="description_en${action.id}" style="margin-bottom:10px" class="form-control" type="text" value="${action.description_en}"">
+                                        <label for="rgbacolor${action.id}">Färg i resultatcirkel</label>
+                                        <input id="rgbacolor${action.id}" style="margin-bottom:10px" class="form-control" type="text" value="${action.rgbacolor}"">
+                                        <label for="image${action.id}">Bild</label>
+                                        <input id="image${action.id}" style="margin-bottom:10px" class="form-control" type="text" value="${action.image}"">
+                                        
+                                        <img id="image_img${action.id}" style="flex:2;width:100%" src="data:image/jpeg;base64,`)
+                                        res.write(Buffer.from(content).toString('base64'));
+                                        res.write('"/>');
+                        res.write(`</div>
+                                    <div style="flex:1;display:flex;flex-direction:column;justify-content: flex-end;">
+                                        <div style="display:flex;justify-content: flex-end;">
+                                            <button id="updateAction_${action.id}" onclick="updateAction('${action.id}', '${req.params.event_id}');" type="button" class="btn btn-primary" style="margin-right:10px">
+                                                Spara
+                                            </button>
+                                            <button id="deleteAction_${action.id}" onclick="deleteAction('${action.id}', '${req.params.event_id}');" type="button" class="btn btn-primary">
+                                                Ta bort
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`)
+        });
+        res.write(`</div>`)
+        res.end();
+    } catch(err) {
+        res.write(err.message + `</div>`)
+        res.end();
     }
 });
 
@@ -304,7 +389,7 @@ apiRoutes.get(process.env.API_PATH + "/choice/:event_id", async function (req, r
     let currentVotes = {};
     let currentNewVotes = {};
     try {
-        if (req.params.event_id) {
+        if (req.params.event_id) {            
             let results = await eventController.readActionChoicesResult(req.params.event_id);
             results.forEach(function (row) {
                 currentVotes[row.id] = row.choices;
