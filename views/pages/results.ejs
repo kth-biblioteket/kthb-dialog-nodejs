@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <%- include('../partials/resultshead'); %>
+</head>
+
+<body>
+    <!--div id="pollbody">
+        <div class="content-wrap">
+            <div class="content">
+                <img id="globe" src="/dialog/images/Surreal-Earth.png">
+                <button id="move">Move</button>
+                <div id="header">
+                </div>
+                <div id="content">
+                    <div id="charttext"></div>
+                    <div id="chartwrapper">
+                        <div id="canvaswrapper">
+                            <canvas id="myChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div-->
+    <div class="title"><%- choiceresultsdata.language =='sv' ? choiceresultsdata.event.resultstitle : choiceresultsdata.event.resultstitle_en %></div>
+    <div class="subtitle"><%- choiceresultsdata.language =='sv' ? choiceresultsdata.event.resultssubtitle : choiceresultsdata.event.resultssubtitle_en %></div>
+    <div class="doughnut" style="flex-grow: 1"><canvas id="myChart"></canvas></div>
+    <img id="globe" src="/dialog/images/Surreal-Earth.png">
+</body>
+    <%- include('../partials/resultsscript'); %>
+
+    <script>
+        var eventid = '<%- JSON.stringify(choiceresultsdata.event.id) %>';
+        var doughnutcentertext = "Pledges"
+        var doughnutcentertext_sv = "Löften"
+        var header_lib_tv = `<div>Make a climate pledge</div>`
+        var header_sv_lib_tv = `<div>Avge ett klimatlöfte</div>
+        <div style="font-size:3.5vw">– Hur skulle du kunna bidra till att minska klimatförändringen?</div>`
+        var header = "Climate pledges"
+        var header_sv = "Klimatlöften"
+        var charttext = "Pledges made so far"
+        var charttext_sv = "Detta har andra lovat"
+        var cutout = "70%"
+        var radius ="70%"
+        var XApiKey = 'kg897n987n98n)!dskjlksjfd?435mnckjsbsekef-_klknbhjhsef'
+        var doughnutcentertotalfontsize = 108
+        var doughnutcentertextfontsize = 48
+        var textcolor = 'rgba(255, 255, 255, 0.8)'
+
+        function getQuerystringparam (querystringparam) {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const value = urlParams.get(querystringparam)
+            return value
+        }
+
+        function chunkString(str, maxWidth){
+            const sections = [];
+            const words = str.split(" ");
+            let builder = "";
+
+            for (const word of words) {
+                if(word.length > maxWidth) {
+                sections.push(builder.trim())
+                builder = ""
+                sections.push(word.trim())
+                continue
+                }
+
+                let temp = `${builder} ${word}`
+                if(temp.length > maxWidth) {
+                sections.push(builder.trim())
+                builder = word
+                continue
+                }
+
+                builder = temp
+            }
+            sections.push(builder.trim())
+
+            return sections;
+        }
+
+        var getTotal = function (myChart) {
+            var sum = myChart.config.data.datasets[0].data.reduce((a, b) => a + b, 0);
+            return sum;
+        }
+
+        var getDoughnutcentertext = function () {
+            if (getQuerystringparam('lang') == 'sv') {
+                return doughnutcentertext_sv
+            } else {
+                return doughnutcentertext
+            }
+        }
+
+        if (getQuerystringparam('display') == 'libtv') {
+            //$('body').css('overflow', 'hidden');
+        }
+
+        if (getQuerystringparam('lang') == 'sv') {
+            if (getQuerystringparam('display') == 'libtv') {
+                $('#header').html(header_sv_lib_tv)
+                $('#charttext').html(charttext_sv)
+            } else {
+                $('#header').html(header_sv)
+                $('#charttext').html(charttext_sv)
+            }
+        } else {
+            if (getQuerystringparam('display') == 'libtv') {
+                $('#header').html(header_lib_tv)
+                $('#charttext').html(charttext)
+            } else {
+                $('#header').html(header)
+                $('#charttext').html(charttext)
+            }
+        }
+
+        const ctx = document.getElementById('myChart');
+        Chart.register(ChartDataLabels);
+        Chart.register(DoughnutLabel);
+        const myChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                datasets: [{}]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                },
+                borderWidth: 0,
+                plugins: {
+                    title: {
+                        display: false, 
+                        position: "top", 
+                        fullsize: false,
+                        align: "start",
+                        text: "",
+                        padding: {
+                            top: 200,
+                            bottom: 30
+                        },
+                        color: 'rgba(255, 255, 255, 0.8)',
+                        font: function (context) {
+                            var avgSize = Math.round((context.chart.height + context.chart.width) / 2);
+                            var size = Math.round(avgSize / 32);
+                            return {
+                                size: size + 3,
+                                weight: 'bold'
+                            };
+                        },
+                    },
+                    legend: {
+                        display: false
+                    },
+                    datalabels: {
+                        labels: {
+                            name: {
+                                align: 'end',
+                                anchor: 'end',
+                                color: textcolor,
+                                font: function (context) {
+                                    var avgSize = Math.round((context.chart.height + context.chart.width) / 2);
+                                    var size = Math.round(avgSize / 32);
+                                    if (context.chart.width < 800) {
+                                        size = size - 6;
+                                    }
+
+                                    if (context.chart.width < 600) {
+                                        size = size - 3
+                                    }
+
+                                    if (context.chart.width < 480) {
+                                        size = size + 3
+                                    }
+                                    return {
+                                        size: size,
+                                        weight: 'bold'
+                                    };
+                                },
+                                formatter: function (value, ctx) {
+                                    return ctx.active
+                                        ? ctx.dataset.data[ctx.dataIndex] + ''
+                                        : ctx.chart.data.labels[ctx.dataIndex];
+                                },
+                                offset: 10,
+                                opacity: function (ctx) {
+                                    return ctx.active ? 1 : 1;
+                                }
+                            }
+                        }
+                    },
+                    doughnutlabel: {
+                        paddingPercentage: 5,
+                        labels: [
+                            {
+                                text: getTotal,
+                                font: {
+                                    size: doughnutcentertotalfontsize,
+                                    family: '"Open Sans",Arial,"Helvetica Neue",helvetica,sans-ServiceUIFrameContext',
+                                    style: 'italic',
+                                    weight: 'bold',
+                                },
+                                color: textcolor,
+                            },
+                            {
+                                text: getDoughnutcentertext,
+                                font: {
+                                    size: doughnutcentertextfontsize,
+                                    family: '"Open Sans",Arial,"Helvetica Neue",helvetica,sans-ServiceUIFrameContext',
+                                    style: 'italic',
+                                    weight: 'bold',
+                                },
+                                color: textcolor,
+                            },
+                        ],
+                    }
+                },
+                cutout: function (context) {
+                            var cutout = "70%"
+                            console.log(context.chart.width)
+                            if (context.chart.width < 800) {
+                                cutout = "80%"
+                            }
+
+                            if (context.chart.width < 580) {
+                                cutout = "80%"
+                            }
+                            return cutout;
+                        },
+                radius: function (context) {
+                            var radius = "70%"
+                            console.log(context.chart.width)
+                            if (context.chart.width < 800) {
+                                radius = "60%"
+                            }
+
+                            if (context.chart.width < 580) {
+                                radius = "60%"
+                            }
+                            return radius;
+                        },
+                layout: {
+                    //autoPadding: true,
+                    padding: {
+                        left: 80,
+                        right: 70,
+                        top: 70,
+                        bottom: 100
+                    }
+                }
+            }
+        });
+
+        if (getQuerystringparam('ws') == 'true') {
+            const socket = io('', { path: "/dialog/socket.io" })
+
+            socket.on("FromAPI", function (data) {
+                document.getElementById("globe").classList.toggle('animated')
+                GETInitialVotes(false);
+            });
+
+            socket.on("connect", () => {
+            });
+
+            socket.on("disconnect", () => {
+            });
+
+            socket.on('error', console.error.bind(console));
+
+        }
+
+        function GETInitialVotes(first) {
+            return fetch('/dialog/api/v1/choice/' + eventid, {
+                method: 'GET',
+                headers: new Headers({
+                    'X-Api-Key': XApiKey
+                }),
+                mode: 'cors'
+            }).then(function (res) {
+                if (res.ok) {
+                    return res.json();
+                } else {
+                    throw new TypeError('GETVotes error');
+                }
+            }).then(function (resJSON) {
+                var currentNewVotes = resJSON.currentNewVotes
+                var chartdataarray = [];
+                var chartlabelarray = [];
+                var chartbackgroundcolorarray = [];
+                for (let i in currentNewVotes) {
+                    if (getQuerystringparam('lang') == 'sv') {
+                        chartlabelarray.push(chunkString(currentNewVotes[i].description_sv, 20))
+                    } else {
+                        chartlabelarray.push(chunkString(currentNewVotes[i].description_en, 20))
+                    }
+                    chartdataarray.push(currentNewVotes[i].choices)
+                    chartbackgroundcolorarray.push(currentNewVotes[i].rgbacolor)
+                }
+                myChart.data.datasets[0].data = chartdataarray;
+                myChart.data.datasets[0].backgroundColor = chartbackgroundcolorarray;
+                myChart.data.labels = chartlabelarray;
+                if (first === true) {
+                }
+                myChart.update();
+            }).catch(function (err) {
+                console.log(err);
+            });
+        }
+
+        GETInitialVotes(true)
+
+        /*
+        move.onclick = () => {
+            document.getElementById("globe").classList.toggle('animated')
+            GETInitialVotes(false);
+        }
+        */
+        const animated = document.getElementById('globe');
+        animated.addEventListener('animationend', () => {
+            document.getElementById("globe").classList.toggle('animated')
+        });
+
+    </script>
+</html>

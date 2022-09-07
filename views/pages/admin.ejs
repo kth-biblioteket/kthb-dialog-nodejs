@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <%- include('../partials/adminhead'); %>
+</head>
+
+<body>
+    <% var url = new URL(admindata.url) %>
+    <div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+            <a class="navbar-brand" href="#">
+                <img alt="" src="https://apps.lib.kth.se/polopoly/KTH_Logotyp.svg" width="75" height="75"
+                    class="d-inline-block align-top"> KTH Bibliotekets Dialog System
+            </a>
+            <button aria-controls="basic-navbar-nav" type="button" aria-label="Toggle navigation"
+                class="navbar-toggler collapsed"><span class="navbar-toggler-icon"></span></button>
+            <div class="navbar-collapse collapse" id="basic-navbar-nav">
+                <div class="navbar-nav">
+                </div>
+            </div>
+            <div id="gradientBorder"></div>
+        </nav>
+        <div id="content">
+            <div style="flex:3;padding-right:10px">
+                <div class="" id="actionsModal2" tabindex="-1" aria-labelledby="actionsModal2Label" aria-hidden="true">
+                    <div style="margin-bottom:10px" class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Events</h5>
+                            <table id="EventActionstable" class="table table-striped" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Namn Svenska</th>
+                                        <th>Namn Engelska</th>
+                                        <th>Beskrivning Svenska</th>
+                                        <th>Beskrivning Engelska</th>
+                                        <th>Startdatum</th>
+                                        <th>Slutdatum</th>
+                                        <th>Resultat rubrik</th>
+                                        <th>Resultat rubrik engelska</th>
+                                        <th>Resultat underrubrik</th>
+                                        <th>Resultat underrubrik engelska</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <% admindata.events.forEach(row => { %>
+                                    <tr>
+                                        <td>
+                                            <input class="form-control" type="hidden" id="event-<%=row.id%>-id" name="event-<%=row.id%>-id" value="<%=row.id%>"><%=row.id%>
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="event-<%=row.id%>-name" name="event-<%=row.id%>-name" value="<%=row.name%>">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="event-<%=row.id%>-name_en" name="event-<%=row.id%>-name_en" value="<%=row.name_en%>">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="event-<%=row.id%>-description" name="event-<%=row.id%>-description" value="<%=row.description%>">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="event-<%=row.id%>-description_en" name="event-<%=row.id%>-description_en" value="<%=row.description_en%>">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="date" max="2999-12-31" id="event-<%=row.id%>-startdate" name="event-<%=row.id%>-startdate" value="<%=row.startdate.toLocaleDateString()%>">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="date" max="2999-12-31" id="event-<%=row.id%>-enddate" name="event-<%=row.id%>-enddate" value="<%=row.enddate.toLocaleDateString()%>">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="event-<%=row.id%>-resultstitle" name="event-<%=row.id%>-resultstitle" value="<%=row.resultstitle%>">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="event-<%=row.id%>-resultstitle_en" name="event-<%=row.id%>-resultstitle_en" value="<%=row.resultstitle_en%>">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="event-<%=row.id%>-resultssubtitle" name="event-<%=row.id%>-resultssubtitle" value="<%=row.resultssubtitle%>">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="event-<%=row.id%>-resultssubtitle_en" name="event-<%=row.id%>-resultssubtitle_en" value="<%=row.resultssubtitle_en%>">
+                                        </td>
+                                        <td>
+                                            <div style="display:flex;width:270px;justify-content: end;">
+                                                <button id="updateActionEvent_<%=row.id%>" onclick="updateDialogEvent('<%=row.id%>');" type="button" class="btn btn-success" style="margin-right:10px">
+                                                    Spara
+                                                </button>
+                                                <button id="deleteActionEvent_<%=row.id%>" onclick="deleteDialogEvent('<%=row.id%>');" type="button" class="btn btn-danger" style="margin-right:10px">
+                                                    Ta bort
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                                    <tr class="newrow">
+                                        <td>
+                                            Ny!
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="new_event_name" name="new_event_name" value="">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="new_event_name_en" name="new_event_name_en" value="">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="new_event_description" name="new_event_description" value="">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="new_event_description_en" name="new_event_description_en" value="">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="date" max="2999-12-31" id="new_event_startdate" name="new_event_startdate" value="">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="date" max="2999-12-31" id="new_event_enddate" name="new_event_enddate" value="">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="new_event_resultstitle" name="new_event_resultstitle" value="">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="new_event_resultstitle_en" name="new_event_resultstitle_en" value="">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="new_event_resultssubtitle" name="new_event_resultssubtitle" value="">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="new_event_resultssubtitle_en" name="new_event_resultssubtitle_en" value="">
+                                        </td>
+                                        <td>
+                                            <div style="display:flex;width:270px;justify-content: end;">
+                                                <button id="createEvent" onclick="createDialogEvent()" type="button" class="btn btn-success" style="margin-right:10px">
+                                                    Lägg till
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%# Actions/Kategorier %>
+            <div style="flex:3;padding-right:10px">
+                <div class="" id="actionsModal2" tabindex="-1" aria-labelledby="actionsModal2Label" aria-hidden="true">
+                    <div style="margin-bottom:10px" class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Kategorier</h5>
+                            <table id="EventActionstable" class="table table-striped" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Event</th>
+                                        <th>Beskrivning Svenska</th>
+                                        <th>Beskrivning Engelska</th>
+                                        <th>Färg i reslutatcirkel</th>
+                                        <th>Bild</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <% admindata.actions.forEach(row => { %>
+                                    <tr>
+                                        <td>
+                                            <%=row.id%>
+                                        </td>
+                                        <td>
+                                            <div class="form-select">
+                                                <div class="select-wrapper">
+                                                    <select id="action-<%=row.id%>-event_id" class="form-control">
+                                                    <% admindata.events.forEach(event => { %>
+                                                        <option <%= event.id==row.event_id ? 'selected' : '' %> value="<%=event.id%>"><%=event.name%></option>
+                                                    <% }) %>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="action-<%=row.id%>-description_sv" name="action-<%=row.id%>-description_sv" value="<%=row.description_sv%>">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="action-<%=row.id%>-description_en" name="action-<%=row.id%>-description_en" value="<%=row.description_en%>">
+                                        </td>
+                                        <td>
+                                            <input data-jscolor="{alpha:<%= parseFloat(row.rgbacolor.split(',')[3])%>}" class="form-control" type="text" id="action-<%=row.id%>-rgbacolor" name="action-<%=row.id%>-rgbacolor" value="<%=row.rgbacolor%>">
+                                        </td>
+                                        <td>
+                                            <div class="form-select">
+                                                <div class="select-wrapper">
+                                                    <select id="action-<%=row.id%>-image_id" class="form-control">
+                                                    <% admindata.images.forEach(image => { %>
+                                                        <option <%= image.id==row.image_id ? 'selected' : '' %> value="<%=image.id%>"><%=image.name%></option>
+                                                    <% }) %>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style="display:flex;width:270px;justify-content: end;">
+                                                <button id="updateActionEvent_<%=row.id%>" onclick="updateDialogAction('<%=row.id%>');" type="button" class="btn btn-success" style="margin-right:10px">
+                                                    Spara
+                                                </button>
+                                                <button id="deleteActionEvent_<%=row.id%>" onclick="deleteDialogAction('<%=row.id%>');" type="button" class="btn btn-danger" style="margin-right:10px">
+                                                    Ta bort
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                                    <tr class="newrow">
+                                        <td>
+                                            Ny!
+                                        </td>
+                                        <td>
+                                            <div class="form-select">
+                                                <div class="select-wrapper">
+                                                    <select id="new_action_event_id" class="form-control">
+                                                    <% admindata.events.forEach(event => { %>
+                                                        <option value="<%=event.id%>"><%=event.name%></option>
+                                                    <% }) %>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="new_action_description_sv" name="new_action_description_sv" value="">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="new_action_description_en" name="new_action_description_en" value="">
+                                        </td>
+                                        <td>
+                                            <input data-jscolor="{alpha:1}" class="form-control" type="text" id="new_action_rgbacolor" name="new_action_rgbacolor" value="">
+                                        </td>
+                                        <td>
+                                            <div class="form-select">
+                                                <div class="select-wrapper">
+                                                    <select id="new_action_image_id" class="form-control">
+                                                    <% admindata.images.forEach(image => { %>
+                                                        <option value="<%=image.id%>"><%=image.name%></option>
+                                                    <% }) %>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style="display:flex;width:270px;justify-content: end;">
+                                                <button id="createEvent" onclick="createDialogAction()" type="button" class="btn btn-success" style="margin-right:10px">
+                                                    Lägg till
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%# Actionchoices/Kategorival %>
+            <div style="flex:3;padding-right:10px">
+                <div class="" id="subactionsModal" tabindex="-1" aria-labelledby="subactionsModal" aria-hidden="true">
+                    <div style="margin-bottom:10px" class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Kategorival</h5>
+                            <table id="EventActionstable" class="table table-striped" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Kategori</th>
+                                        <th>Typ</th>
+                                        <th>Name Svenska</th>
+                                        <th>Name Engelska</th>
+                                        <th>Beskrivning Svenska</th>
+                                        <th>Beskrivning Engelska</th>
+                                        <th>Bild</th>
+                                        <th>Sortering</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <% admindata.actionchoices.forEach(row => { %>
+                                    <tr>
+                                        <td>
+                                            <%=row.id%>
+                                        </td>
+                                        <td style="width:200px">
+                                            <div class="form-select">
+                                                <div class="select-wrapper">
+                                                    <select id="actionchoice-<%=row.id%>-action_id" class="form-control">
+                                                    <% admindata.actions.forEach(action => { %>
+                                                        <option <%= action.id==row.action_id ? 'selected' : '' %> value="<%=action.id%>"><%=action.description_sv%></option>
+                                                    <% }) %>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="width:150px">
+                                            <div class="form-select">
+                                                <div class="select-wrapper">
+                                                    <select id="actionchoice-<%=row.id%>-actionchoicetype_id" class="form-control">
+                                                    <% admindata.actionchoicetypes.forEach(actionchoicetype => { %>
+                                                        <option <%= actionchoicetype.id==row.actionchoicetype_id ? 'selected' : '' %> value="<%=actionchoicetype.id%>"><%=actionchoicetype.type%></option>
+                                                    <% }) %>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="actionchoice-<%=row.id%>-name" name="row-<%=row.id%>-name" value="<%=row.name%>">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="actionchoice-<%=row.id%>-name_en" name="row-<%=row.id%>-name_en" value="<%=row.name_en%>">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="actionchoice-<%=row.id%>-description" name="row-<%=row.id%>-description" value="<%=row.description%>">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="actionchoice-<%=row.id%>-description_en" name="row-<%=row.id%>-description_en" value="<%=row.description_en%>">
+                                        </td>
+                                        <td>
+                                            <div class="form-select">
+                                                <div class="select-wrapper">
+                                                    <select id="actionchoice-<%=row.id%>-image_id" class="form-control">
+                                                    <% admindata.images.forEach(image => { %>
+                                                        <option <%= image.id==row.image_id ? 'selected' : '' %> value="<%=image.id%>"><%=image.name%></option>
+                                                    <% }) %>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="actionchoice-<%=row.id%>-sortorder" name="row-<%=row.id%>-sortorder" value="<%=row.sortorder%>">
+                                        </td>
+                                        <td>
+                                            <div style="display:flex;width:270px;justify-content: end;">
+                                                <button id="updateActionChoice<%=row.id%>" onclick="updateDialogActionChoice('<%=row.id%>');" type="button" class="btn btn-success" style="margin-right:10px">
+                                                    Spara
+                                                </button>
+                                                <button id="deleteActionChoice<%=row.id%>" onclick="deleteDialogActionChoice('<%=row.id%>');" type="button" class="btn btn-danger" style="margin-right:10px">
+                                                    Ta bort
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                                <tr class="newrow">
+                                    <td>
+                                        Ny!
+                                    </td>
+                                    <td style="width:200px">
+                                        <div class="form-select">
+                                            <div class="select-wrapper">
+                                                <select id="new_actionchoice_action_id" class="form-control">
+                                                <% admindata.actions.forEach(action => { %>
+                                                    <option value="<%=action.id%>"><%=action.description_sv%></option>
+                                                <% }) %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+                                        <div class="form-select">
+                                            <div class="select-wrapper">
+                                                <select id="new_actionchoice_actionchoicetype_id" class="form-control">
+                                                <% admindata.actionchoicetypes.forEach(actionchoicetype => { %>
+                                                    <option value="<%=actionchoicetype.id%>"><%=actionchoicetype.type%></option>
+                                                <% }) %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input class="form-control" type="text" id="new_actionchoice_name" name="new_actionchoice_name" value="">
+                                    </td>
+                                    <td>
+                                        <input class="form-control" type="text" id="new_actionchoice_name_en" name="new_actionchoice_name_en" value="">
+                                    </td>
+                                    <td>
+                                        <input class="form-control" type="text" id="new_actionchoice_description" name="new_actionchoice_description" value="">
+                                    </td>
+                                    <td>
+                                        <input class="form-control" type="text" id="new_actionchoice_description_en" name="new_actionchoice_description_en" value="">
+                                    </td>
+                                    <td>
+                                        <div class="form-select">
+                                            <div class="select-wrapper">
+                                                <select id="new_actionchoice_image_id" class="form-control">
+                                                <% admindata.images.forEach(image => { %>
+                                                    <option value="<%=image.id%>"><%=image.name%></option>
+                                                <% }) %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input class="form-control" type="text" id="new_actionchoice_sortorder" name="new_actionchoice_sortorder" value="">
+                                    </td>
+                                    <td>
+                                        <div style="display:flex;width:270px;justify-content: end;">
+                                            <button id="createDialogActionChoice" onclick="createDialogActionChoice()" type="button" class="btn btn-success" style="margin-right:10px">
+                                                Lägg till
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%# SubActionchoices/Alternativ under kategorival %>
+            <div style="flex:3;padding-right:10px">
+                <div class="" id="subactionsModal" tabindex="-1" aria-labelledby="subactionsModal" aria-hidden="true">
+                    <div style="margin-bottom:10px" class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Alternativ under kategorival</h5>
+                            <table id="EventActionstable" class="table table-striped" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Kategorival</th>
+                                        <th>Typ</th>
+                                        <th>Name Svenska</th>
+                                        <th>Name Engelska</th>
+                                        <th>Beskrivning Svenska</th>
+                                        <th>Beskrivning Engelska</th>
+                                        <th>Bild</th>
+                                        <th>Sortering</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <% admindata.subactionchoices.forEach(row => { %>
+                                    <tr>
+                                        <td>
+                                            <%=row.id%>
+                                        </td>
+                                        <td style="width:200px">
+                                            <div class="form-select">
+                                                <div class="select-wrapper">
+                                                    <select id="subactionchoice-<%=row.id%>-actionchoice_id" class="form-control">
+                                                    <% admindata.actionchoices.forEach(actionchoice => { %>
+                                                        <option <%= actionchoice.id==row.actionchoice_id ? 'selected' : '' %> value="<%=actionchoice.id%>"><%=actionchoice.name%></option>
+                                                    <% }) %>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="width:150px">
+                                            <div class="form-select">
+                                                <div class="select-wrapper">
+                                                    <select id="subactionchoice-<%=row.id%>-actionchoicetype_id" class="form-control">
+                                                    <% admindata.actionchoicetypes.forEach(actionchoicetype => { %>
+                                                        <option <%= actionchoicetype.id==row.actionchoicetype_id ? 'selected' : '' %> value="<%=actionchoicetype.id%>"><%=actionchoicetype.type%></option>
+                                                    <% }) %>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="subactionchoice-<%=row.id%>-name" name="subactionchoice-<%=row.id%>-name" value="<%=row.name%>">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="subactionchoice-<%=row.id%>-name_en" name="subactionchoice-<%=row.id%>-name_en" value="<%=row.name_en%>">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="subactionchoice-<%=row.id%>-description" name="subactionchoice-<%=row.id%>-description" value="<%=row.description%>">
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="subactionchoice-<%=row.id%>-description_en" name="subactionchoice-<%=row.id%>-description_en" value="<%=row.description_en%>">
+                                        </td>
+                                        <td>
+                                            <div class="form-select">
+                                                <div class="select-wrapper">
+                                                    <select id="subactionchoice-<%=row.id%>-image_id" class="form-control">
+                                                    <% admindata.images.forEach(image => { %>
+                                                        <option <%= image.id==row.image_id ? 'selected' : '' %> value="<%=image.id%>"><%=image.name%></option>
+                                                    <% }) %>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" id="subactionchoice-<%=row.id%>-sortorder" name="subactionchoice-<%=row.id%>-sortorder" value="<%=row.sortorder%>">
+                                        </td>
+                                        <td>
+                                            <div style="display:flex;width:270px;justify-content: end;">
+                                                <button id="updateSubActionChoice<%=row.id%>" onclick="updateDialogSubActionChoice('<%=row.id%>');" type="button" class="btn btn-success" style="margin-right:10px">
+                                                    Spara
+                                                </button>
+                                                <button id="deleteSubActionChoice<%=row.id%>" onclick="deleteDialogSubActionChoice('<%=row.id%>');" type="button" class="btn btn-danger" style="margin-right:10px">
+                                                    Ta bort
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                                <tr class="newrow">
+                                    <td>
+                                        Ny!
+                                    </td>
+                                    <td style="width:200px">
+                                        <div class="form-select">
+                                            <div class="select-wrapper">
+                                                <select id="new_subactionchoice_actionchoice_id" class="form-control">
+                                                <% admindata.actionchoices.forEach(actionchoice => { %>
+                                                    <option value="<%=actionchoice.id%>"><%=actionchoice.name%></option>
+                                                <% }) %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="width:150px">
+                                        <div class="form-select">
+                                            <div class="select-wrapper">
+                                                <select id="new_subactionchoice_actionchoicetype_id" class="form-control">
+                                                <% admindata.actionchoicetypes.forEach(actionchoicetype => { %>
+                                                    <option value="<%=actionchoicetype.id%>"><%=actionchoicetype.type%></option>
+                                                <% }) %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input class="form-control" type="text" id="new_subactionchoice_name" name="new_subactionchoice_name" value="">
+                                    </td>
+                                    <td>
+                                        <input class="form-control" type="text" id="new_subactionchoice_name_en" name="new_subactionchoice_name_en" value="">
+                                    </td>
+                                    <td>
+                                        <input class="form-control" type="text" id="new_subactionchoice_description" name="new_subactionchoice_description" value="">
+                                    </td>
+                                    <td>
+                                        <input class="form-control" type="text" id="new_subactionchoice_description_en" name="new_subactionchoice_description_en" value="">
+                                    </td>
+                                    <td>
+                                        <div class="form-select">
+                                            <div class="select-wrapper">
+                                                <select id="new_subactionchoice_image_id" class="form-control">
+                                                <% admindata.images.forEach(image => { %>
+                                                    <option value="<%=image.id%>"><%=image.name%></option>
+                                                <% }) %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input class="form-control" type="text" id="new_subactionchoice_sortorder" name="new_subactionchoice_sortorder" value="">
+                                    </td>
+                                    <td>
+                                        <div style="display:flex;width:270px;justify-content: end;">
+                                            <button id="createDialogSubActionChoice" onclick="createDialogSubActionChoice()" type="button" class="btn btn-success" style="margin-right:10px">
+                                                Lägg till
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+    <%- include('../partials/adminscript'); %>
+    <script>
+        jscolor.presets.default = {
+            format:'rgba'
+        };
+
+        $(document).ready(function(){
+            
+        });
+    
+        function updateDialogEvent(event_id) {
+            var formData = new FormData();
+            formData.append("event_id", event_id);
+            formData.append("name", document.getElementById("event-" + event_id + "-name").value);
+            formData.append("name_en", document.getElementById("event-" + event_id + "-name_en").value);
+            formData.append("description", document.getElementById("event-" + event_id + "-description").value);
+            formData.append("description_en", document.getElementById("event-" + event_id + "-description_en").value);
+            formData.append("startdate", document.getElementById("event-" + event_id + "-startdate").value);
+            formData.append("enddate", document.getElementById("event-" + event_id + "-enddate").value);
+            formData.append("resultstitle", document.getElementById("event-" + event_id + "-resultstitle").value);
+            formData.append("resultstitle_en", document.getElementById("event-" + event_id + "-resultstitle_en").value);
+            formData.append("resultssubtitle", document.getElementById("event-" + event_id + "-resultssubtitle").value);
+            formData.append("resultssubtitle_en", document.getElementById("event-" + event_id + "-resultssubtitle_en").value);
+    
+            var xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                if (xhttp.status == 401) { 
+                }
+    
+                if (xhttp.status == 400) {
+                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
+                }
+                
+                if (xhttp.status == 200) {
+                    alert('Event uppdaterat', 'success', 'createEventPlaceholder')
+                }
+            };
+            xhttp.open("PUT", "/dialog/api/v1/event/" + event_id, true);
+            xhttp.send(formData);
+        }
+
+        function createDialogEvent() {
+            var formData = new FormData();
+            formData.append("name", document.getElementById('new_event_name').value);
+            formData.append("name_en", document.getElementById('new_event_name_en').value);
+            formData.append("description", document.getElementById('new_event_description').value);
+            formData.append("description_en", document.getElementById('new_event_description_en').value);
+            formData.append("startdate", document.getElementById('new_event_startdate').value);
+            formData.append("enddate", document.getElementById('new_event_enddate').value);
+            formData.append("resultstitle", document.getElementById("new_event_resultstitle").value);
+            formData.append("resultstitle_en", document.getElementById("new_event_resultstitle_en").value);
+            formData.append("resultssubtitle", document.getElementById("new_event_resultssubtitle").value);
+            formData.append("resultssubtitle_en", document.getElementById("new_event_resultssubtitle_en").value);
+            console.log(formData)
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                if (xhttp.status == 401) { 
+                }
+    
+                if (xhttp.status == 400) {
+                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
+                }
+                
+                if (xhttp.status == 200) {
+                    location.reload(true)
+                    alert('Event skapat', 'success', 'createEventPlaceholder')
+                }
+            };
+            xhttp.open("POST", "/dialog/api/v1/event", true);
+            xhttp.send(formData);
+        }
+
+        function deleteDialogEvent(event_id) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                if (xhttp.status == 401) { 
+                }
+    
+                if (xhttp.status == 400) {
+                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
+                }
+                
+                if (xhttp.status == 200) {
+                    location.reload(true)
+                    alert('Event borttaget', 'success', 'createEventPlaceholder')
+                }
+            };
+            xhttp.open("DELETE", "/dialog/api/v1/event/" + event_id, true);
+            xhttp.send();
+        }
+    
+        function updateDialogAction(action_id) {
+            var formData = new FormData();
+            formData.append("action_id", action_id);
+            formData.append("event_id", $('#action-' + action_id + '-event_id :selected').attr('value'));
+            formData.append("description_sv", document.getElementById("action-" + action_id + "-description_sv").value);
+            formData.append("description_en", document.getElementById("action-" + action_id + "-description_en").value);
+            formData.append("image_id", document.getElementById("action-" + action_id + "-image_id").value);
+            formData.append("rgbacolor", document.getElementById("action-" + action_id + "-rgbacolor").value);
+    
+            var xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                if (xhttp.status == 401) { 
+                }
+    
+                if (xhttp.status == 400) {
+                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
+                }
+                
+                if (xhttp.status == 200) {
+                    location.reload(true)
+                    alert('Action uppdaterad', 'success', 'createEventPlaceholder')
+                }
+            };
+            xhttp.open("PUT", "/dialog/api/v1/action/" + action_id, true);
+            xhttp.send(formData);
+        }
+
+        function createDialogAction() {
+            var formData = new FormData();
+            formData.append("event_id", $('#new_action_event_id :selected').attr('value'));
+            formData.append("description_sv", document.getElementById("new_action_description_sv").value);
+            formData.append("description_en", document.getElementById("new_action_description_en").value);
+            formData.append("image_id", document.getElementById("new_action_image_id").value);
+            formData.append("rgbacolor", document.getElementById("new_action_rgbacolor").value);
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                if (xhttp.status == 401) { 
+                }
+    
+                if (xhttp.status == 400) {
+                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
+                }
+                
+                if (xhttp.status == 200) {
+                    location.reload(true)
+                    alert('Event skapat', 'success', 'createEventPlaceholder')
+                }
+            };
+            xhttp.open("POST", "/dialog/api/v1/action", true);
+            xhttp.send(formData);
+        }
+
+        function deleteDialogAction(action_id) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                if (xhttp.status == 401) { 
+                }
+    
+                if (xhttp.status == 400) {
+                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
+                }
+                
+                if (xhttp.status == 200) {
+                    location.reload(true)
+                    alert('Event borttaget', 'success', 'createEventPlaceholder')
+                }
+            };
+            xhttp.open("DELETE", "/dialog/api/v1/action/" + action_id, true);
+            xhttp.send();
+        }
+    
+        function updateDialogActionChoice(actionchoice_id) {
+            var formData = new FormData();
+            formData.append("actionchoice_id", actionchoice_id);
+            formData.append("action_id", document.getElementById("actionchoice-" + actionchoice_id + "-action_id").value);
+            formData.append("actionchoicetype_id", $('#actionchoice-' + actionchoice_id + '-actionchoicetype_id :selected').attr('value'));
+            formData.append("name", document.getElementById("actionchoice-" + actionchoice_id + "-name").value);
+            formData.append("name_en", document.getElementById("actionchoice-" + actionchoice_id + "-name_en").value);
+            formData.append("description", document.getElementById("actionchoice-" + actionchoice_id + "-description").value);
+            formData.append("description_en", document.getElementById("actionchoice-" + actionchoice_id + "-description_en").value);
+            formData.append("image_id", document.getElementById("actionchoice-" + actionchoice_id + "-image_id").value);
+            formData.append("sortorder", document.getElementById("actionchoice-" + actionchoice_id + "-sortorder").value);
+    
+            var xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                if (xhttp.status == 401) { 
+                }
+    
+                if (xhttp.status == 400) {
+                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
+                }
+                
+                if (xhttp.status == 200) {
+                    location.reload(true)
+                    alert('Kategorival uppdaterat', 'success', 'createEventPlaceholder')
+                }
+            };
+            xhttp.open("PUT", "/dialog/api/v1/actionchoice/" + actionchoice_id, true);
+            xhttp.send(formData);
+        }
+
+        function createDialogActionChoice() {
+            var formData = new FormData();
+            formData.append("action_id", document.getElementById("new_actionchoice_action_id").value);
+            formData.append("actionchoicetype_id", $('#new_actionchoice_actionchoicetype_id :selected').attr('value'));
+            formData.append("name", document.getElementById("new_actionchoice_name").value);
+            formData.append("name_en", document.getElementById("new_actionchoice_name_en").value);
+            formData.append("description", document.getElementById("new_actionchoice_description").value);
+            formData.append("description_en", document.getElementById("new_actionchoice_description_en").value);
+            formData.append("image_id", document.getElementById("new_actionchoice_image_id").value);
+            formData.append("sortorder", document.getElementById("new_actionchoice_sortorder").value);
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                if (xhttp.status == 401) { 
+                }
+    
+                if (xhttp.status == 400) {
+                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
+                }
+                
+                if (xhttp.status == 200) {
+                    location.reload(true)
+                    alert('Event skapat', 'success', 'createEventPlaceholder')
+                }
+            };
+            xhttp.open("POST", "/dialog/api/v1/actionchoice", true);
+            xhttp.send(formData);
+        }
+
+        function deleteDialogActionChoice(actionchoice_id) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                if (xhttp.status == 401) { 
+                }
+    
+                if (xhttp.status == 400) {
+                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
+                }
+                
+                if (xhttp.status == 200) {
+                    location.reload(true)
+                    alert('Event borttaget', 'success', 'createEventPlaceholder')
+                }
+            };
+            xhttp.open("DELETE", "/dialog/api/v1/actionchoice/" + actionchoice_id, true);
+            xhttp.send();
+        }
+    
+        function updateDialogSubActionChoice(subactionchoice_id) {
+            var formData = new FormData();
+            formData.append("actionchoice_id", document.getElementById("subactionchoice-" + subactionchoice_id + "-actionchoice_id").value);
+            formData.append("actionchoicetype_id", $('#subactionchoice-' + subactionchoice_id + '-actionchoicetype_id :selected').attr('value'));
+            formData.append("name", document.getElementById("subactionchoice-" + subactionchoice_id + "-name").value);
+            formData.append("name_en", document.getElementById("subactionchoice-" + subactionchoice_id + "-name_en").value);
+            formData.append("description", document.getElementById("subactionchoice-" + subactionchoice_id + "-description").value);
+            formData.append("description_en", document.getElementById("subactionchoice-" + subactionchoice_id + "-description_en").value);
+            formData.append("image_id", document.getElementById("subactionchoice-" + subactionchoice_id + "-image_id").value);
+            formData.append("sortorder", document.getElementById("subactionchoice-" + subactionchoice_id + "-sortorder").value);
+    
+            var xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                if (xhttp.status == 401) { 
+                }
+    
+                if (xhttp.status == 400) {
+                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
+                }
+                
+                if (xhttp.status == 200) {
+                    location.reload(true)
+                    alert('Kategorival uppdaterat', 'success', 'createEventPlaceholder')
+                }
+            };
+            xhttp.open("PUT", "/dialog/api/v1/subactionchoice/" + subactionchoice_id, true);
+            xhttp.send(formData);
+        }
+
+        function createDialogSubActionChoice() {
+            var formData = new FormData();
+            formData.append("actionchoice_id", document.getElementById("new_subactionchoice_actionchoice_id").value);
+            formData.append("actionchoicetype_id", $('#new_subactionchoice_actionchoicetype_id :selected').attr('value'));
+            formData.append("name", document.getElementById("new_subactionchoice_name").value);
+            formData.append("name_en", document.getElementById("new_subactionchoice_name_en").value);
+            formData.append("description", document.getElementById("new_subactionchoice_description").value);
+            formData.append("description_en", document.getElementById("new_subactionchoice_description_en").value);
+            formData.append("image_id", document.getElementById("new_subactionchoice_image_id").value);
+            formData.append("sortorder", document.getElementById("new_subactionchoice_sortorder").value);
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                if (xhttp.status == 401) { 
+                }
+    
+                if (xhttp.status == 400) {
+                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
+                }
+                
+                if (xhttp.status == 200) {
+                    location.reload(true)
+                    alert('Event skapat', 'success', 'createEventPlaceholder')
+                }
+            };
+            xhttp.open("POST", "/dialog/api/v1/subactionchoice", true);
+            xhttp.send(formData);
+        }
+
+        function deleteDialogSubActionChoice(subactionchoice_id) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                if (xhttp.status == 401) { 
+                }
+    
+                if (xhttp.status == 400) {
+                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
+                }
+                
+                if (xhttp.status == 200) {
+                    location.reload(true)
+                    alert('Event borttaget', 'success', 'createEventPlaceholder')
+                }
+            };
+            xhttp.open("DELETE", "/dialog/api/v1/subactionchoice/" + subactionchoice_id, true);
+            xhttp.send();
+        }
+    
+
+        function subactions(action_id) {
+            $('#subactionsModal').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Hämtar...');
+            var xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                if (xhttp.status == 401) {
+                    $('#subactionsModal').html('Fel vid hämtning')
+                }
+                $('#subactionsModal').html(xhttp.response)
+            };
+            xhttp.open("GET", "/dialog/api/v1/event/actionsDT/" + event_id, true);
+            xhttp.send();
+        }
+
+        function OnColorChanged(selectedColor, input) {
+            input.value = selectedColor
+        }
+        
+    </script>
+</html>

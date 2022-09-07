@@ -1,7 +1,17 @@
+/* radbryt aldrig datum*/
+.date {
+    white-space: nowrap;
+}
+
+html {
+    font-size: 12px;
+}
+
 body {
     margin: 0 auto;
     font-family: "Open Sans", Arial, "Helvetica Neue", helvetica, sans-serif;
     padding: 0em 20px 20px 20px;
+    background-color: #fff
 }
 
 body #gradientBorder {
@@ -20,7 +30,7 @@ main .navbar-expand-lg .navbar-nav .nav-link {
 }
 
 .nav-link {
-    font-size: 1.25rem;
+    font-size: 2rem;
 }
 
 .nav-link.active {
@@ -29,7 +39,7 @@ main .navbar-expand-lg .navbar-nav .nav-link {
 
 .navbar {
     display: block !important;
-    padding-top: 20px;
+    padding: 20px 0px 0px 0px;
 }
 
 .navbar-nav {
@@ -38,7 +48,7 @@ main .navbar-expand-lg .navbar-nav .nav-link {
 
 .navbar-brand {
     font-family: "Open Sans", Arial, "Helvetica Neue", helvetica, sans-serif;
-    font-size: 1.25rem;
+    font-size: 2rem;
     font-weight: 600;
     color: #000;
     line-height: 1.375;
@@ -118,9 +128,19 @@ main .navbar-expand-lg .navbar-nav .nav-link {
     z-index: 1;
     padding: 10px;
     display: flex;
+    flex-direction: column;
 }
 
 h2 {
     padding: 0;
     margin: 0;
+}
+
+.newrow td {
+    background-color: #bde3a5  !important;
+    border-top: 2px solid #8b8b8b !important;
+}
+
+.table tr td {
+    vertical-align: middle;
 }

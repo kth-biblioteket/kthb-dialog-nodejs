@@ -65,11 +65,11 @@ const readEventId = (id) => {
 };
 
 //Skapa ett event
-const createEvent = (name, name_en, description, description_en, startdate, enddate) => {
+const createEvent = (name, name_en, description, description_en, startdate, enddate, resultstitle, resultstitle_en, resultssubtitle, resultssubtitle_en) => {
     return new Promise(function (resolve, reject) {
-        const sql = `INSERT INTO events(name, name_en, description, description_en, startdate, enddate)
-                VALUES(?, ?, ?, ?, ?, ?)`;
-        database.db.query(database.mysql.format(sql,[name, name_en, description, description_en, startdate, enddate]), async function(err, result) {
+        const sql = `INSERT INTO events(name, name_en, description, description_en, startdate, enddate, resultstitle, resultstitle_en, resultssubtitle, resultssubtitle_en)
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        database.db.query(database.mysql.format(sql,[name, name_en, description, description_en, startdate, enddate, resultstitle, resultstitle_en, resultssubtitle, resultssubtitle_en]), async function(err, result) {
             if(err) {
                 reject(err.message)
             } else {
@@ -81,19 +81,26 @@ const createEvent = (name, name_en, description, description_en, startdate, endd
 };
 
 //Uppdatera ett event
-const updateEvent = (name, description, startdate, enddate, id) => {
+const updateEvent = (name, name_en, description, description_en, startdate, enddate, resultstitle, resultstitle_en, resultssubtitle, resultssubtitle_en, event_id) => {
     return new Promise(function (resolve, reject) {
 
         const sql = `UPDATE events 
-                SET name = ?, description = ?, startdate = ?, enddate = ? 
+                SET name = ?, name_en = ?, description = ?, description_en = ?, startdate = ?, enddate = ?, 
+                resultstitle = ?, resultstitle_en = ?, resultssubtitle = ?, resultssubtitle_en = ? 
                 WHERE id = ?`;
-        database.db.query(database.mysql.format(sql,[name, description, startdate, enddate, id]),(err, result) => {
+
+        database.db.query(database.mysql.format(sql,[name, name_en, description, description_en, startdate, enddate, resultstitle, resultstitle_en, resultssubtitle, resultssubtitle_en, event_id]),(err, result) => {
             if(err) {
                 console.error(err);
                 reject(err.message)
             }
-            const successMessage = "The event was successfully updated."
-            resolve(successMessage);
+
+            if(result.affectedRows > 0) {
+                const successMessage = "The event was successfully updated."
+                resolve(successMessage);
+            } else {
+                reject("Inget uppdaterades , kontakta KTH Bibliotekets IT-grupp")
+            }
         });
     })
 };
@@ -129,10 +136,25 @@ const readAllUserTypes = () => {
     })
 };
 
+//Hämta all actions
+const readAllActions = () => {
+    return new Promise(function (resolve, reject) {
+        const sql = `SELECT * FROM actions`;
+        database.db.query(database.mysql.format(sql,[]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            resolve(result);
+        });
+    })
+};
+
 //Hämta actions via Eventid
 const readActions = (event_id) => {
     return new Promise(function (resolve, reject) {
-        const sql = `SELECT * FROM actions       
+        const sql = `SELECT actions.*, images.fullpath FROM actions
+                    JOIN images on images.id = actions.image_id      
                     WHERE event_id = ?`;
         database.db.query(database.mysql.format(sql,[event_id]),(err, result) => {
             if(err) {
@@ -145,11 +167,11 @@ const readActions = (event_id) => {
 };
 
 //Skapa en action
-const createAction = (event_id, description_sv, description_en, image, rgbacolor) => {
+const createAction = (event_id, description_sv, description_en, image_id, rgbacolor) => {
     return new Promise(function (resolve, reject) {
-        const sql = `INSERT INTO actions(event_id, description_sv, description_en, image, rgbacolor)
+        const sql = `INSERT INTO actions(event_id, description_sv, description_en, image_id, rgbacolor)
                 VALUES(?, ?, ?, ?, ?)`;
-        database.db.query(database.mysql.format(sql,[event_id, description_sv, description_en, image, rgbacolor]), async function(err, result) {
+        database.db.query(database.mysql.format(sql,[event_id, description_sv, description_en, image_id, rgbacolor]), async function(err, result) {
             if(err) {
                 reject(err.message)
             } else {
@@ -160,12 +182,12 @@ const createAction = (event_id, description_sv, description_en, image, rgbacolor
     })
 };
 
-const updateAction = (description_sv, description_en, image, rgbacolor, action_id) => {
+const updateAction = (event_id, description_sv, description_en, image_id, rgbacolor, action_id) => {
     return new Promise(function (resolve, reject) {
         const sql = `UPDATE actions 
-                    set description_sv = ?, description_en = ?, image = ?, rgbacolor = ?
+                    set event_id = ?, description_sv = ?, description_en = ?, image_id = ?, rgbacolor = ?
                     WHERE id = ?`;
-        database.db.query(database.mysql.format(sql,[description_sv, description_en, image, rgbacolor, action_id]), async function(err, result) {
+        database.db.query(database.mysql.format(sql,[event_id, description_sv, description_en, image_id, rgbacolor, action_id]), async function(err, result) {
             if(err) {
                 reject(err.message)
             } else {
@@ -176,10 +198,158 @@ const updateAction = (description_sv, description_en, image, rgbacolor, action_i
     })
 };
 
+//Radera en action.
+const deleteAction= (id) => {
+    return new Promise(function (resolve, reject) {
+
+        const sql = `DELETE FROM actions 
+                WHERE id = ?`;
+        database.db.query(database.mysql.format(sql,[id]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            const successMessage = "The action was successfully deleted."
+            resolve(successMessage);
+        });
+    })
+};
+
+//Skapa en actionchoice
+const createActionChoice = (action_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `INSERT INTO actionchoices(action_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder)
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?)`;
+        database.db.query(database.mysql.format(sql,[action_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder]), async function(err, result) {
+            if(err) {
+                reject(err.message)
+            } else {
+                const successMessage = "The actionchoice was entered successfully."
+                resolve(result.insertId);
+            }
+        });
+    })
+};
+
+// Uppdatera en actionchoice
+const updateActionChoice = (action_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder, actionchoice_id) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `UPDATE actionchoices 
+                    set action_id = ?, actionchoicetype_id = ?, name = ?, name_en = ?, description = ?, description_en = ?, image_id = ?, sortorder = ?
+                    WHERE id = ?`;
+        database.db.query(database.mysql.format(sql,[action_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder, actionchoice_id]), async function(err, result) {
+            if(err) {
+                reject(err.message)
+            } else {
+                const successMessage = "The actionchoice was updated successfully."
+                resolve(successMessage);
+            }
+        });
+    })
+};
+
+//Radera en actionchoice.
+const deleteActionChoice = (id) => {
+    return new Promise(function (resolve, reject) {
+
+        const sql = `DELETE FROM actionchoices 
+                WHERE id = ?`;
+        database.db.query(database.mysql.format(sql,[id]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            const successMessage = "The actionchoice was successfully deleted."
+            resolve(successMessage);
+        });
+    })
+};
+
+//Skapa en subactionchoice
+const createSubActionChoice = (actionchoice_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `INSERT INTO subactionchoices(actionchoice_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder)
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?)`;
+        database.db.query(database.mysql.format(sql,[actionchoice_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder]), async function(err, result) {
+            if(err) {
+                reject(err.message)
+            } else {
+                const successMessage = "The subactionchoice was entered successfully."
+                resolve(result.insertId);
+            }
+        });
+    })
+};
+
+// uppdatera en subactionchoice
+const updateSubActionChoice = (actionchoice_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder, subactionchoice_id) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `UPDATE subactionchoices 
+                    set actionchoice_id = ?, actionchoicetype_id = ?, name = ?, name_en = ?, description = ?, description_en = ?, image_id = ?, sortorder = ?
+                    WHERE id = ?`;
+        database.db.query(database.mysql.format(sql,[actionchoice_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder, subactionchoice_id]), async function(err, result) {
+            if(err) {
+                console.log(err.message)
+                reject(err.message)
+            } else {
+                const successMessage = "The subactionchoice was updated successfully."
+                resolve(successMessage);
+            }
+        });
+    })
+};
+
+//Radera en subactionchoice.
+const deleteSubActionChoice = (id) => {
+    return new Promise(function (resolve, reject) {
+
+        const sql = `DELETE FROM subactionchoices 
+                WHERE id = ?`;
+        database.db.query(database.mysql.format(sql,[id]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            const successMessage = "The subactionchoice was successfully deleted."
+            resolve(successMessage);
+        });
+    })
+};
+
+//Hämta alla actionchoicetypes
+const readActionChoiceTypes = () => {
+    return new Promise(function (resolve, reject) {
+        const sql = `SELECT * FROM actionchoicetypes`;
+        database.db.query(database.mysql.format(sql,[]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            resolve(result);
+        });
+    })
+};
+
+//Hämta actionchoices via Actionid
+const readAllActionChoices = () => {
+    return new Promise(function (resolve, reject) {
+        const sql = `SELECT * FROM actionchoices       
+                    ORDER BY sortorder`;
+        database.db.query(database.mysql.format(sql,[]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            resolve(result);
+        });
+    })
+};
+
 //Hämta actionchoices via Actionid
 const readActionChoices = (action_id) => {
     return new Promise(function (resolve, reject) {
-        const sql = `SELECT * FROM actionchoices       
+        const sql = `SELECT actionchoices.*, images.fullpath FROM actionchoices
+                    JOIN images on images.id = image_id
                     WHERE action_id = ? 
                     ORDER BY sortorder`;
         database.db.query(database.mysql.format(sql,[action_id]),(err, result) => {
@@ -192,6 +362,20 @@ const readActionChoices = (action_id) => {
     })
 };
 
+//Hämta alla subactionchoices
+const readAllSubActionChoices = () => {
+    return new Promise(function (resolve, reject) {
+        const sql = `SELECT * FROM subactionchoices       
+                    ORDER BY sortorder`;
+        database.db.query(database.mysql.format(sql,[]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            resolve(result);
+        });
+    })
+};
 //Hämta subactionchoices via actionchoice_id
 const readSubActionChoices = (actionchoice_id) => {
     return new Promise(function (resolve, reject) {
@@ -271,20 +455,114 @@ const createUserActionData = (usertype_code, schoolcode, uuid) => {
 //Hämta resultat av actionchoices via event_id
 const readActionChoicesResult = (event_id) => {
     return new Promise(function (resolve, reject) {
-        const sql = `SELECT actions.id, 
-                        actions.description_en, 
-                        actions.description_sv,
-                        actions.rgbacolor,
-                        count(actions.id) AS 'choices' 
-                        FROM actions
-                        INNER JOIN actionchoices
-                        ON actions.id = actionchoices.action_id
-                        INNER JOIN useractionchoices
-                        ON actionchoices.id = useractionchoices.actionchoice_id
-                        INNER JOIN events
-                        ON actions.event_id = events.id
-                        WHERE events.id = ?
-                        GROUP BY actions.id,actions.description_en,actions.description_sv, actions.rgbacolor`;
+        const sql = `
+            SELECT 
+                actions.id, 
+                actions.description_en, 
+                actions.description_sv,
+                actions.rgbacolor,
+                count(actions.id) AS 'choices' 
+            FROM actions
+            INNER JOIN actionchoices
+                ON actions.id = actionchoices.action_id
+            INNER JOIN useractionchoices
+                ON actionchoices.id = useractionchoices.actionchoice_id
+            INNER JOIN events
+                ON actions.event_id = events.id
+            WHERE events.id = ?
+            GROUP BY 
+                actions.id,actions.description_en,actions.description_sv, actions.rgbacolor`;
+        database.db.query(database.mysql.format(sql,[event_id]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            resolve(result);
+        });
+    })
+};
+
+//Hämta stastistik
+const readStatsUserActions = (event_id) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `
+        SELECT 
+            actions.id as 'ActionID', 
+            actions.description_sv AS 'Beskrivning', 
+            count(actions.id) AS 'Antal' 
+        FROM actions
+        INNER JOIN actionchoices
+            ON actions.id = actionchoices.action_id
+        INNER JOIN useractionchoices
+            ON actionchoices.id = useractionchoices.actionchoice_id
+        INNER JOIN events
+            ON actions.event_id = events.id
+        WHERE events.id = ?
+        GROUP BY 
+            actions.id,actions.description_sv`;
+        database.db.query(database.mysql.format(sql,[event_id]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            resolve(result);
+        });
+    })
+};
+
+const readStatsUserActionChoices = (event_id) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `
+        SELECT
+            useractiondata.usertype_code AS 'Användare',
+            actionchoices.name AS 'Beskrivning',
+            count(useractionchoices.id) AS 'Antal'
+        FROM 
+        	useractionchoices
+        INNER JOIN
+            actionchoices ON actionchoices.id = useractionchoices.actionchoice_id
+        INNER JOIN
+            useractiondata ON useractiondata.uuid = useractionchoices.uuid
+        INNER JOIN
+            actions ON actions.id = actionchoices.action_id
+        INNER JOIN
+            events ON events.id = actions.event_id
+        WHERE event_id = ?
+        GROUP BY
+            useractiondata.usertype_code,actionchoices.name`;
+        database.db.query(database.mysql.format(sql,[event_id]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            resolve(result);
+        });
+    })
+};
+
+const readStatsUserSubActionChoices = (event_id) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `
+        SELECT
+            useractiondata.usertype_code AS 'Användare',
+            actionchoices.name AS 'Kategorival',
+            subactionchoices.name AS 'Beskrivning',
+            count(usersubactionchoices.id) AS 'Antal'
+        FROM 
+            usersubactionchoices
+        INNER JOIN
+            subactionchoices ON subactionchoices.id = usersubactionchoices.subactionchoice_id
+        INNER JOIN
+            actionchoices ON actionchoices.id = subactionchoices.actionchoice_id
+        INNER JOIN
+            useractiondata ON useractiondata.uuid = usersubactionchoices.uuid
+        INNER JOIN
+            actions ON actions.id = actionchoices.action_id
+        INNER JOIN
+            events ON events.id = actions.event_id
+        WHERE event_id = ?
+        GROUP BY
+            useractiondata.usertype_code,actionchoices.name, subactionchoices.name`;
         database.db.query(database.mysql.format(sql,[event_id]),(err, result) => {
             if(err) {
                 console.error(err);
@@ -463,16 +741,30 @@ module.exports = {
     updateEvent,
     deleteEvent,
     readAllUserTypes,
+    readAllActions,
     readActions,
     createAction,
     updateAction,
+    deleteAction,
+    createActionChoice,
+    updateActionChoice,
+    deleteActionChoice,
+    createSubActionChoice,
+    updateSubActionChoice,
+    deleteSubActionChoice,
+    readActionChoiceTypes,
+    readAllActionChoices,
     readActionChoices,
+    readAllSubActionChoices,
     readSubActionChoices,
     createUserActionChoices,
     createUserSubActionChoices,
     createUserActionMessages,
     createUserActionData,
     readActionChoicesResult,
+    readStatsUserActions,
+    readStatsUserActionChoices,
+    readStatsUserSubActionChoices,
     createVoteType,
     deleteVoteType,
     updateVoteType,

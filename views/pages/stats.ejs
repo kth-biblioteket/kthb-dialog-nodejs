@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <%- include('../partials/statshead'); %>
+</head>
+
+<body>
+    <div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+            <a class="navbar-brand" href="#">
+                <img alt="" src="https://apps.lib.kth.se/polopoly/KTH_Logotyp.svg" width="75" height="75"
+                    class="d-inline-block align-top"> KTH Bibliotekets Dialog System
+            </a>
+            <button aria-controls="basic-navbar-nav" type="button" aria-label="Toggle navigation"
+                class="navbar-toggler collapsed"><span class="navbar-toggler-icon"></span></button>
+            <div class="navbar-collapse collapse" id="basic-navbar-nav">
+                <div class="navbar-nav">
+                </div>
+            </div>
+            <div id="gradientBorder"></div>
+        </nav>
+        <div id="content">
+            <div style="flex:3;padding-right:10px">
+                <!--div class="doughnut" style="flex-grow: 1"><canvas id="myChart"></canvas></div-->
+                <div class="cardwrap">
+                    <select class="form-select" name="events" id="events">
+                        <option selected>Välj event</option>
+                        <% statsdata.events.forEach(event => { %>
+                            <option value="<%=event.id%>"><%=event.name%></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div class="cardwrap">
+                    <div style="display:flex">
+                        <div class="card" style="flex:2">
+                            <div class="card-header">
+                                Kategorier
+                            </div>
+                            <div class="card-body">
+                                <table id="useractions" class="table table-striped" style="width:100%">
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card" style="flex:1">
+                            <div class="card-header">
+                                Diagram
+                            </div>
+                            <div class="card-body">
+                                <div id="useractionsdoughnut" class="doughnut" style="flex-grow: 1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cardwrap">
+                    <div style="display:flex">
+                        <div class="card" style="flex:2">
+                            <div class="card-header">
+                                Användarval
+                            </div>
+                            <div class="card-body">
+                                <table id="useractionchoices" class="table table-striped" style="width:100%">
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card" style="flex:1">
+                            <div class="card-header">
+                                Diagram
+                            </div>
+                            <div class="card-body">
+                                <div id="useractionchoicesdoughnut" class="doughnut" style="flex-grow: 1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cardwrap">
+                    <div style="display:flex">
+                        <div class="card" style="flex:2">
+                            <div class="card-header">
+                                Användarval nivå 2
+                            </div>
+                            <div class="card-body">
+                                <table id="usersubactionchoices" class="table table-striped" style="width:100%">
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card" style="flex:1">
+                            <div class="card-header">
+                                Diagram
+                            </div>
+                            <div class="card-body">
+                                <div id="usersubactionchoicesdoughnut" class="doughnut" style="flex-grow: 1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</body>
+    <%- include('../partials/statsscript'); %>
+    <script>
+        $('select').on('change', function(e){
+            generate($(this).find("option:selected").val());
+        });
+
+        var events = '<%- JSON.stringify(statsdata.events) %>';
+
+        var getDoughnutcentertext = function () {
+            if (getQuerystringparam('lang') == 'sv') {
+                return "Löften"
+            } else {
+                return "Pledges"
+            }
+        }
+
+        var dynamicColors = function() {
+            const randomNum = () => Math.floor(Math.random() * 255);
+            const randomRGB = () => `rgb(${randomNum()}, ${randomNum()}, ${randomNum()})`;
+            return randomRGB()
+        };
+
+        var getTotal = function (myChart) {
+            var sum = myChart.config.data.datasets[0].data.reduce((a, b) => a + b, 0);
+            return sum;
+        }
+
+        function cirkeldiagram(type, data, diagramid) {
+            var chartdataarray = []
+            var labelarray = []
+            var backgroundColor = []
+
+            removediv = document.getElementById(diagramid + 'chart');
+            if (removediv) {
+                removediv.remove();
+            }
+            
+            var div = document.createElement('div');
+            div.setAttribute('id',diagramid + 'chart');
+            var canvas = document.createElement('canvas');
+            var diagram = document.getElementById(diagramid);
+            div.appendChild(canvas)
+            diagram.appendChild(div)
+
+            for (i=0;i<data.length;i++) {
+                chartdataarray.push(data[i].Antal)
+                labelarray.push(data[i].Beskrivning)
+                backgroundColor.push(dynamicColors());
+            }
+            new Chart(canvas, {
+                type: type,
+                data: {
+                    labels: labelarray,
+                    datasets: [{
+                        label: 'Dialog',
+                        data: chartdataarray,
+                        backgroundColor: backgroundColor,
+                        hoverOffset: 4
+                    }]
+                }
+            });
+        }
+
+        function getstat(url, type, diagramtype) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                if (xhttp.status == 401) { 
+                }
+    
+                if (xhttp.status == 400) {
+                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
+                }
+                
+                if (xhttp.status == 200) {
+                    console.log('Hämtat stats', 'success', 'createEventPlaceholder')
+                    var stats = JSON.parse(xhttp.response)
+                    
+                    var html = ``
+                    var tablehead=`<thead><tr>`
+                    var tablebody = `<tbody>`
+                    for(i=0 ; i< stats.length ; i++) {
+                        tablebody += `<tr>`
+                        for (var colheader in stats[i]) {
+                            if (i === 0) {
+                                tablehead += `<th>${colheader}</th>`
+                            }
+                            
+                            tablebody += `<td>${stats[i][colheader]}</td>`
+                        }
+                        tablebody += `</tr>`
+                    }
+                    tablehead += `</thead></tr>`
+                    tablebody += `</tbody>`
+                    html += tablehead + tablebody +
+                    `<tfoot>` +
+                        tablehead +
+                    `</tfoot>`
+                    $('#' + type).html(html)
+                    $('#' + type).DataTable().destroy()
+                    $('#' + type).DataTable({
+                        "dom": '<Bplfi<t>>',
+                        "columnDefs": [
+                            { 
+                                "orderDataType": "dom-text",
+                                "type": "string",
+                                "width": "60%", 
+                                "targets": 1 
+                            }
+                        ],
+                        "order": [[ 1, 'desc' ]],
+                        buttons: [ {
+                            extend: 'excelHtml5',
+                            autoFilter: true,
+                            filename: 'Dialog_statistik',
+                            sheetName: 'Statistik'
+                        } ]
+                    });
+                    //$('#' + type + diagramtype).destroy()
+                    if(diagramtype != '') {
+                        cirkeldiagram(diagramtype, stats, type + diagramtype)
+                    }
+                }
+            };
+            xhttp.open("GET", url, true);
+            xhttp.send();
+        }
+        function generate(event_id) {
+            getstat("/dialog/api/v1/stats/useractions/" + event_id, 'useractions', 'doughnut');
+            getstat("/dialog/api/v1/stats/useractionchoices/" + event_id, 'useractionchoices', 'doughnut');
+            getstat("/dialog/api/v1/stats/usersubactionchoices/" + event_id, 'usersubactionchoices', 'doughnut');
+        }
+    </script>
+</html>

@@ -70,6 +70,84 @@ async function readEventsPaginated(req, res, next) {
     
 }
 
+// Funktion som genererar ett 
+// admingränssnitt
+async function generateEventsAdminApp(req, res, next) {
+
+    let event
+    let events 
+    let actions
+    let actionchoices
+    let subactionchoices
+    
+    //Läs in event
+    try {
+        event = await eventModel.readEventId(req.params.event_id)
+    } catch(err) {
+        res.send("error: " + err.message)
+    }
+
+    //Läs in event
+    try {
+        events = await eventModel.readEvents()
+    } catch(err) {
+        res.send("error: " + err.message)
+    }
+
+    //Läs in actions
+    try {
+        actions = await eventModel.readAllActions()
+    } catch(err) {
+        res.send("error: " + err.message)
+    }
+
+    //Läs in choices
+    try {
+        actionchoices = await eventModel.readAllActionChoices()
+    } catch(err) {
+        res.send("error: " + err.message)
+    }
+
+    //Läs in subchoices
+    try {
+        subactionchoices = await eventModel.readAllSubActionChoices()
+    } catch(err) {
+        res.send("error: " + err.message)
+    }
+
+    //Läs in actionchoicetypes
+    try {
+        actionchoicetypes = await eventModel.readActionChoiceTypes()
+    } catch(err) {
+        res.send("error: " + err.message)
+    }
+
+    //Läs in images
+    try {
+        images = await eventModel.readImages()
+    } catch(err) {
+        res.send("error: " + err.message)
+    }
+
+    try {
+        admindata = {
+            "url": req.protocol + '://' + req.get('host') + req.originalUrl,
+            "event": event,
+            "events": events,
+            "actions": actions,
+            "actionchoices": actionchoices,
+            "subactionchoices": subactionchoices,
+            "actionchoicetypes": actionchoicetypes,
+            "images": images
+        }
+        res.render('pages/admin', admindata);
+
+    } catch(err) {
+        res.send("error: " + err.message)
+    }
+    
+}
+
 // Funktion som genererar en dialogapp för ipad/skärm/webb
 async function generateChoiceApp(req, res, next) {
     
@@ -170,9 +248,9 @@ async function generateChoiceApp(req, res, next) {
         }
         
 
-        choicedata = choicedata_json.data;
+        //choicedata = choicedata_json.data;
 
-        res.render('choice', choicedata);
+        res.render('pages/choice', choicedata);
 
     } catch(err) {
         res.send("error: " + err.message)
@@ -185,8 +263,11 @@ async function generateChoiceResultsApp(req, res, next) {
 
     let event
     let data = []
+    let language
 
     try {
+        
+        language = req.query.language || 'en';
         //Hämta event
         event = await eventModel.readEventId(req.params.event_id)
         for (let event_ of event) { 
@@ -196,9 +277,34 @@ async function generateChoiceResultsApp(req, res, next) {
         //Skapa dataobjekt att skicka till webbapp
         choiceresultsdata = {
             "url": req.protocol + '://' + req.get('host') + req.originalUrl,
+            "language": language,
             "event": data.event
         }
-        res.render('results', choiceresultsdata);
+        res.render('pages/results', choiceresultsdata);
+
+    } catch(err) {
+        res.send("error: " + err.message)
+    }
+}
+
+async function generateStatsApp(req, res, next) {
+
+    let events
+    let language
+
+    try {
+        
+        language = req.query.language || 'en';
+        //Hämta events
+        events = await eventModel.readEvents()
+
+        //Skapa dataobjekt att skicka till webbapp
+        statsdata = {
+            "url": req.protocol + '://' + req.get('host') + req.originalUrl,
+            "language": language,
+            "events": events
+        }
+        res.render('pages/stats', statsdata);
 
     } catch(err) {
         res.send("error: " + err.message)
@@ -273,18 +379,18 @@ async function readEventId(id) {
     }
 }
 
-async function createEvent(name, name_en, description, description_en, startdate, enddate) {
+async function createEvent(name, name_en, description, description_en, startdate, enddate, resultstitle, resultstitle_en, resultssubtitle, resultssubtitle_en) {
     try {
-        let result = await eventModel.createEvent(name, name_en, description, description_en, startdate, enddate)
+        let result = await eventModel.createEvent(name, name_en, description, description_en, startdate, enddate, resultstitle, resultstitle_en, resultssubtitle, resultssubtitle_en)
         return result
     } catch (err) {
         return {"status": 0, "message": err }
     }
 }
 
-async function updateEvent(id, name, description, startdate, enddate) {
+async function updateEvent(name, name_en, description, description_en, startdate, enddate, resultstitle, resultstitle_en, resultssubtitle, resultssubtitle_en, event_id) {
     try {
-        let result = eventModel.updateEvent(name, description, startdate, enddate, id)
+        let result = eventModel.updateEvent(name, name_en, description, description_en, startdate, enddate, resultstitle, resultstitle_en, resultssubtitle, resultssubtitle_en, event_id)
         return result
     } catch (err) {
         console.log(err.message)
@@ -312,21 +418,98 @@ async function readActions(event_id) {
     }
 }
 
-async function createAction(event_id, description_sv, description_en, image, rgbacolor) {
+async function createAction(event_id, description_sv, description_en, image_id, rgbacolor) {
     try {
-        let result = await eventModel.createAction(event_id, description_sv, description_en, image, rgbacolor)
+        let result = await eventModel.createAction(event_id, description_sv, description_en, image_id, rgbacolor)
         return result
     } catch (err) {
         return {"status": 0, "message": err }
     }
 }
 
-async function updateAction(description_sv, description_en, image, rgbacolor, action_id) {
+async function updateAction(event_id, description_sv, description_en, image_id, rgbacolor, action_id) {
     try {
-        let result = await eventModel.updateAction(description_sv, description_en, image, rgbacolor, action_id)
+        let result = await eventModel.updateAction(event_id, description_sv, description_en, image_id, rgbacolor, action_id)
         return result
     } catch (err) {
         return {"status": 0, "message": err }
+    }
+}
+
+async function deleteAction(action_id) {
+    try {
+        let result = await eventModel.deleteAction(action_id)
+        return result
+    } catch (err) {
+        console.log(err.message)
+        return "error: " + err.message
+    }
+}
+
+async function createActionChoice(action_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder) {
+    try {
+        let result = await eventModel.createActionChoice(action_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder)
+        return result
+    } catch (err) {
+        return {"status": 0, "message": err }
+    }
+}
+
+async function updateActionChoice(action_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder, actionchoice_id) {
+    try {
+        let result = await eventModel.updateActionChoice(action_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder, actionchoice_id)
+        return result
+    } catch (err) {
+        return {"status": 0, "message": err }
+    }
+}
+
+async function deleteActionChoice(actionchoice_id) {
+    try {
+        let result = await eventModel.deleteActionChoice(actionchoice_id)
+        return result
+    } catch (err) {
+        console.log(err.message)
+        return "error: " + err.message
+    }
+}
+
+async function createSubActionChoice(actionchoice_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder) {
+    try {
+        let result = await eventModel.createSubActionChoice(actionchoice_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder)
+        return result
+    } catch (err) {
+        return {"status": 0, "message": err }
+    }
+}
+
+async function updateSubActionChoice(actionchoice_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder, subactionchoice_id) {
+    try {
+        let result = await eventModel.updateSubActionChoice(actionchoice_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder, subactionchoice_id)
+        return result
+    } catch (err) {
+        return {"status": 0, "message": err.message }
+    }
+}
+
+async function deleteSubActionChoice(subactionchoice_id) {
+    try {
+        let result = await eventModel.deleteSubActionChoice(subactionchoice_id)
+        return result
+    } catch (err) {
+        console.log(err.message)
+        return "error: " + err.message
+    }
+}
+
+//Hämta via action_id
+async function readActionChoices(action_id) {
+    try {
+        let result = await eventModel.readActionChoices(action_id)
+        return result
+    } catch (err) {
+        console.log(err.message)
+        return "error: " + err.message
     }
 }
 
@@ -380,33 +563,45 @@ async function readActionChoicesResult(events_id) {
     }
 }
 
-async function readEventFields(events_id) {
+async function readStatsUserActions(req, res, next) {
     try {
-        let result = await eventModel.readEventFields(events_id)
-        return result
+        let result = await eventModel.readStatsUserActions(req.params.event_id)
+        if(!result) {
+            res.status(400).send("error")
+        } else {
+            res.status(200).send(result);
+        }
     } catch (err) {
         console.log(err.message)
-        return "error: " + err.message
+        res.status(400).send(err.message)
     }
 }
 
-async function createEventField(event_id, field_id) {
+async function readStatsUserActionChoices(req, res, next) {
     try {
-        let result = await eventModel.createEventField(event_id, field_id)
-        return result
+        let result = await eventModel.readStatsUserActionChoices(req.params.event_id)
+        if(!result) {
+            res.status(400).send("error")
+        } else {
+            res.status(200).send(result);
+        }
     } catch (err) {
         console.log(err.message)
-        return "error: " + err.message
+        res.status(400).send(err.message)
     }
 }
 
-async function deleteEventField(event_id, field_id) {
+async function readStatsUserSubActionChoices(req, res, next) {
     try {
-        let result = await eventModel.deleteEventField(event_id, field_id)
-        return result
+        let result = await eventModel.readStatsUserSubActionChoices(req.params.event_id)
+        if(!result) {
+            res.status(400).send("error")
+        } else {
+            res.status(200).send(result);
+        }
     } catch (err) {
         console.log(err.message)
-        return "error: " + err.message
+        res.status(400).send(err.message)
     }
 }
 
@@ -510,8 +705,10 @@ function truncate(str, max, suffix) {
 
 module.exports = {
     readEventsPaginated,
+    generateEventsAdminApp,
     generateChoiceApp,
     generateChoiceResultsApp,
+    generateStatsApp,
     login,
     logout,
     getkthschools,
@@ -524,13 +721,22 @@ module.exports = {
     readActions,
     createAction,
     updateAction,
+    deleteAction,
+    createActionChoice,
+    updateActionChoice,
+    deleteActionChoice,
+    createSubActionChoice,
+    updateSubActionChoice,
+    deleteSubActionChoice,
+    readActionChoices,
     createUserActionChoices,
     createUserSubActionChoices,
     createUserActionMessages,
     createUserActionData,
-    readActionChoicesResult, 
-    createEventField,
-    deleteEventField,
+    readStatsUserActions,
+    readActionChoicesResult,
+    readStatsUserActionChoices,
+    readStatsUserSubActionChoices,
     readEventImage,
     createEventImage,
     deleteEventImage,

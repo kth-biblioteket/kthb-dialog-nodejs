@@ -1,46 +1,12 @@
 <!DOCTYPE html>
 <html lang="<%= choicedata.language%>">
 <head>
-    <meta name="viewport" content = "width = device-width, initial-scale = 1.0, minimum-scale = 1, maximum-scale = 1, user-scalable = no" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="KTH" />
-    <meta name="apple-touch-fullscreen" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <link rel="apple-touch-icon" sizes="76x76" href="images/energy_icon.png">
-    <link rel="shortcut icon" href="/favicon.ico">
-
-    <title>KTH Biblioteket</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.bootstrap5.min.css">
-    <link rel="stylesheet" type="text/css" href="/dialog/public/style.css">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.socket.io/4.4.0/socket.io.min.js"
-        integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.bootstrap5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/uuid@latest/dist/umd/uuidv4.min.js"></script>
+    <%- include('../partials/choiceshead'); %>
 </head>
 
 <body>
     <!--div style="width:100%">
-        <img id="map" src="/dialog/public/images/wintersun.jpg" />
+        <img id="map" src="/dialog/images/wintersun.jpg" />
     </div-->
     <div id="errorPlaceholder"></div>
     <!-- Language -->
@@ -70,11 +36,12 @@
             </div>
         <%} %>
         </div>
+
         <!-- Modals -->
         <div class="dialog_modal largeModal shadow hide" id="checklistModal">
             <div id="checklistHeader">
                 <!-- TODO Lägg in bildpath från DB-->
-                <img id="checklistLogo" class="shadow" src="/dialog/public/images/habitat_icon.png" width="150" height="150" draggable="false" />
+                <img id="checklistLogo" class="shadow" src="/dialog/images/habitat_icon.png" width="150" height="150" draggable="false" />
                 <!-- TODO Lägg in texter i tabell DB-->
                 <div id="checklistHeaderText">
                     <div id="checklistPrompt" class="title frontTitle">
@@ -93,7 +60,7 @@
                 </div>
             </div>
             <div class="closeModalButton clickable shadow">
-                <img src="/dialog/public/images/dismiss_icon.png" width="30" height="30" draggable="false" />
+                <img src="/dialog/images/dismiss_icon.png" width="30" height="30" draggable="false" />
             </div>
             <div id="submitActionButton" class="hide clickable shadow"><%- choicedata.language =='sv' ? choicedata.labels.submitActionButtonText_sv : choicedata.labels.submitActionButtonText_en%>
             </div>
@@ -122,7 +89,7 @@
               </div>
             </div>
             <div class="closeModalButton clickable shadow">
-              <img src="/dialog/public/images/dismiss_icon.png" width="30" height="30" draggable="false" />
+              <img src="/dialog/images/dismiss_icon.png" width="30" height="30" draggable="false" />
             </div>
         </div>
 
@@ -203,7 +170,7 @@
               </ul>
             </div>
             <div class="closeModalButton clickable shadow">
-              <img src="/dialog/public/images/dismiss_icon.png" width="30" height="30" draggable="false" />
+              <img src="/dialog/images/dismiss_icon.png" width="30" height="30" draggable="false" />
             </div>
             <div id="submitEmail" class="clickable shadow hide"><%- choicedata.language =='sv' ? choicedata.labels.submitActionButtonText_sv : choicedata.labels.submitActionButtonText_en%></div>
         </div>
@@ -214,9 +181,9 @@
 
         <div class="modal fade" id="choiceModal" tabindex="-1" aria-labelledby="choiceModalLabel" aria-hidden="true">
         </div>
-
     </div><!-- End of Wrapper-->
-
+</body>
+    <%- include('../partials/choicesscript'); %>
     <script>
 
         //////////////////////// EVENT EMITTERS ////////////////////////
@@ -229,9 +196,10 @@
         }
 
         function pledge(action_id) {
+
             //skapa ett unikt id för att samla ihop alla svar för sessionen
-            
             uuid = uuidv4();
+
             //hitta rätt action
             let actionObject = actions.find(action => action.id === parseInt(action_id))
 
@@ -249,6 +217,10 @@
             }
 
             school = $("#school").val();
+
+            if (typeof school === "undefined") {
+                school = "";
+            }
 
             $(".mainactioncheckbox")
                 .each(function () {
@@ -289,20 +261,25 @@
 
             //verify at least one choice made
             if (session_choices.length > 0) {
-                console.log(body)
-                
-                $.post({
-                    url: '/dialog/api/v1/choice',
-                    headers: { 'x-api-key': secret },
-                    data: body
-                })
-                .always(pledgeDone)
-                .done(function(data) {
-                })
-                .fail( function(data) {
-                    alert( JSON.stringify(data['responseText']), 'danger', 'errorPlaceholder' );
-                });
-                
+                //Mandatory fields
+                if (school === ""|| user_type ==="" ) {
+                    alert("Please select type and school ", 'danger', 'errorPlaceholder' );
+                    $("#submitActionButton").removeClass('hide');
+                } else {
+                    console.log(body)
+                    
+                    $.post({
+                        url: '/dialog/api/v1/choice',
+                        headers: { 'x-api-key': secret },
+                        data: body
+                    })
+                    .always(pledgeDone)
+                    .done(function(data) {
+                    })
+                    .fail( function(data) {
+                        alert( JSON.stringify(data['responseText']), 'danger', 'errorPlaceholder' );
+                    });
+                } 
             }
             else {
                 alert("Please make a choice", 'danger', 'errorPlaceholder' );
@@ -533,7 +510,7 @@
 
             // Clear divs, html, applied style
             $("#checklistlearnMoreText").html('');
-            $(".itemCheckboxImage").attr('src', '/dialog/public/images/unchecked_box.png');
+            $(".itemCheckboxImage").attr('src', '/dialog/images/unchecked_box.png');
             $('#write').html('');
             $('#write').val('');
             $("#submitActionButton").addClass('hide');
@@ -567,8 +544,8 @@
                                     checklistContainer += `
                                     <input onclick="togglesubchoices(this)" class="mainactioncheckbox" type="checkbox" id="myCheckbox-${i}" name="myCheckbox-${i}" value="${actionObject.choices[i].id}"/>
                                     <label for="myCheckbox-${i}">
-                                        <img class="unchecked" id="myCheckboxImageUnchecked-${i}" src="/dialog/public/images/unchecked_box.png"/>
-                                        <img class="checked" id="myCheckboxImageChecked-${i}" src="/dialog/public/images/checked_box.png"/>
+                                        <img class="unchecked" id="myCheckboxImageUnchecked-${i}" src="/dialog/images/unchecked_box.png"/>
+                                        <img class="checked" id="myCheckboxImageChecked-${i}" src="/dialog/images/checked_box.png"/>
                                         <div class="actionItemBody">
                                             <div class="actionItemName title">
                                                 ${language =='sv' ? actionObject.choices[i].name : actionObject.choices[i].name_en}
@@ -581,6 +558,7 @@
                                     <div class="subactions hide">`
                                     //Visa endast om mainaction är checked
                                     for (var j = 0; j < actionObject.choices[i].subchoices.length; j++) {
+                                        //Fritext
                                         if (actionObject.choices[i].subchoices[j].actionchoicetype_id == 4) {
                                             checklistContainer += 
                                         `<div class="usermessages">
@@ -595,13 +573,28 @@
                                             <textarea rows="3" id="myTextarea-${j}" name="myTextarea-${j}"/></textarea>
                                         </div>`
                                         }
+                                        //Checkbox
                                         if (actionObject.choices[i].subchoices[j].actionchoicetype_id == 1) {
                                             checklistContainer += 
                                         `<div>
                                             <input class="subactioncheckbox" type="checkbox" id="subchoiceCheckbox-${j}" name="subchoiceCheckbox-${j}" value="${actionObject.choices[i].subchoices[j].id}"/>
                                             <label for="subchoiceCheckbox-${j}">
-                                                <img class="unchecked" id="subchoiceCheckboxImageUnchecked-${j}" src="/dialog/public/images/unchecked_box.png"/>
-                                                <img class="checked" id="subchoiceCheckboxImageChecked-${j}" src="/dialog/public/images/checked_box.png"/>
+                                                <img class="unchecked" id="subchoiceCheckboxImageUnchecked-${j}" src="/dialog/images/unchecked_box.png"/>
+                                                <img class="checked" id="subchoiceCheckboxImageChecked-${j}" src="/dialog/images/checked_box.png"/>
+                                                <div class="subactionItemBody">
+                                                    <div class="subactionItemName">
+                                                        ${language == 'sv' ? actionObject.choices[i].subchoices[j].name : actionObject.choices[i].subchoices[j].name_en}
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>`
+                                        }
+                                        //Radio
+                                        if (actionObject.choices[i].subchoices[j].actionchoicetype_id == 2) {
+                                            checklistContainer += 
+                                        `<div>
+                                            <input class="subchoiceRadio" type="radio" id="subchoiceRadio-${i}" name="subchoiceRadio-${i}" value="${actionObject.choices[i].subchoices[j].id}"/>
+                                            <label for="subchoiceRadio-${j}">
                                                 <div class="subactionItemBody">
                                                     <div class="subactionItemName">
                                                         ${language == 'sv' ? actionObject.choices[i].subchoices[j].name : actionObject.choices[i].subchoices[j].name_en}
@@ -618,12 +611,12 @@
                                 `</div>
                             </div>`
                     }
-                    //Användartyp
+                    //Användartyp och skola
                     let usertypes = JSON.parse('<%- JSON.stringify(choicedata.usertypes) %>')
                     checklistContainer += 
                     `<div class="userinfo">
                         <div>
-                            Select your type and school(optional):
+                            Select your type and school:
                         </div>
                         <div class="mb-2">`
                     for (var i = 0; i < usertypes.length; i++) {
@@ -637,7 +630,7 @@
                     }
                     checklistContainer += 
                         `</div>`
-                    //Skola
+
                     let kthschools = JSON.parse('<%- JSON.stringify(choicedata.kthschools) %>')
                     let kthschools_en = JSON.parse('<%- JSON.stringify(choicedata.kthschools_en) %>')
                     let currents_kthschools = language == 'sv' ? kthschools : kthschools_en
@@ -652,7 +645,8 @@
                     </div>`
 
                     $("#checklistContainer").html(checklistContainer)
-                    $("#checklistLogo").attr('src', '/dialog/public/images/'+ actionObject.image)
+                    console.log(actionObject)
+                    $("#checklistLogo").attr('src', actionObject.fullpath)
 
                     // Show checklist modal
                     $('#checklistModal').removeClass('hide');
@@ -801,7 +795,7 @@
 
         function showmoreinfo(index) {
             let actionObject = actions.find(action => action.id === parseInt(SESSION_CATEGORY))
-            $("#checklistlearnMoreText").html('<img src="/dialog/public/images/' + actionObject.choices[index].image + '" class="learnMoreImage"/>');
+            $("#checklistlearnMoreText").html('<img src="' + actionObject.choices[index].fullpath + '" class="learnMoreImage"/>');
         }
 
         var currentlanguage = 'sv';
@@ -897,6 +891,4 @@
             makeProgress(data)
         })
     </script>
-</body>
-
 </html>

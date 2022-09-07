@@ -33,12 +33,14 @@ app.use(cookieParser());
 const socketIo = require("socket.io");
 
 app.set("view engine", "ejs");
-app.use(express.static(path.join(__dirname, "public")));
+
+app.use(process.env.APP_PATH, express.static(path.join(__dirname, "public")));
 
 app.use(cors({ origin: '*' }));
 
 const apiRoutes = express.Router();
 
+//Hänvisa root till admin
 apiRoutes.get("/", async function (req, res, next) {
     try {
         let verify = await VerifyAdmin(req, res, next)
@@ -46,30 +48,6 @@ apiRoutes.get("/", async function (req, res, next) {
     } catch(err) {
         res.render('login', {logindata: {"status":"ok", "message":"login"}})
     }
-});
-
-apiRoutes.get('/public/images/:name', function(req, res) {
-    res.sendFile(__dirname + "/public/images/" + req.params.name);
-});
-
-apiRoutes.get('/public/style.css', function(req, res) {
-    res.sendFile(__dirname + "/public/css/" + "styles.css");
-});
-
-apiRoutes.get('/public/results.css', function(req, res) {
-    res.sendFile(__dirname + "/public/css/" + "results.css");
-});
-
-apiRoutes.get('/public/admin.css', function(req, res) {
-    res.sendFile(__dirname + "/public/css/" + "admin.css");
-});
-
-apiRoutes.get('/public/chartjs-plugin-doughnutlabel-rebourne.js', function(req, res) {
-    res.sendFile(__dirname + "/public/js/" + "chartjs-plugin-doughnutlabel-rebourne.js");
-});
-
-apiRoutes.get('/public/styles_pdf.css', function(req, res) {
-    res.sendFile(__dirname + "/public/css/" + "styles_pdf.css");
 });
 
 apiRoutes.get('/public/TheSans-Plain-kthb.ttf', function(req, res) {
@@ -115,17 +93,21 @@ apiRoutes.post("/login", eventController.login)
 apiRoutes.post("/logout", VerifyToken, eventController.logout)
 
 // AdmininstrationsApp
-apiRoutes.get("/admin", VerifyToken, eventController.readEventsPaginated)
+apiRoutes.get("/admin", VerifyToken, eventController.generateEventsAdminApp)
 
-//DialogChoicesApp
+// DialogChoicesApp
 apiRoutes.get("/choice/:event_id", eventController.generateChoiceApp)
 
-//DialogResultsApp
+// DialogResultsApp
 apiRoutes.get("/results/:event_id", eventController.generateChoiceResultsApp)
 
-//Hämta KTH-skolor
+// DialogStatsApp
+apiRoutes.get("/stats", eventController.generateStatsApp)
+
+// Hämta KTH-skolor
 apiRoutes.get(process.env.API_PATH + "/kthschools",eventController.getkthschools)
 
+// Skapa ett event
 apiRoutes.post(process.env.API_PATH + "/event", VerifyToken, async function (req, res, next) {
     try {
         let name = req.body.name
@@ -134,8 +116,12 @@ apiRoutes.post(process.env.API_PATH + "/event", VerifyToken, async function (req
         let description_en = req.body.description_en
         let startdate = req.body.startdate
         let enddate = req.body.enddate
+        let resultstitle = req.body.resultstitle
+        let resultstitle_en = req.body.resultstitle_en
+        let resultssubtitle = req.body.resultssubtitle
+        let resultssubtitle_en =req.body.resultssubtitle_en
 
-        let create = await eventController.createEvent(name, name_en, description, description_en, startdate, enddate)
+        let create = await eventController.createEvent(name, name_en, description, description_en, startdate, enddate, resultstitle, resultstitle_en, resultssubtitle, resultssubtitle_en)
         if(create.status == 0) {
             res.status(400).send(create.message)
         } else {
@@ -146,34 +132,51 @@ apiRoutes.post(process.env.API_PATH + "/event", VerifyToken, async function (req
     }
 });
 
-apiRoutes.put(process.env.API_PATH + "/event", VerifyToken, async function (req, res, next) {
+// Uppdatera ett event
+apiRoutes.put(process.env.API_PATH + "/event/:id", VerifyToken, async function (req, res, next) {
     try {
-        let guid = req.query.guid || req.body.guid
-        let eventtime = req.query.eventtime || req.body.eventtime
-        res.send(eventController.updateEvent(guid, eventtime))
+        let event_id = req.params.id
+        let name = req.body.name
+        let name_en = req.body.name_en
+        let description = req.body.description
+        let description_en = req.body.description_en
+        let startdate = req.body.startdate
+        let enddate = req.body.enddate
+        let resultstitle = req.body.resultstitle
+        let resultstitle_en = req.body.resultstitle_en
+        let resultssubtitle = req.body.resultssubtitle
+        let resultssubtitle_en =req.body.resultssubtitle_en
+
+        let update = await eventController.updateEvent(name, name_en, description, description_en, startdate, enddate, resultstitle, resultstitle_en, resultssubtitle, resultssubtitle_en, event_id)
+        if(update.status == 0) {
+            res.status(400).send(update.message)
+        } else {
+            res.sendStatus(200);
+        }
     } catch(err) {
-        res.send(err.message)
+        res.status(400).send(err)
     }
 });
 
-apiRoutes.delete(process.env.API_PATH + "/event", VerifyToken, async function (req, res, next) {
+// Ta bort ett event
+apiRoutes.delete(process.env.API_PATH + "/event/:id", VerifyToken, async function (req, res, next) {
     try {
-        let guid = req.query.guid || req.body.guid
-        res.send(eventController.deleteEvent(guid))   
+        res.send(eventController.deleteEvent(req.params.id))   
     } catch(err) {
         res.send(err.message)
     } 
 });
 
-apiRoutes.post(process.env.API_PATH + "/event/action", VerifyToken, async function (req, res, next) {
+// Skapa action
+apiRoutes.post(process.env.API_PATH + "/action", VerifyToken, async function (req, res, next) {
     try {
         let event_id = req.body.event_id
-        let description_sv = req.body.actiondescription_sv
-        let description_en = req.body.actiondescription_en
-        let image = req.body.actionimage
-        let rgbacolor = req.body.actionrgbacolor
+        let description_sv = req.body.description_sv
+        let description_en = req.body.description_en
+        let image_id = req.body.image_id
+        let rgbacolor = req.body.rgbacolor
 
-        let create = await eventController.createAction(event_id, description_sv, description_en, image, rgbacolor)
+        let create = await eventController.createAction(event_id, description_sv, description_en, image_id, rgbacolor)
         if(create.status == 0) {
             res.status(400).send(create.message)
         } else {
@@ -184,72 +187,142 @@ apiRoutes.post(process.env.API_PATH + "/event/action", VerifyToken, async functi
     }
 });
 
-apiRoutes.put(process.env.API_PATH + "/event/action/:action_id", VerifyToken, async function (req, res, next) {
+// Uppdatera action
+apiRoutes.put(process.env.API_PATH + "/action/:id", VerifyToken, async function (req, res, next) {
     try {
-        let action_id = req.params.action_id
-        let description_sv = req.body.actiondescription_sv
-        let description_en = req.body.actiondescription_en
-        let image = req.body.actionimage
-        let rgbacolor = req.body.actionrgbacolor
-        const update = await eventController.updateAction(description_sv, description_en, image, rgbacolor, action_id)
+        let event_id = req.body.event_id
+        let action_id = req.params.id
+        let description_sv = req.body.description_sv
+        let description_en = req.body.description_en
+        let image_id = req.body.image_id
+        let rgbacolor = req.body.rgbacolor
+
+        const update = await eventController.updateAction(event_id, description_sv, description_en, image_id, rgbacolor, action_id)
         res.send(update)
     } catch(err) {
         res.send(err.message)
     }
 });
 
-apiRoutes.post(process.env.API_PATH + "/event/field", VerifyToken, async function (req, res, next) {
+// Ta bort action
+apiRoutes.delete(process.env.API_PATH + "/action/:id", VerifyToken, async function (req, res, next) {
     try {
-        let fields_id = req.body.fields_id
-        let events_id = req.body.events_id
-        res.send(eventController.createEventField(events_id, fields_id))
+        res.send(eventController.deleteAction(req.params.id))   
+    } catch(err) {
+        res.send(err.message)
+    } 
+});
+
+// Skapa actionchoice
+apiRoutes.post(process.env.API_PATH + "/actionchoice", VerifyToken, async function (req, res, next) {
+    try {
+        let action_id = req.body.action_id
+        let actionchoicetype_id = req.body.actionchoicetype_id
+        let name = req.body.name
+        let name_en = req.body.name_en
+        let description = req.body.description
+        let description_en = req.body.description_en
+        let image_id = req.body.image_id
+        let sortorder = req.body.sortorder
+
+        let create = await eventController.createActionChoice(action_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder)
+        if(create.status == 0) {
+            res.status(400).send(create.message)
+        } else {
+            res.sendStatus(200);
+        }
+    } catch(err) {
+        res.status(400).send(err)
+    }
+});
+
+// Uppdatera actionchoice
+apiRoutes.put(process.env.API_PATH + "/actionchoice/:id", VerifyToken, async function (req, res, next) {
+    try {
+        let actionchoice_id = req.params.id
+        let action_id = req.body.action_id
+        let actionchoicetype_id = req.body.actionchoicetype_id
+        let name = req.body.name
+        let name_en = req.body.name_en
+        let description = req.body.description
+        let description_en = req.body.description_en
+        let image_id = req.body.image_id
+        let sortorder = req.body.sortorder
+ 
+        const update = await eventController.updateActionChoice(action_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder, actionchoice_id)
+        res.send(update)
     } catch(err) {
         res.send(err.message)
     }
 });
 
-apiRoutes.delete(process.env.API_PATH + "/event/field", VerifyToken, async function (req, res, next) {
+// Ta bort actionchoice
+apiRoutes.delete(process.env.API_PATH + "/actionchoice/:id", VerifyToken, async function (req, res, next) {
     try {
-        let fields_id = req.body.fields_id
-        let events_id = req.body.events_id
-        res.send(eventController.deleteEventField(events_id, fields_id))
+        res.send(eventController.deleteActionChoice(req.params.id))   
     } catch(err) {
         res.send(err.message)
+    } 
+});
+
+// Skapa subactionchoice
+apiRoutes.post(process.env.API_PATH + "/subactionchoice", VerifyToken, async function (req, res, next) {
+    try {
+        let actionchoice_id = req.body.actionchoice_id
+        let actionchoicetype_id = req.body.actionchoicetype_id
+        let name = req.body.name
+        let name_en = req.body.name_en
+        let description = req.body.description
+        let description_en = req.body.description_en
+        let image_id = req.body.image_id
+        let sortorder = req.body.sortorder
+
+        let create = await eventController.createSubActionChoice(actionchoice_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder)
+        if(create.status == 0) {
+            res.status(400).send(create.message)
+        } else {
+            res.sendStatus(200);
+        }
+    } catch(err) {
+        res.status(400).send(err)
     }
 });
 
-apiRoutes.post(process.env.API_PATH + "/event/image", VerifyToken, async function (req, res, next) {
+// Uppdatera subactionchoice
+apiRoutes.put(process.env.API_PATH + "/subactionchoice/:id", VerifyToken, async function (req, res, next) {
     try {
-        let images_id = req.body.images_id
-        let events_id = req.body.events_id
-        res.send(eventController.createEventImage(events_id, images_id))
-    } catch(err) {
-        res.send(err.message)
-    }
-});
+        let subactionchoice_id = req.params.id
+        let actionchoice_id = req.body.actionchoice_id
+        let actionchoicetype_id = req.body.actionchoicetype_id
+        let name = req.body.name
+        let name_en = req.body.name_en
+        let description = req.body.description
+        let description_en = req.body.description_en
+        let image_id = req.body.image_id
+        let sortorder = req.body.sortorder
 
-apiRoutes.delete(process.env.API_PATH + "/event/image", VerifyToken, async function (req, res, next) {
-    try {
-        let images_id = req.body.images_id
-        let events_id = req.body.events_id
-        res.send(eventController.deleteEventImage(events_id, images_id))
-    } catch(err) {
-        res.send(err.message)
-    }
-});
-
-apiRoutes.get(process.env.API_PATH + "/event/:id", async function (req, res, next) {
-    try {
-        let html_template = req.query.template || 'templates/smartsign_template.html'
-        if (req.params.id) {
-            let page = await eventController.generateCalendarPage(req.params.id, html_template);
-            res.send(page)
+        console.log(actionchoice_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder, subactionchoice_id)
+        const update = await eventController.updateSubActionChoice(actionchoice_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder, subactionchoice_id)
+        if(update.status == 0) {
+            res.status(400).send(update.message)
+        } else {
+            res.sendStatus(200);
         }
     } catch(err) {
         res.send(err.message)
     }
 });
 
+// Ta bort subactionchoice
+apiRoutes.delete(process.env.API_PATH + "/subactionchoice/:id", VerifyToken, async function (req, res, next) {
+    try {
+        res.send(eventController.deleteSubActionChoice(req.params.id))   
+    } catch(err) {
+        res.send(err.message)
+    } 
+});
+
+// Hämta actions för event
 apiRoutes.get(process.env.API_PATH + "/event/actions/:event_id", async function (req, res) {
     try {
         res.write(`<div style="display:flex;flex-direction:column;flex-wrap:wrap" id="actions">`)
@@ -299,6 +372,12 @@ apiRoutes.get(process.env.API_PATH + "/event/actions/:event_id", async function 
     }
 });
 
+apiRoutes.get(process.env.API_PATH + "/event/subactions/:action_id", async function (req, res) {
+    eventController.readSubActions(data.event.actions[i].choices[j].id)
+});
+
+
+// Hämta bilder från bildbank
 apiRoutes.get(process.env.API_PATH + "/images", async function (req, res) {
     try {
         res.write(`<div style="display:flex;flex-direction:column;flex-wrap:wrap" id="images">`)
@@ -341,6 +420,7 @@ apiRoutes.get(process.env.API_PATH + "/images", async function (req, res) {
     }
 });
 
+// Uppdatera bilder från bildbank
 apiRoutes.put(process.env.API_PATH + "/images/:id", VerifyToken, async function (req, res, next) {
     try {
         res.send(eventController.updateImage(req.params.id, req.body.name ))
@@ -349,6 +429,7 @@ apiRoutes.put(process.env.API_PATH + "/images/:id", VerifyToken, async function 
     }
 });
 
+// Ta bort bilder från bildbank
 apiRoutes.delete(process.env.API_PATH + "/images/:id", VerifyToken, async function (req, res, next) {
     try {
         res.send(eventController.deleteImage(req.params.id))
@@ -357,6 +438,7 @@ apiRoutes.delete(process.env.API_PATH + "/images/:id", VerifyToken, async functi
     }
 });
 
+// Skapa/Ladda upp bilder till bildbank
 apiRoutes.post(process.env.API_PATH + "/uploadfile", async function (req, res) {
     try {
         let targetFile = req.files.imgFile;
@@ -566,6 +648,11 @@ apiRoutes.post(process.env.API_PATH + "/reminder", async function (req, res) {
     });
 
 });
+
+// Statistik
+apiRoutes.get(process.env.API_PATH + "/stats/useractions/:event_id",eventController.readStatsUserActions)
+apiRoutes.get(process.env.API_PATH + "/stats/useractionchoices/:event_id",eventController.readStatsUserActionChoices)
+apiRoutes.get(process.env.API_PATH + "/stats/usersubactionchoices/:event_id",eventController.readStatsUserSubActionChoices)
 
 app.use(process.env.APP_PATH, apiRoutes);
 
