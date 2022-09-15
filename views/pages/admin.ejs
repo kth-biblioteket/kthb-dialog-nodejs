@@ -20,545 +20,307 @@
             </div>
             <div id="gradientBorder"></div>
         </nav>
-        <div id="content">
-            <div style="flex:3;padding-right:10px">
-                <div class="" id="actionsModal2" tabindex="-1" aria-labelledby="actionsModal2Label" aria-hidden="true">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab" aria-controls="general" aria-selected="true">General</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="actions-tab" data-bs-toggle="tab" data-bs-target="#actions" type="button" role="tab" aria-controls="actions" aria-selected="false">Kategorier</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="choices-tab" data-bs-toggle="tab" data-bs-target="#choices" type="button" role="tab" aria-controls="choices" aria-selected="false">Alternativ</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="subchoices-tab" data-bs-toggle="tab" data-bs-target="#subchoices" type="button" role="tab" aria-controls="subchoices" aria-selected="false">Under-alternativ</button>
+              </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                <div id="dialog-events" class="col">
                     <div style="margin-bottom:10px" class="card">
+                        <div class="card-header">
+                            <h3>Events</h3>
+                            <div>Välj event</div>
+                            <select id="events-select-list" class="form-select"></select>
+                        </div>
                         <div class="card-body">
-                            <h5 class="card-title">Events</h5>
-                            <table id="EventActionstable" class="table table-striped" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Namn Svenska</th>
-                                        <th>Namn Engelska</th>
-                                        <th>Beskrivning Svenska</th>
-                                        <th>Beskrivning Engelska</th>
-                                        <th>Startdatum</th>
-                                        <th>Slutdatum</th>
-                                        <th>Resultat rubrik</th>
-                                        <th>Resultat rubrik engelska</th>
-                                        <th>Resultat underrubrik</th>
-                                        <th>Resultat underrubrik engelska</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <% admindata.events.forEach(row => { %>
-                                    <tr>
-                                        <td>
-                                            <input class="form-control" type="hidden" id="event-<%=row.id%>-id" name="event-<%=row.id%>-id" value="<%=row.id%>"><%=row.id%>
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="event-<%=row.id%>-name" name="event-<%=row.id%>-name" value="<%=row.name%>">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="event-<%=row.id%>-name_en" name="event-<%=row.id%>-name_en" value="<%=row.name_en%>">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="event-<%=row.id%>-description" name="event-<%=row.id%>-description" value="<%=row.description%>">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="event-<%=row.id%>-description_en" name="event-<%=row.id%>-description_en" value="<%=row.description_en%>">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="date" max="2999-12-31" id="event-<%=row.id%>-startdate" name="event-<%=row.id%>-startdate" value="<%=row.startdate.toLocaleDateString()%>">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="date" max="2999-12-31" id="event-<%=row.id%>-enddate" name="event-<%=row.id%>-enddate" value="<%=row.enddate.toLocaleDateString()%>">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="event-<%=row.id%>-resultstitle" name="event-<%=row.id%>-resultstitle" value="<%=row.resultstitle%>">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="event-<%=row.id%>-resultstitle_en" name="event-<%=row.id%>-resultstitle_en" value="<%=row.resultstitle_en%>">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="event-<%=row.id%>-resultssubtitle" name="event-<%=row.id%>-resultssubtitle" value="<%=row.resultssubtitle%>">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="event-<%=row.id%>-resultssubtitle_en" name="event-<%=row.id%>-resultssubtitle_en" value="<%=row.resultssubtitle_en%>">
-                                        </td>
-                                        <td>
-                                            <div style="display:flex;width:270px;justify-content: end;">
-                                                <button id="updateActionEvent_<%=row.id%>" onclick="updateDialogEvent('<%=row.id%>');" type="button" class="btn btn-success" style="margin-right:10px">
-                                                    Spara
-                                                </button>
-                                                <button id="deleteActionEvent_<%=row.id%>" onclick="deleteDialogEvent('<%=row.id%>');" type="button" class="btn btn-danger" style="margin-right:10px">
-                                                    Ta bort
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <% }) %>
-                                    <tr class="newrow">
-                                        <td>
-                                            Ny!
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="new_event_name" name="new_event_name" value="">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="new_event_name_en" name="new_event_name_en" value="">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="new_event_description" name="new_event_description" value="">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="new_event_description_en" name="new_event_description_en" value="">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="date" max="2999-12-31" id="new_event_startdate" name="new_event_startdate" value="">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="date" max="2999-12-31" id="new_event_enddate" name="new_event_enddate" value="">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="new_event_resultstitle" name="new_event_resultstitle" value="">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="new_event_resultstitle_en" name="new_event_resultstitle_en" value="">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="new_event_resultssubtitle" name="new_event_resultssubtitle" value="">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="new_event_resultssubtitle_en" name="new_event_resultssubtitle_en" value="">
-                                        </td>
-                                        <td>
-                                            <div style="display:flex;width:270px;justify-content: end;">
-                                                <button id="createEvent" onclick="createDialogEvent()" type="button" class="btn btn-success" style="margin-right:10px">
-                                                    Lägg till
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <h5 class="card-title"></h5>
+                            <div id="event-edit" class="eventedit"></div>
+                        </div>
+                        <div class="card-footer text-muted" style="justify-content: end;display: flex;">
+                            <button style='margin-right:10px' class='btn btn-success' data-bs-toggle='modal' data-bs-target='#add-event-modal' data-id=''>
+                                Add
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-            <%# Actions/Kategorier %>
-            <div style="flex:3;padding-right:10px">
-                <div class="" id="actionsModal2" tabindex="-1" aria-labelledby="actionsModal2Label" aria-hidden="true">
+            <div class="tab-pane fade" id="actions" role="tabpanel" aria-labelledby="actions-tab">
+                <div id="dialog-actions" class="col">
                     <div style="margin-bottom:10px" class="card">
+                        <div class="card-header">
+                            <input class="form-control" type="hidden" id="dialog-actions-event_id" name="dialog-actions-event_id">
+                            <h3 id="dialog-actions-event_name"></h3>
+                            <div>Välj action</div>
+                            <select id="actions-select-list" class="form-select"></select>
+                        </div>
                         <div class="card-body">
-                            <h5 class="card-title">Kategorier</h5>
-                            <table id="EventActionstable" class="table table-striped" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Event</th>
-                                        <th>Beskrivning Svenska</th>
-                                        <th>Beskrivning Engelska</th>
-                                        <th>Färg i reslutatcirkel</th>
-                                        <th>Bild</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <% admindata.actions.forEach(row => { %>
-                                    <tr>
-                                        <td>
-                                            <%=row.id%>
-                                        </td>
-                                        <td>
-                                            <div class="form-select">
-                                                <div class="select-wrapper">
-                                                    <select id="action-<%=row.id%>-event_id" class="form-control">
-                                                    <% admindata.events.forEach(event => { %>
-                                                        <option <%= event.id==row.event_id ? 'selected' : '' %> value="<%=event.id%>"><%=event.name%></option>
-                                                    <% }) %>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="action-<%=row.id%>-description_sv" name="action-<%=row.id%>-description_sv" value="<%=row.description_sv%>">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="action-<%=row.id%>-description_en" name="action-<%=row.id%>-description_en" value="<%=row.description_en%>">
-                                        </td>
-                                        <td>
-                                            <input data-jscolor="{alpha:<%= parseFloat(row.rgbacolor.split(',')[3])%>}" class="form-control" type="text" id="action-<%=row.id%>-rgbacolor" name="action-<%=row.id%>-rgbacolor" value="<%=row.rgbacolor%>">
-                                        </td>
-                                        <td>
-                                            <div class="form-select">
-                                                <div class="select-wrapper">
-                                                    <select id="action-<%=row.id%>-image_id" class="form-control">
-                                                    <% admindata.images.forEach(image => { %>
-                                                        <option <%= image.id==row.image_id ? 'selected' : '' %> value="<%=image.id%>"><%=image.name%></option>
-                                                    <% }) %>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div style="display:flex;width:270px;justify-content: end;">
-                                                <button id="updateActionEvent_<%=row.id%>" onclick="updateDialogAction('<%=row.id%>');" type="button" class="btn btn-success" style="margin-right:10px">
-                                                    Spara
-                                                </button>
-                                                <button id="deleteActionEvent_<%=row.id%>" onclick="deleteDialogAction('<%=row.id%>');" type="button" class="btn btn-danger" style="margin-right:10px">
-                                                    Ta bort
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <% }) %>
-                                    <tr class="newrow">
-                                        <td>
-                                            Ny!
-                                        </td>
-                                        <td>
-                                            <div class="form-select">
-                                                <div class="select-wrapper">
-                                                    <select id="new_action_event_id" class="form-control">
-                                                    <% admindata.events.forEach(event => { %>
-                                                        <option value="<%=event.id%>"><%=event.name%></option>
-                                                    <% }) %>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="new_action_description_sv" name="new_action_description_sv" value="">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="new_action_description_en" name="new_action_description_en" value="">
-                                        </td>
-                                        <td>
-                                            <input data-jscolor="{alpha:1}" class="form-control" type="text" id="new_action_rgbacolor" name="new_action_rgbacolor" value="">
-                                        </td>
-                                        <td>
-                                            <div class="form-select">
-                                                <div class="select-wrapper">
-                                                    <select id="new_action_image_id" class="form-control">
-                                                    <% admindata.images.forEach(image => { %>
-                                                        <option value="<%=image.id%>"><%=image.name%></option>
-                                                    <% }) %>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div style="display:flex;width:270px;justify-content: end;">
-                                                <button id="createEvent" onclick="createDialogAction()" type="button" class="btn btn-success" style="margin-right:10px">
-                                                    Lägg till
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <h5 class="card-title"></h5>
+                            <div id="action-edit" class="dialogedit"></div>
+                        </div>
+                        <div class="card-footer text-muted" style="justify-content: end;display: flex;">
+                            <button style='margin-right:10px' class='btn btn-success' data-bs-toggle='modal' data-bs-target='#add-action-modal' data-id=''>
+                                Add
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-            <%# Actionchoices/Kategorival %>
-            <div style="flex:3;padding-right:10px">
-                <div class="" id="subactionsModal" tabindex="-1" aria-labelledby="subactionsModal" aria-hidden="true">
+            <div class="tab-pane fade" id="choices" role="tabpanel" aria-labelledby="choices-tab">
+                <div id="dialog-choices" class="col">
                     <div style="margin-bottom:10px" class="card">
+                        <div class="card-header">
+                            <input class="form-control" type="hidden" id="dialog-choices-action_id" name="dialog-choices-action_id">
+                            <h3 id="dialog-choices-action_name"></h3>
+                            <div>Välj alternativ</div>
+                            <select id="choices-select-list" class="form-select"></select>
+                        </div>
                         <div class="card-body">
-                            <h5 class="card-title">Kategorival</h5>
-                            <table id="EventActionstable" class="table table-striped" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Kategori</th>
-                                        <th>Typ</th>
-                                        <th>Name Svenska</th>
-                                        <th>Name Engelska</th>
-                                        <th>Beskrivning Svenska</th>
-                                        <th>Beskrivning Engelska</th>
-                                        <th>Bild</th>
-                                        <th>Sortering</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <% admindata.actionchoices.forEach(row => { %>
-                                    <tr>
-                                        <td>
-                                            <%=row.id%>
-                                        </td>
-                                        <td style="width:200px">
-                                            <div class="form-select">
-                                                <div class="select-wrapper">
-                                                    <select id="actionchoice-<%=row.id%>-action_id" class="form-control">
-                                                    <% admindata.actions.forEach(action => { %>
-                                                        <option <%= action.id==row.action_id ? 'selected' : '' %> value="<%=action.id%>"><%=action.description_sv%></option>
-                                                    <% }) %>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td style="width:150px">
-                                            <div class="form-select">
-                                                <div class="select-wrapper">
-                                                    <select id="actionchoice-<%=row.id%>-actionchoicetype_id" class="form-control">
-                                                    <% admindata.actionchoicetypes.forEach(actionchoicetype => { %>
-                                                        <option <%= actionchoicetype.id==row.actionchoicetype_id ? 'selected' : '' %> value="<%=actionchoicetype.id%>"><%=actionchoicetype.type%></option>
-                                                    <% }) %>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="actionchoice-<%=row.id%>-name" name="row-<%=row.id%>-name" value="<%=row.name%>">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="actionchoice-<%=row.id%>-name_en" name="row-<%=row.id%>-name_en" value="<%=row.name_en%>">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="actionchoice-<%=row.id%>-description" name="row-<%=row.id%>-description" value="<%=row.description%>">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="actionchoice-<%=row.id%>-description_en" name="row-<%=row.id%>-description_en" value="<%=row.description_en%>">
-                                        </td>
-                                        <td>
-                                            <div class="form-select">
-                                                <div class="select-wrapper">
-                                                    <select id="actionchoice-<%=row.id%>-image_id" class="form-control">
-                                                    <% admindata.images.forEach(image => { %>
-                                                        <option <%= image.id==row.image_id ? 'selected' : '' %> value="<%=image.id%>"><%=image.name%></option>
-                                                    <% }) %>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="actionchoice-<%=row.id%>-sortorder" name="row-<%=row.id%>-sortorder" value="<%=row.sortorder%>">
-                                        </td>
-                                        <td>
-                                            <div style="display:flex;width:270px;justify-content: end;">
-                                                <button id="updateActionChoice<%=row.id%>" onclick="updateDialogActionChoice('<%=row.id%>');" type="button" class="btn btn-success" style="margin-right:10px">
-                                                    Spara
-                                                </button>
-                                                <button id="deleteActionChoice<%=row.id%>" onclick="deleteDialogActionChoice('<%=row.id%>');" type="button" class="btn btn-danger" style="margin-right:10px">
-                                                    Ta bort
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <% }) %>
-                                <tr class="newrow">
-                                    <td>
-                                        Ny!
-                                    </td>
-                                    <td style="width:200px">
-                                        <div class="form-select">
-                                            <div class="select-wrapper">
-                                                <select id="new_actionchoice_action_id" class="form-control">
-                                                <% admindata.actions.forEach(action => { %>
-                                                    <option value="<%=action.id%>"><%=action.description_sv%></option>
-                                                <% }) %>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td style="width:150px">
-                                        <div class="form-select">
-                                            <div class="select-wrapper">
-                                                <select id="new_actionchoice_actionchoicetype_id" class="form-control">
-                                                <% admindata.actionchoicetypes.forEach(actionchoicetype => { %>
-                                                    <option value="<%=actionchoicetype.id%>"><%=actionchoicetype.type%></option>
-                                                <% }) %>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <input class="form-control" type="text" id="new_actionchoice_name" name="new_actionchoice_name" value="">
-                                    </td>
-                                    <td>
-                                        <input class="form-control" type="text" id="new_actionchoice_name_en" name="new_actionchoice_name_en" value="">
-                                    </td>
-                                    <td>
-                                        <input class="form-control" type="text" id="new_actionchoice_description" name="new_actionchoice_description" value="">
-                                    </td>
-                                    <td>
-                                        <input class="form-control" type="text" id="new_actionchoice_description_en" name="new_actionchoice_description_en" value="">
-                                    </td>
-                                    <td>
-                                        <div class="form-select">
-                                            <div class="select-wrapper">
-                                                <select id="new_actionchoice_image_id" class="form-control">
-                                                <% admindata.images.forEach(image => { %>
-                                                    <option value="<%=image.id%>"><%=image.name%></option>
-                                                <% }) %>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <input class="form-control" type="text" id="new_actionchoice_sortorder" name="new_actionchoice_sortorder" value="">
-                                    </td>
-                                    <td>
-                                        <div style="display:flex;width:270px;justify-content: end;">
-                                            <button id="createDialogActionChoice" onclick="createDialogActionChoice()" type="button" class="btn btn-success" style="margin-right:10px">
-                                                Lägg till
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                            <h5 class="card-title"></h5>
+                            <div id="choice-edit" class="dialogedit" ></div>
+                        </div>
+                        <div class="card-footer text-muted" style="justify-content: end;display: flex;">
+                            <button style='margin-right:10px' class='btn btn-success' data-bs-toggle='modal' data-bs-target='#add-actionchoice-modal' data-id=''>
+                                Add
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-            <%# SubActionchoices/Alternativ under kategorival %>
-            <div style="flex:3;padding-right:10px">
-                <div class="" id="subactionsModal" tabindex="-1" aria-labelledby="subactionsModal" aria-hidden="true">
+            <div class="tab-pane fade" id="subchoices" role="tabpanel" aria-labelledby="subchoices-tab">
+                <div id="dialog-subchoices" class="col">
                     <div style="margin-bottom:10px" class="card">
+                        <div class="card-header">
+                            <input class="form-control" type="hidden" id="dialog-subchoices-actionchoice_id" name="dialog-subchoices-actionchoice_id">
+                            <h3 id="dialog-subchoices-actionchoice_name"></h3>
+                            <div>Välj Under-alternativ</div>
+                            <select id="subchoices-select-list" class="form-select"></select>
+                        </div>
                         <div class="card-body">
-                            <h5 class="card-title">Alternativ under kategorival</h5>
-                            <table id="EventActionstable" class="table table-striped" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Kategorival</th>
-                                        <th>Typ</th>
-                                        <th>Name Svenska</th>
-                                        <th>Name Engelska</th>
-                                        <th>Beskrivning Svenska</th>
-                                        <th>Beskrivning Engelska</th>
-                                        <th>Bild</th>
-                                        <th>Sortering</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <% admindata.subactionchoices.forEach(row => { %>
-                                    <tr>
-                                        <td>
-                                            <%=row.id%>
-                                        </td>
-                                        <td style="width:200px">
-                                            <div class="form-select">
-                                                <div class="select-wrapper">
-                                                    <select id="subactionchoice-<%=row.id%>-actionchoice_id" class="form-control">
-                                                    <% admindata.actionchoices.forEach(actionchoice => { %>
-                                                        <option <%= actionchoice.id==row.actionchoice_id ? 'selected' : '' %> value="<%=actionchoice.id%>"><%=actionchoice.name%></option>
-                                                    <% }) %>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td style="width:150px">
-                                            <div class="form-select">
-                                                <div class="select-wrapper">
-                                                    <select id="subactionchoice-<%=row.id%>-actionchoicetype_id" class="form-control">
-                                                    <% admindata.actionchoicetypes.forEach(actionchoicetype => { %>
-                                                        <option <%= actionchoicetype.id==row.actionchoicetype_id ? 'selected' : '' %> value="<%=actionchoicetype.id%>"><%=actionchoicetype.type%></option>
-                                                    <% }) %>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="subactionchoice-<%=row.id%>-name" name="subactionchoice-<%=row.id%>-name" value="<%=row.name%>">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="subactionchoice-<%=row.id%>-name_en" name="subactionchoice-<%=row.id%>-name_en" value="<%=row.name_en%>">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="subactionchoice-<%=row.id%>-description" name="subactionchoice-<%=row.id%>-description" value="<%=row.description%>">
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="subactionchoice-<%=row.id%>-description_en" name="subactionchoice-<%=row.id%>-description_en" value="<%=row.description_en%>">
-                                        </td>
-                                        <td>
-                                            <div class="form-select">
-                                                <div class="select-wrapper">
-                                                    <select id="subactionchoice-<%=row.id%>-image_id" class="form-control">
-                                                    <% admindata.images.forEach(image => { %>
-                                                        <option <%= image.id==row.image_id ? 'selected' : '' %> value="<%=image.id%>"><%=image.name%></option>
-                                                    <% }) %>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" id="subactionchoice-<%=row.id%>-sortorder" name="subactionchoice-<%=row.id%>-sortorder" value="<%=row.sortorder%>">
-                                        </td>
-                                        <td>
-                                            <div style="display:flex;width:270px;justify-content: end;">
-                                                <button id="updateSubActionChoice<%=row.id%>" onclick="updateDialogSubActionChoice('<%=row.id%>');" type="button" class="btn btn-success" style="margin-right:10px">
-                                                    Spara
-                                                </button>
-                                                <button id="deleteSubActionChoice<%=row.id%>" onclick="deleteDialogSubActionChoice('<%=row.id%>');" type="button" class="btn btn-danger" style="margin-right:10px">
-                                                    Ta bort
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <% }) %>
-                                <tr class="newrow">
-                                    <td>
-                                        Ny!
-                                    </td>
-                                    <td style="width:200px">
-                                        <div class="form-select">
-                                            <div class="select-wrapper">
-                                                <select id="new_subactionchoice_actionchoice_id" class="form-control">
-                                                <% admindata.actionchoices.forEach(actionchoice => { %>
-                                                    <option value="<%=actionchoice.id%>"><%=actionchoice.name%></option>
-                                                <% }) %>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td style="width:150px">
-                                        <div class="form-select">
-                                            <div class="select-wrapper">
-                                                <select id="new_subactionchoice_actionchoicetype_id" class="form-control">
-                                                <% admindata.actionchoicetypes.forEach(actionchoicetype => { %>
-                                                    <option value="<%=actionchoicetype.id%>"><%=actionchoicetype.type%></option>
-                                                <% }) %>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <input class="form-control" type="text" id="new_subactionchoice_name" name="new_subactionchoice_name" value="">
-                                    </td>
-                                    <td>
-                                        <input class="form-control" type="text" id="new_subactionchoice_name_en" name="new_subactionchoice_name_en" value="">
-                                    </td>
-                                    <td>
-                                        <input class="form-control" type="text" id="new_subactionchoice_description" name="new_subactionchoice_description" value="">
-                                    </td>
-                                    <td>
-                                        <input class="form-control" type="text" id="new_subactionchoice_description_en" name="new_subactionchoice_description_en" value="">
-                                    </td>
-                                    <td>
-                                        <div class="form-select">
-                                            <div class="select-wrapper">
-                                                <select id="new_subactionchoice_image_id" class="form-control">
-                                                <% admindata.images.forEach(image => { %>
-                                                    <option value="<%=image.id%>"><%=image.name%></option>
-                                                <% }) %>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <input class="form-control" type="text" id="new_subactionchoice_sortorder" name="new_subactionchoice_sortorder" value="">
-                                    </td>
-                                    <td>
-                                        <div style="display:flex;width:270px;justify-content: end;">
-                                            <button id="createDialogSubActionChoice" onclick="createDialogSubActionChoice()" type="button" class="btn btn-success" style="margin-right:10px">
-                                                Lägg till
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                            <h5 class="card-title"></h5>
+                            <div id="subchoice-edit" class="dialogedit" ></div>
+                        </div>
+                        <div class="card-footer text-muted" style="justify-content: end;display: flex;">
+                            <button style='margin-right:10px' class='btn btn-success' data-bs-toggle='modal' data-bs-target='#add-subactionchoice-modal' data-id=''>
+                                Add
+                            </button>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="add-event-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Skapa Event</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/dialog/api/v1/event/" id="addevent-form">
+                        <input class="form-control" type="hidden" name="id">
+                        <div class="form-group">
+                            <label for="email">Namn</label>
+                            <input class="form-control" type="text" name="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name">Name</label>
+                            <input class="form-control" type="text" name="name_en">
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name">Beskrivning</label>
+                            <textarea class="form-control" type="text" name="description" row="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Description</label>
+                            <textarea class="form-control" type="text" name="description_en" row="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Startdatum</label>
+                            <input class="form-control" type="date" max="2999-12-31" name="startdate">
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name">Slutdatum</label>
+                            <input class="form-control" type="date" max="2999-12-31" name="enddate">
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name">Resultat rubrik</label>
+                            <input class="form-control" type="text" name="resultstitle">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Results title</label>
+                            <input class="form-control" type="text" name="resultstitle_en">
+                        </div>
+                        <div class="form-group">
+                            <label for="first_name">Resultat underrubrik</label>
+                            <input class="form-control" type="text" name="resultssubtitle">
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name">Results subtitle</label>
+                            <input class="form-control" type="text" name="resultssubtitle_en">
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="db_create(this, 'addevent-form', 'POST', 'events-select-list', '/dialog/api/v1/events', 'add-event-modal', false, '', '')" id="btnAddEventSubmit">Lägg till</button>
+                        <button type="button" class="btn btn-danger float-right" data-bs-dismiss="modal">Avbryt</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="add-action-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Skapa kategori</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/dialog/api/v1/action/" id="addaction-form">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input class="form-control" type="text" name="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="name_en">Name</label>
+                            <input class="form-control" type="text" name="name_en">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Beskrivning</label>
+                            <input class="form-control" type="text" name="description">
+                        </div>
+                        <div class="form-group">
+                            <label for="description_en">Description</label>
+                            <input class="form-control" type="text" name="description_en">
+                        </div>
+                        <div class="form-group">
+                            <label for="image_id">Bild</label>
+                            <select id="image_id" name="image_id" class="form-select">`
+                                <% admindata.images.forEach(image => { %>
+                                    <option value="<%=image.id%>"><%=image.name%></option>
+                                <% }) %>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="rgbacolor">Färg</label>
+                            <input class="form-control" type="text" name="rgbacolor">
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="db_create(this, 'addaction-form', 'POST', 'actions-select-list', '/dialog/api/v1/event/parentid/actions', 'add-action-modal', true, 'event_id', 'dialog-actions-event_id')" id="btnAddActionSubmit">Lägg till</button>
+                        <button type="button" class="btn btn-danger float-right" data-bs-dismiss="modal">Avbryt</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="add-actionchoice-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Skapa alternativ</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/dialog/api/v1/actionchoice/" id="addchoice-form">
+                        <div class="form-group">
+                            <label for="actionchoicetype_id">Typ</label>
+                            <select id="actionchoicetype_id" name="actionchoicetype_id" class="form-select">`
+                                <% admindata.actionchoicetypes.forEach(type => { %>
+                                    <option value="<%=type.id%>"><%=type.type%></option>
+                                <% }) %>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Namn</label>
+                            <input class="form-control" type="text" name="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="name_en">Name</label>
+                            <input class="form-control" type="text" name="name_en">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Beskrivning</label>
+                            <input class="form-control" type="text" name="description">
+                        </div>
+                        <div class="form-group">
+                            <label for="description_en">Description</label>
+                            <input class="form-control" type="text" name="description_en">
+                        </div>
+                        <div class="form-group">
+                            <label for="image_id">Bild</label>
+                            <select id="image_id" name="image_id" class="form-select">`
+                                <% admindata.images.forEach(image => { %>
+                                    <option value="<%=image.id%>"><%=image.name%></option>
+                                <% }) %>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sortorder">Sortering</label>
+                            <input class="form-control" type="text" name="sortorder">
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="db_create(this, 'addchoice-form', 'POST', 'choices-select-list', '/dialog/api/v1/action/parentid/actionchoices', 'add-actionchoice-modal', true, 'action_id', 'dialog-choices-action_id')" id="btnAddChoiceSubmit">Lägg till</button>
+                        <button type="button" class="btn btn-danger float-right" data-bs-dismiss="modal">Avbryt</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="add-subactionchoice-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Skapa under-alternativ</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/dialog/api/v1/subactionchoice/" id="addsubchoice-form">
+                        <div class="form-group">
+                            <label for="actionchoicetype_id">Typ</label>
+                            <select id="actionchoicetype_id" name="actionchoicetype_id" class="form-select">`
+                                <% admindata.actionchoicetypes.forEach(type => { %>
+                                    <option value="<%=type.id%>"><%=type.type%></option>
+                                <% }) %>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Namn</label>
+                            <input class="form-control" type="text" name="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="name_en">Name</label>
+                            <input class="form-control" type="text" name="name_en">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Beskrivning</label>
+                            <input class="form-control" type="text" name="description">
+                        </div>
+                        <div class="form-group">
+                            <label for="description_en">Description</label>
+                            <input class="form-control" type="text" name="description_en">
+                        </div>
+                        <div class="form-group">
+                            <label for="image_id">Bild</label>
+                            <select id="image_id" name="image_id" class="form-select">`
+                                <% admindata.images.forEach(image => { %>
+                                    <option value="<%=image.id%>"><%=image.name%></option>
+                                <% }) %>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sortorder">Sortering</label>
+                            <input class="form-control" type="text" name="sortorder">
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="db_create(this, 'addsubchoice-form', 'POST', 'subchoices-select-list', '/dialog/api/v1/actionchoice/parentid/subactionchoices', 'add-subactionchoice-modal', true, 'actionchoice_id', 'dialog-subchoices-actionchoice_id')" id="btnAddSubChoiceSubmit">Lägg till</button>
+                        <button type="button" class="btn btn-danger float-right" data-bs-dismiss="modal">Avbryt</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -566,335 +328,627 @@
 </body>
     <%- include('../partials/adminscript'); %>
     <script>
+        var images
         jscolor.presets.default = {
             format:'rgba'
         };
 
         $(document).ready(function(){
-            
+            //Definiera javascriptobject med data från EJS
+            images = JSON.parse(`<%- JSON.stringify(admindata.images)%>`)
+
+            $('#events-select-list').on('change', function() {
+                getevent_($(this).val());
+            });
+            $('#actions-select-list').on('change', function() {
+                getaction_($(this).val());
+            });
+            $('#choices-select-list').on('change', function() {
+                getchoice_($(this).val());
+            });
+            $('#subchoices-select-list').on('change', function() {
+                getsubchoice_($(this).val());
+            });
+
+            getselectcontent("events-select-list", "/dialog/api/v1/events")
         });
-    
-        function updateDialogEvent(event_id) {
-            var formData = new FormData();
-            formData.append("event_id", event_id);
-            formData.append("name", document.getElementById("event-" + event_id + "-name").value);
-            formData.append("name_en", document.getElementById("event-" + event_id + "-name_en").value);
-            formData.append("description", document.getElementById("event-" + event_id + "-description").value);
-            formData.append("description_en", document.getElementById("event-" + event_id + "-description_en").value);
-            formData.append("startdate", document.getElementById("event-" + event_id + "-startdate").value);
-            formData.append("enddate", document.getElementById("event-" + event_id + "-enddate").value);
-            formData.append("resultstitle", document.getElementById("event-" + event_id + "-resultstitle").value);
-            formData.append("resultstitle_en", document.getElementById("event-" + event_id + "-resultstitle_en").value);
-            formData.append("resultssubtitle", document.getElementById("event-" + event_id + "-resultssubtitle").value);
-            formData.append("resultssubtitle_en", document.getElementById("event-" + event_id + "-resultssubtitle_en").value);
-    
-            var xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                if (xhttp.status == 401) { 
-                }
-    
-                if (xhttp.status == 400) {
-                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
-                }
-                
-                if (xhttp.status == 200) {
-                    alert('Event uppdaterat', 'success', 'createEventPlaceholder')
-                }
-            };
-            xhttp.open("PUT", "/dialog/api/v1/event/" + event_id, true);
-            xhttp.send(formData);
+
+        function resetForm(selector) 
+        {
+            $(selector)[0].reset();
         }
 
-        function createDialogEvent() {
-            var formData = new FormData();
-            formData.append("name", document.getElementById('new_event_name').value);
-            formData.append("name_en", document.getElementById('new_event_name_en').value);
-            formData.append("description", document.getElementById('new_event_description').value);
-            formData.append("description_en", document.getElementById('new_event_description_en').value);
-            formData.append("startdate", document.getElementById('new_event_startdate').value);
-            formData.append("enddate", document.getElementById('new_event_enddate').value);
-            formData.append("resultstitle", document.getElementById("new_event_resultstitle").value);
-            formData.append("resultstitle_en", document.getElementById("new_event_resultstitle_en").value);
-            formData.append("resultssubtitle", document.getElementById("new_event_resultssubtitle").value);
-            formData.append("resultssubtitle_en", document.getElementById("new_event_resultssubtitle_en").value);
-            console.log(formData)
+        function getselectcontent(listselector, url) {
+            $.ajax({
+                type: "GET",
+                //url: '/dialog/api/v1/events',
+                url: url,
+                success: function (response) {
+                    var html = "";
+                    selecthtml = "";
+                    if(response.length) {
+                        selecthtml += `<option value="0" selected>Inget valt</option>`
+                        $.each(response, function(key,value) {
+                            selecthtml += `<option value="${value.id}">${value.name}</option>`
+                        })
+                    } else {
+                        selecthtml += '<div class="alert alert-warning">';
+                        selecthtml += 'No records found!';
+                        selecthtml += '</div>';
+                    }
+                    $("#" + listselector).html(selecthtml);
+                    //$("#events-select-list").html(selecthtml);
+                }
+            });
+        }
+        
+        function getevent_(event_id) {
+            //clear boxes
+            $("#action-edit").html('');
+            $("#actions-select-list").html('');
+            $("#dialog-actions-event_name").html('');
+            $("#dialog-actions-event_id").val('');
+            $("#choice-edit").html('');
+            $("#choices-select-list").html('');
+            $("#dialog-choices-action_name").html('');
+            $("#dialog-choices-action_id").val('');
+            $("#subchoice-edit").html('');
+            $("#subchoices-select-list").html('');
+            $("#dialog-subchoices-actionchoice_name").html('');
+            $("#dialog-subchoices-actionchoice_id").val('');
 
-            var xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                if (xhttp.status == 401) { 
-                }
-    
-                if (xhttp.status == 400) {
-                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
-                }
-                
-                if (xhttp.status == 200) {
-                    location.reload(true)
-                    alert('Event skapat', 'success', 'createEventPlaceholder')
-                }
-            };
-            xhttp.open("POST", "/dialog/api/v1/event", true);
-            xhttp.send(formData);
+            if (event_id === "0") {
+                $("#event-edit").html('');
+                $("#dialog-actions-event_id").val('');
+                $("#dialog-actions-event_name").html('')
+            } else {
+                $.ajax({
+                        type: "GET",
+                        url: '/dialog/api/v1/event/' + event_id,
+                        beforeSend: function () {
+                        },
+                        success: function (response) {
+                            /*
+                            var html = `<form action="/dialog/api/v1/event/" id="editevent-form">`
+                            for(i=0 ; i< response.length ; i++) {
+                                for (var colheader in response[i]) {
+                                    if (i === 0) {
+                                        //id i första kolumnen
+                                       console.log(colheader)
+                                       var html = `<input class="form-control" type="hidden" name="${colheader}" value="${response[i][colheader]}">`
+                                    } else {
+                                        var html = `<div class="form-group">
+                                                        <label for="${colheader}">Namn</label>
+                                                        <input class="form-control" type="text" name="${colheader}" value="${response[i][colheader]}">
+                                                    </div>`
+                                    }
+                                    
+                                    console.log(response[i][colheader])
+                                }
+                            }
+                            */
+                            response=response[0]
+                            console.log(response)
+                            
+                            startdate_locale = new Date(response.startdate).toLocaleDateString()
+                            enddate_locale = new Date(response.enddate).toLocaleDateString()
+                            var html = `
+                                    <form action="/dialog/api/v1/event/" id="editevent-form">
+                                    <input class="form-control" type="hidden" name="id">
+                                    <div class="form-group">
+                                        <label for="email">Namn</label>
+                                        <input class="form-control" type="text" name="name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="first_name">Name</label>
+                                        <input class="form-control" type="text" name="name_en">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="last_name">Beskrivning</label>
+                                        <textarea class="form-control" type="text" name="description" row="3"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="address">Description</label>
+                                        <textarea class="form-control" type="text" name="description_en" row="3"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Startdatum</label>
+                                        <input class="form-control" type="date" max="2999-12-31" name="startdate">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="first_name">Slutdatum</label>
+                                        <input class="form-control" type="date" max="2999-12-31" name="enddate">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="last_name">Resultat rubrik</label>
+                                        <input class="form-control" type="text" name="resultstitle">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Results title</label>
+                                        <input class="form-control" type="text" name="resultstitle_en">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="first_name">Resultat underrubrik</label>
+                                        <input class="form-control" type="text" name="resultssubtitle">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="last_name">Results subtitle</label>
+                                        <input class="form-control" type="text" name="resultssubtitle_en">
+                                    </div>
+                                    <button type="button" class="btn btn-primary float-right" onclick="db_update(this, 'editevent-form', 'PUT', 'events-select-list', '/dialog/api/v1/events')" id="btnUpdateEventSubmit">Update</button>
+                                    <button type="button" class="btn btn-danger float-right" onclick="deleteevent(this)" id="btnDeleteEventSubmit">Delete</button>
+                                </form>
+                            `
+                            $('#event-edit').html(html);
+                            $("#editevent-form [name=\"id\"]").val(response.id);
+                            $("#editevent-form [name=\"name\"]").val(response.name);
+                            $("#editevent-form [name=\"name_en\"]").val(response.name_en);
+                            $("#editevent-form [name=\"description\"]").val(response.description);
+                            $("#editevent-form [name=\"description_en\"]").val(response.description_en);
+                            $("#editevent-form [name=\"description\"]").val(response.description);
+                            $("#editevent-form [name=\"startdate\"]").val(startdate_locale);
+                            $("#editevent-form [name=\"enddate\"]").val(enddate_locale);
+                            $("#editevent-form [name=\"resultstitle\"]").val(response.resultstitle);
+                            $("#editevent-form [name=\"resultstitle_en\"]").val(response.resultstitle_en);
+                            $("#editevent-form [name=\"resultssubtitle\"]").val(response.resultssubtitle);
+                            $("#editevent-form [name=\"resultssubtitle_en\"]").val(response.resultssubtitle_en);
+                            
+                            $("#dialog-actions-event_id").val(event_id);
+                            $("#dialog-actions-event_name").html(response.name)
+                            getselectcontent("actions-select-list", "/dialog/api/v1/event/" + event_id + "/actions")
+                        }
+                });
+            }
         }
 
-        function deleteDialogEvent(event_id) {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                if (xhttp.status == 401) { 
-                }
-    
-                if (xhttp.status == 400) {
-                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
-                }
-                
-                if (xhttp.status == 200) {
-                    location.reload(true)
-                    alert('Event borttaget', 'success', 'createEventPlaceholder')
-                }
-            };
-            xhttp.open("DELETE", "/dialog/api/v1/event/" + event_id, true);
-            xhttp.send();
-        }
-    
-        function updateDialogAction(action_id) {
-            var formData = new FormData();
-            formData.append("action_id", action_id);
-            formData.append("event_id", $('#action-' + action_id + '-event_id :selected').attr('value'));
-            formData.append("description_sv", document.getElementById("action-" + action_id + "-description_sv").value);
-            formData.append("description_en", document.getElementById("action-" + action_id + "-description_en").value);
-            formData.append("image_id", document.getElementById("action-" + action_id + "-image_id").value);
-            formData.append("rgbacolor", document.getElementById("action-" + action_id + "-rgbacolor").value);
-    
-            var xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                if (xhttp.status == 401) { 
-                }
-    
-                if (xhttp.status == 400) {
-                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
-                }
-                
-                if (xhttp.status == 200) {
-                    location.reload(true)
-                    alert('Action uppdaterad', 'success', 'createEventPlaceholder')
-                }
-            };
-            xhttp.open("PUT", "/dialog/api/v1/action/" + action_id, true);
-            xhttp.send(formData);
-        }
-
-        function createDialogAction() {
-            var formData = new FormData();
-            formData.append("event_id", $('#new_action_event_id :selected').attr('value'));
-            formData.append("description_sv", document.getElementById("new_action_description_sv").value);
-            formData.append("description_en", document.getElementById("new_action_description_en").value);
-            formData.append("image_id", document.getElementById("new_action_image_id").value);
-            formData.append("rgbacolor", document.getElementById("new_action_rgbacolor").value);
-
-            var xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                if (xhttp.status == 401) { 
-                }
-    
-                if (xhttp.status == 400) {
-                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
-                }
-                
-                if (xhttp.status == 200) {
-                    location.reload(true)
-                    alert('Event skapat', 'success', 'createEventPlaceholder')
-                }
-            };
-            xhttp.open("POST", "/dialog/api/v1/action", true);
-            xhttp.send(formData);
-        }
-
-        function deleteDialogAction(action_id) {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                if (xhttp.status == 401) { 
-                }
-    
-                if (xhttp.status == 400) {
-                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
-                }
-                
-                if (xhttp.status == 200) {
-                    location.reload(true)
-                    alert('Event borttaget', 'success', 'createEventPlaceholder')
-                }
-            };
-            xhttp.open("DELETE", "/dialog/api/v1/action/" + action_id, true);
-            xhttp.send();
-        }
-    
-        function updateDialogActionChoice(actionchoice_id) {
-            var formData = new FormData();
-            formData.append("actionchoice_id", actionchoice_id);
-            formData.append("action_id", document.getElementById("actionchoice-" + actionchoice_id + "-action_id").value);
-            formData.append("actionchoicetype_id", $('#actionchoice-' + actionchoice_id + '-actionchoicetype_id :selected').attr('value'));
-            formData.append("name", document.getElementById("actionchoice-" + actionchoice_id + "-name").value);
-            formData.append("name_en", document.getElementById("actionchoice-" + actionchoice_id + "-name_en").value);
-            formData.append("description", document.getElementById("actionchoice-" + actionchoice_id + "-description").value);
-            formData.append("description_en", document.getElementById("actionchoice-" + actionchoice_id + "-description_en").value);
-            formData.append("image_id", document.getElementById("actionchoice-" + actionchoice_id + "-image_id").value);
-            formData.append("sortorder", document.getElementById("actionchoice-" + actionchoice_id + "-sortorder").value);
-    
-            var xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                if (xhttp.status == 401) { 
-                }
-    
-                if (xhttp.status == 400) {
-                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
-                }
-                
-                if (xhttp.status == 200) {
-                    location.reload(true)
-                    alert('Kategorival uppdaterat', 'success', 'createEventPlaceholder')
-                }
-            };
-            xhttp.open("PUT", "/dialog/api/v1/actionchoice/" + actionchoice_id, true);
-            xhttp.send(formData);
+        function getaction_(action_id) {
+            $("#choice-edit").html('');
+            $("#choices-select-list").html('');
+            $("#dialog-choices-action_name").html('');
+            $("#dialog-choices-action_id").val('');
+            $("#subchoice-edit").html('');
+            $("#subchoices-select-list").html('');
+            $("#dialog-subchoices-actionchoice_name").html('');
+            $("#dialog-subchoices-actionchoice_id").val('');
+            if (action_id === "0") {
+                $("#action-edit").html('');
+            } else {
+                $.ajax({
+                    type: "GET",
+                    url: '/dialog/api/v1/action/' + action_id,
+                    success: function (response) {
+                        response=response[0];
+                        var html = `
+                            <form action="/dialog/api/v1/action/" id="editaction-form">
+                                <input class="form-control" type="hidden" name="id">
+                                <input class="form-control" type="hidden" name="event_id">
+                                <div class="form-group">
+                                        <select id="image_id" name="image_id" class="form-select">`
+                                                images.forEach(image => {
+                                                    console.log(image.name)
+                                                    html += `<option ${image.id==response.image_id ? 'selected' : ''} value="${image.id}">${image.name}</option>`
+                                                })
+                                html += `</select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Namn</label>
+                                    <input class="form-control" type="text" name="name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="name_en">Name</label>
+                                    <input class="form-control" type="text" name="name_en">
+                                </div>
+                                <div class="form-group">
+                                    <label for="description">Beskrivning</label>
+                                    <input class="form-control" type="text" name="description">
+                                </div>
+                                <div class="form-group">
+                                    <label for="description_en">Description</label>
+                                    <input class="form-control" type="text" name="description_en">
+                                </div>
+                                <!--div class="form-group">
+                                    <label for="image_id">Bild</label>
+                                    <input class="form-control" type="text" name="image_id">
+                                </div-->
+                                <div class="form-group">
+                                    <label for="rgbacolor">Färg</label>
+                                    <input data-jscolor="{alpha:${parseFloat(response.rgbacolor.split(',')[3])}}" class="form-control" type="text" id="action-${response.id}-rgbacolor" name="rgbacolor" value="${response.rgbacolor}">
+                                </div>
+                                <button type="button" class="btn btn-primary float-right" onclick="db_update(this, 'editaction-form', 'PUT', 'actions-select-list', '/dialog/api/v1/event/parentid/actions', true, 'event_id', 'dialog-actions-event_id')" id="btnUpdateActionSubmit">Update</button>
+                                <button type="button" class="btn btn-danger float-right" onclick="deleteaction(this)" id="btnDeleteActionSubmit">Delete</button>
+                            </form>
+                        `
+                        $('#action-edit').html(html);
+                        jscolor.install()
+                        $("#editaction-form [name=\"id\"]").val(response.id);
+                        $("#editaction-form [name=\"event_id\"]").val(response.event_id);
+                        $("#editaction-form [name=\"name\"]").val(response.name);
+                        $("#editaction-form [name=\"name_en\"]").val(response.name_en);
+                        $("#editaction-form [name=\"description\"]").val(response.description);
+                        $("#editaction-form [name=\"description_en\"]").val(response.description_en);
+                        
+                        $("#dialog-choices-action_id").val(action_id);
+                        $("#dialog-choices-action_name").html(response.name)
+                        getselectcontent("choices-select-list", "/dialog/api/v1/action/" + action_id + "/actionchoices")
+                    }
+                });
+            }
         }
 
-        function createDialogActionChoice() {
-            var formData = new FormData();
-            formData.append("action_id", document.getElementById("new_actionchoice_action_id").value);
-            formData.append("actionchoicetype_id", $('#new_actionchoice_actionchoicetype_id :selected').attr('value'));
-            formData.append("name", document.getElementById("new_actionchoice_name").value);
-            formData.append("name_en", document.getElementById("new_actionchoice_name_en").value);
-            formData.append("description", document.getElementById("new_actionchoice_description").value);
-            formData.append("description_en", document.getElementById("new_actionchoice_description_en").value);
-            formData.append("image_id", document.getElementById("new_actionchoice_image_id").value);
-            formData.append("sortorder", document.getElementById("new_actionchoice_sortorder").value);
+        function getchoice_(actionchoice_id) {
+            $("#subchoice-edit").html('');
+            $("#subchoices-select-list").html('');
+            $("#dialog-subchoices-actionchoice_name").html('');
+            $("#dialog-subchoices-actionchoice_id").val('');
+            
+            if (actionchoice_id === "0") {
+                $("#choice-edit").html('');
+            } else {
+                $.ajax({
+                    type: "GET",
+                    url: '/dialog/api/v1/actionchoice/' + actionchoice_id,
+                    success: function (response) {
+                        response=response[0];
+                        var html = `
+                            <form action="/dialog/api/v1/actionchoice/" id="editchoice-form">
+                                <input class="form-control" type="hidden" name="id">
+                                <input class="form-control" type="hidden" name="action_id">
+                                <!--div class="form-select">
+                                    <div class="select-wrapper">
+                                        <select id="action-event_id" class="form-control">
+                                        
+                                        </select>
+                                    </div>
+                                </div-->
+                                <div class="form-group">
+                                    <label for="name">Namn</label>
+                                    <input class="form-control" type="text" name="name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="name_en">Name</label>
+                                    <input class="form-control" type="text" name="name_en">
+                                </div>
+                                <div class="form-group">
+                                    <label for="description">Beskrivning</label>
+                                    <input class="form-control" type="text" name="description">
+                                </div>
+                                <div class="form-group">
+                                    <label for="description_en">Description</label>
+                                    <input class="form-control" type="text" name="description_en">
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Typ</label>
+                                    <input class="form-control" type="text" name="actionchoicetype_id">
+                                </div>
+                                <div class="form-group">
+                                    <label for="image_id">Bild</label>
+                                    <input class="form-control" type="text" name="image_id">
+                                </div>
+                                <div class="form-group">
+                                    <label for="sortorder">Sortering</label>
+                                    <input class="form-control" type="text" name="sortorder">
+                                </div>
+                                <button type="button" class="btn btn-primary float-right" onclick="db_update(this, 'editchoice-form', 'PUT', 'choices-select-list', '/dialog/api/v1/action/parentid/actionchoices', true, 'action_id', 'dialog-choices-action_id')" id="btnUpdateActionChoiceSubmit">Update</button>
+                                <button type="button" class="btn btn-danger float-right" onclick="deletechoice(this)" id="btnDeleteActionChoiceSubmit">Delete</button>
+                            </form>
+                        `
+                        $('#choice-edit').html(html);
+                        $("#editchoice-form [name=\"id\"]").val(response.id);
+                        $("#editchoice-form [name=\"action_id\"]").val(response.action_id);
+                        $("#editchoice-form [name=\"actionchoicetype_id\"]").val(response.actionchoicetype_id);
+                        $("#editchoice-form [name=\"name\"]").val(response.name);
+                        $("#editchoice-form [name=\"name_en\"]").val(response.name_en);
+                        $("#editchoice-form [name=\"description\"]").val(response.description);
+                        $("#editchoice-form [name=\"description_en\"]").val(response.description_en);
+                        $("#editchoice-form [name=\"image_id\"]").val(response.image_id);
+                        $("#editchoice-form [name=\"sortorder\"]").val(response.sortorder);
 
-            var xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                if (xhttp.status == 401) { 
-                }
-    
-                if (xhttp.status == 400) {
-                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
-                }
-                
-                if (xhttp.status == 200) {
-                    location.reload(true)
-                    alert('Event skapat', 'success', 'createEventPlaceholder')
-                }
-            };
-            xhttp.open("POST", "/dialog/api/v1/actionchoice", true);
-            xhttp.send(formData);
+                        $("#dialog-subchoices-actionchoice_id").val(actionchoice_id);
+                        $("#dialog-subchoices-actionchoice_name").html(response.name)
+                        getselectcontent("subchoices-select-list", "/dialog/api/v1/actionchoice/" + actionchoice_id + "/subactionchoices")
+                    }
+                });
+            }
         }
 
-        function deleteDialogActionChoice(actionchoice_id) {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                if (xhttp.status == 401) { 
-                }
-    
-                if (xhttp.status == 400) {
-                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
-                }
-                
-                if (xhttp.status == 200) {
-                    location.reload(true)
-                    alert('Event borttaget', 'success', 'createEventPlaceholder')
-                }
-            };
-            xhttp.open("DELETE", "/dialog/api/v1/actionchoice/" + actionchoice_id, true);
-            xhttp.send();
+        function getsubchoice_(subactionchoice_id) {
+            if (subactionchoice_id === "0") {
+                $("#subchoice-edit").html('');
+            } else {
+                $.ajax({
+                    type: "GET",
+                    url: '/dialog/api/v1/subactionchoice/' + subactionchoice_id,
+                    success: function (response) {
+                        response=response[0];
+                        var html = `
+                            <form action="/dialog/api/v1/subactionchoice/" id="editsubchoice-form">
+                                <input class="form-control" type="hidden" name="id">
+                                <input class="form-control" type="hidden" name="actionchoice_id">
+                                <!--div class="form-select">
+                                    <div class="select-wrapper">
+                                        <select id="action-event_id" class="form-control">
+                                        
+                                        </select>
+                                    </div>
+                                </div-->
+                                <div class="form-group">
+                                    <label for="name">Namn</label>
+                                    <input class="form-control" type="text" name="name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="name_en">Name</label>
+                                    <input class="form-control" type="text" name="name_en">
+                                </div>
+                                <div class="form-group">
+                                    <label for="description">Beskrivning</label>
+                                    <input class="form-control" type="text" name="description">
+                                </div>
+                                <div class="form-group">
+                                    <label for="description_en">Description</label>
+                                    <input class="form-control" type="text" name="description_en">
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Typ</label>
+                                    <input class="form-control" type="text" name="actionchoicetype_id">
+                                </div>
+                                <div class="form-group">
+                                    <label for="image_id">Bild</label>
+                                    <input class="form-control" type="text" name="image_id">
+                                </div>
+                                <div class="form-group">
+                                    <label for="sortorder">Sortering</label>
+                                    <input class="form-control" type="text" name="sortorder">
+                                </div>
+                                <button type="button" class="btn btn-primary float-right" onclick="db_update(this, 'editsubchoice-form', 'PUT', 'subchoices-select-list', '/dialog/api/v1/actionchoice/parentid/subactionchoices', true, 'actionchoice_id', 'dialog-subchoices-actionchoice_id')" id="btnUpdateSubActionChoiceSubmit">Update</button>
+                                <button type="button" class="btn btn-danger float-right" onclick="deletesubchoice(this)" id="btnDeleteSubActionChoiceSubmit">Delete</button>
+                            </form>
+                        `
+                        $('#subchoice-edit').html(html);
+                        $("#editsubchoice-form [name=\"id\"]").val(response.id);
+                        $("#editsubchoice-form [name=\"actionchoice_id\"]").val(response.actionchoice_id);
+                        $("#editsubchoice-form [name=\"actionchoicetype_id\"]").val(response.actionchoicetype_id);
+                        $("#editsubchoice-form [name=\"name\"]").val(response.name);
+                        $("#editsubchoice-form [name=\"name_en\"]").val(response.name_en);
+                        $("#editsubchoice-form [name=\"description\"]").val(response.description);
+                        $("#editsubchoice-form [name=\"description_en\"]").val(response.description_en);
+                        $("#editsubchoice-form [name=\"image_id\"]").val(response.image_id);
+                        $("#editsubchoice-form [name=\"sortorder\"]").val(response.sortorder);
+                    }
+                });
+            }
         }
-    
-        function updateDialogSubActionChoice(subactionchoice_id) {
-            var formData = new FormData();
-            formData.append("actionchoice_id", document.getElementById("subactionchoice-" + subactionchoice_id + "-actionchoice_id").value);
-            formData.append("actionchoicetype_id", $('#subactionchoice-' + subactionchoice_id + '-actionchoicetype_id :selected').attr('value'));
-            formData.append("name", document.getElementById("subactionchoice-" + subactionchoice_id + "-name").value);
-            formData.append("name_en", document.getElementById("subactionchoice-" + subactionchoice_id + "-name_en").value);
-            formData.append("description", document.getElementById("subactionchoice-" + subactionchoice_id + "-description").value);
-            formData.append("description_en", document.getElementById("subactionchoice-" + subactionchoice_id + "-description_en").value);
-            formData.append("image_id", document.getElementById("subactionchoice-" + subactionchoice_id + "-image_id").value);
-            formData.append("sortorder", document.getElementById("subactionchoice-" + subactionchoice_id + "-sortorder").value);
-    
-            var xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                if (xhttp.status == 401) { 
+        
+        function db_create(thiz, formselector, requesttype, selectlistselector, selectlisturl, modalselector, hasparentid, parentid_name, parentid_selector ) {
+            var $this           = $(thiz); 
+            var $caption        = $this.html();
+            var form            = "#" + formselector;
+            var formData        = $(form).serializeArray();
+            var route           = $(form).attr('action');
+            if (hasparentid==true) {
+                selectlisturl = selectlisturl.replace("parentid", $("#" + parentid_selector).val());
+                formData.push({name: parentid_name, value: $("#" + parentid_selector).val()});
+            }
+            console.log(route)
+            $.ajax({
+                type: requesttype,
+                url: route,
+                data: formData,
+                beforeSend: function () {
+                    $this.attr('disabled', true).html("Processing...");
+                },
+                success: function (response) {
+                    $this.attr('disabled', false).html($caption);
+                    getselectcontent(selectlistselector, selectlisturl)
+
+                    alert(response);
+                    resetForm(form);
+                    $('#' + modalselector).modal('toggle');
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
                 }
-    
-                if (xhttp.status == 400) {
-                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
-                }
-                
-                if (xhttp.status == 200) {
-                    location.reload(true)
-                    alert('Kategorival uppdaterat', 'success', 'createEventPlaceholder')
-                }
-            };
-            xhttp.open("PUT", "/dialog/api/v1/subactionchoice/" + subactionchoice_id, true);
-            xhttp.send(formData);
+            });
         }
 
-        function createDialogSubActionChoice() {
-            var formData = new FormData();
-            formData.append("actionchoice_id", document.getElementById("new_subactionchoice_actionchoice_id").value);
-            formData.append("actionchoicetype_id", $('#new_subactionchoice_actionchoicetype_id :selected').attr('value'));
-            formData.append("name", document.getElementById("new_subactionchoice_name").value);
-            formData.append("name_en", document.getElementById("new_subactionchoice_name_en").value);
-            formData.append("description", document.getElementById("new_subactionchoice_description").value);
-            formData.append("description_en", document.getElementById("new_subactionchoice_description_en").value);
-            formData.append("image_id", document.getElementById("new_subactionchoice_image_id").value);
-            formData.append("sortorder", document.getElementById("new_subactionchoice_sortorder").value);
+        function db_update(thiz, formselector, requesttype, selectlistselector, selectlisturl, hasparentid, parentid_name, parentid_selector) {
+            var $this           = $(thiz);
+            var $caption        = $this.html();
+            //var form            = "#editevent-form";
+            var form            = "#" + formselector;
+            var formData        = $(form).serializeArray();
+            var route           = $(form).attr('action');
 
-            var xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                if (xhttp.status == 401) { 
+            if (hasparentid==true) {
+                selectlisturl = selectlisturl.replace("parentid", $("#" + parentid_selector).val());
+            }
+
+            $.ajax({
+                type: requesttype,
+                url: route + formData[0].value,
+                data: formData,
+                beforeSend: function () {
+                    $this.attr('disabled', true).html("Processing...");
+                },
+                success: function (response) {
+                    $this.attr('disabled', false).html($caption);
+                    //getselectcontent(selectlistselector, selectlisturl)
+                    alert(response);
+                    //$(form).html('')
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
                 }
-    
-                if (xhttp.status == 400) {
-                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
-                }
-                
-                if (xhttp.status == 200) {
-                    location.reload(true)
-                    alert('Event skapat', 'success', 'createEventPlaceholder')
-                }
-            };
-            xhttp.open("POST", "/dialog/api/v1/subactionchoice", true);
-            xhttp.send(formData);
+            });
         }
 
-        function deleteDialogSubActionChoice(subactionchoice_id) {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                if (xhttp.status == 401) { 
+        function deleteevent(thiz) {
+            var $this = $(thiz);
+            var $caption = $this.html();
+            var form = "#editevent-form";
+            var formData = $(form).serializeArray();
+            var route = $(form).attr('action');
+            $.ajax({
+                type: "DELETE",
+                url: route + formData[0].value,
+                beforeSend: function () {
+                    $this.attr('disabled', true).html("Processing...");
+                },
+                success: function (response) {
+                    $this.attr('disabled', false).html($caption);
+                    $("#event-edit").html('');
+                    getselectcontent("events-select-list", "/dialog/api/v1/events")
+                    alert(response);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
                 }
-    
-                if (xhttp.status == 400) {
-                    alert('Fel! ' + xhttp.response, 'danger', 'createEventPlaceholder')
-                }
-                
-                if (xhttp.status == 200) {
-                    location.reload(true)
-                    alert('Event borttaget', 'success', 'createEventPlaceholder')
-                }
-            };
-            xhttp.open("DELETE", "/dialog/api/v1/subactionchoice/" + subactionchoice_id, true);
-            xhttp.send();
+            });
         }
-    
 
-        function subactions(action_id) {
-            $('#subactionsModal').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Hämtar...');
-            var xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                if (xhttp.status == 401) {
-                    $('#subactionsModal').html('Fel vid hämtning')
+        function updateaction(thiz) {
+            var $this           = $(thiz); 
+            var $caption        = $this.html();
+            var form            = "#editaction-form";
+            var formData        = $(form).serializeArray();
+            var route           = $(form).attr('action');
+
+            $.ajax({
+                type: "PUT",
+                url: route + formData[0].value,
+                data: formData,
+                beforeSend: function () {
+                    $this.attr('disabled', true).html("Processing...");
+                },
+                success: function (response) {
+                    $this.attr('disabled', false).html($caption);
+
+                    alert(response);
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+
                 }
-                $('#subactionsModal').html(xhttp.response)
-            };
-            xhttp.open("GET", "/dialog/api/v1/event/actionsDT/" + event_id, true);
-            xhttp.send();
+            });
+        }
+
+        function deleteaction(thiz) {
+            var $this = $(thiz);
+            var $caption = $this.html();
+            var form = "#editaction-form";
+            var formData = $(form).serializeArray();
+            var route = $(form).attr('action');
+            $.ajax({
+                type: "DELETE",
+                url: route + formData[0].value,
+                beforeSend: function () {
+                    $this.attr('disabled', true).html("Processing...");
+                },
+                success: function (response) {
+                    $this.attr('disabled', false).html($caption);
+                    $("#action-edit").html('');
+                    alert(response);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                }
+            });
+        }
+
+        function updatechoice(thiz) {
+            var $this           = $(thiz); 
+            var $caption        = $this.html();
+            var form            = "#editchoice-form";
+            var formData        = $(form).serializeArray();
+            var route           = $(form).attr('action');
+
+            $.ajax({
+                type: "PUT",
+                url: route + formData[0].value,
+                data: formData,
+                beforeSend: function () {
+                    $this.attr('disabled', true).html("Processing...");
+                },
+                success: function (response) {
+                    $this.attr('disabled', false).html($caption);
+
+                    alert(response);
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                }
+            });
+        }
+
+        function deletechoice(thiz) {
+            var $this = $(thiz);
+            var $caption = $this.html();
+            var form = "#editchoice-form";
+            var formData = $(form).serializeArray();
+            var route = $(form).attr('action');
+            $.ajax({
+                type: "DELETE",
+                url: route + formData[0].value,
+                beforeSend: function () {
+                    $this.attr('disabled', true).html("Processing...");
+                },
+                success: function (response) {
+                    $this.attr('disabled', false).html($caption);
+                    $("#choice-edit").html('');
+                    alert(response);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                }
+            });
+        }
+
+        function updatesubchoice(thiz) {
+            var $this           = $(thiz); 
+            var $caption        = $this.html();
+            var form            = "#editsubchoice-form";
+            var formData        = $(form).serializeArray();
+            var route           = $(form).attr('action');
+
+            $.ajax({
+                type: "PUT",
+                url: route + formData[0].value,
+                data: formData,
+                beforeSend: function () {
+                    $this.attr('disabled', true).html("Processing...");
+                },
+                success: function (response) {
+                    $this.attr('disabled', false).html($caption);
+
+                    alert(response);
+
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $this.attr('disabled', false).html($caption);
+                    alert(errorThrown + ": " + XMLHttpRequest.responseText)
+                }
+            });
+        }
+
+        function deletesubchoice(thiz) {
+            var $this = $(thiz);
+            var $caption = $this.html();
+            var form = "#editsubchoice-form";
+            var formData = $(form).serializeArray();
+            var route = $(form).attr('action');
+            $.ajax({
+                type: "DELETE",
+                url: route + formData[0].value,
+                beforeSend: function () {
+                    $this.attr('disabled', true).html("Processing...");
+                },
+                success: function (response) {
+                    $this.attr('disabled', false).html($caption);
+                    $("#subchoice-edit").html('');
+                    alert(response.message);
+                    getselectcontent("subchoices-select-list", "/dialog/api/v1/actionchoice/" + $("#dialog-subchoices-actionchoice_id").val() + "/subactionchoices")
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $this.attr('disabled', false).html($caption);
+                    alert(errorThrown + ": " + XMLHttpRequest.responseText)
+                }
+            });
         }
 
         function OnColorChanged(selectedColor, input) {

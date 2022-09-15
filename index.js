@@ -105,11 +105,21 @@ apiRoutes.get("/results/:event_id", eventController.generateChoiceResultsApp)
 apiRoutes.get("/stats", eventController.generateStatsApp)
 
 // Hämta KTH-skolor
-apiRoutes.get(process.env.API_PATH + "/kthschools",eventController.getkthschools)
+apiRoutes.get(process.env.API_PATH + "/kthschoolsapi",eventController.getkthschools)
+
+// Hämta KTH-skolor
+apiRoutes.get(process.env.API_PATH + "/kthschools",eventController.readKthschools)
+
+//Hämta alla events
+apiRoutes.get(process.env.API_PATH + "/events",eventController.readAllEvents)
+
+//Hämta ett event
+apiRoutes.get(process.env.API_PATH + "/event/:id",eventController.readEvent)
 
 // Skapa ett event
 apiRoutes.post(process.env.API_PATH + "/event", VerifyToken, async function (req, res, next) {
     try {
+        console.log(req.body)
         let name = req.body.name
         let name_en = req.body.name_en
         let description = req.body.description
@@ -167,16 +177,28 @@ apiRoutes.delete(process.env.API_PATH + "/event/:id", VerifyToken, async functio
     } 
 });
 
-// Skapa action
+//Hämta alla actions
+apiRoutes.get(process.env.API_PATH + "/actions",eventController.readAllActions)
+
+//Hämta alla actions för event
+apiRoutes.get(process.env.API_PATH + "/event/:id/actions",eventController.readAllEventActions)
+
+//Hämta action
+apiRoutes.get(process.env.API_PATH + "/action/:id",eventController.readAction)
+
+//Skapa action
 apiRoutes.post(process.env.API_PATH + "/action", VerifyToken, async function (req, res, next) {
     try {
         let event_id = req.body.event_id
-        let description_sv = req.body.description_sv
+        let name = req.body.name
+        let name_en = req.body.name_en
+        let description = req.body.description
         let description_en = req.body.description_en
         let image_id = req.body.image_id
         let rgbacolor = req.body.rgbacolor
 
-        let create = await eventController.createAction(event_id, description_sv, description_en, image_id, rgbacolor)
+        let create = await eventController.createAction(event_id, name, name_en, description, description_en, image_id, rgbacolor)
+        console.log(create)
         if(create.status == 0) {
             res.status(400).send(create.message)
         } else {
@@ -192,12 +214,14 @@ apiRoutes.put(process.env.API_PATH + "/action/:id", VerifyToken, async function 
     try {
         let event_id = req.body.event_id
         let action_id = req.params.id
-        let description_sv = req.body.description_sv
+        let name = req.body.name
+        let name_en = req.body.name_en
+        let description = req.body.description
         let description_en = req.body.description_en
         let image_id = req.body.image_id
         let rgbacolor = req.body.rgbacolor
 
-        const update = await eventController.updateAction(event_id, description_sv, description_en, image_id, rgbacolor, action_id)
+        const update = await eventController.updateAction(event_id, name, name_en, description, description_en, image_id, rgbacolor, action_id)
         res.send(update)
     } catch(err) {
         res.send(err.message)
@@ -212,6 +236,12 @@ apiRoutes.delete(process.env.API_PATH + "/action/:id", VerifyToken, async functi
         res.send(err.message)
     } 
 });
+
+//Hämta alla actionchoices för action
+apiRoutes.get(process.env.API_PATH + "/action/:id/actionchoices",eventController.readAllActionChoices)
+
+//Hämta actionchoice
+apiRoutes.get(process.env.API_PATH + "/actionchoice/:id",eventController.readActionChoice)
 
 // Skapa actionchoice
 apiRoutes.post(process.env.API_PATH + "/actionchoice", VerifyToken, async function (req, res, next) {
@@ -265,9 +295,16 @@ apiRoutes.delete(process.env.API_PATH + "/actionchoice/:id", VerifyToken, async 
     } 
 });
 
+//Hämta alla subactionchoices för actionchoice
+apiRoutes.get(process.env.API_PATH + "/actionchoice/:id/subactionchoices",eventController.readAllSubActionChoices)
+
+//Hämta subactionchoice
+apiRoutes.get(process.env.API_PATH + "/subactionchoice/:id",eventController.readSubActionChoice)
+
 // Skapa subactionchoice
-apiRoutes.post(process.env.API_PATH + "/subactionchoice", VerifyToken, async function (req, res, next) {
-    try {
+apiRoutes.post(process.env.API_PATH + "/subactionchoice", VerifyToken, eventController.createSubActionChoice)
+/*    
+try {
         let actionchoice_id = req.body.actionchoice_id
         let actionchoicetype_id = req.body.actionchoicetype_id
         let name = req.body.name
@@ -287,6 +324,7 @@ apiRoutes.post(process.env.API_PATH + "/subactionchoice", VerifyToken, async fun
         res.status(400).send(err)
     }
 });
+*/
 
 // Uppdatera subactionchoice
 apiRoutes.put(process.env.API_PATH + "/subactionchoice/:id", VerifyToken, async function (req, res, next) {
@@ -314,13 +352,7 @@ apiRoutes.put(process.env.API_PATH + "/subactionchoice/:id", VerifyToken, async 
 });
 
 // Ta bort subactionchoice
-apiRoutes.delete(process.env.API_PATH + "/subactionchoice/:id", VerifyToken, async function (req, res, next) {
-    try {
-        res.send(eventController.deleteSubActionChoice(req.params.id))   
-    } catch(err) {
-        res.send(err.message)
-    } 
-});
+apiRoutes.delete(process.env.API_PATH + "/subactionchoice/:id", VerifyToken, eventController.deleteSubActionChoice)
 
 // Hämta actions för event
 apiRoutes.get(process.env.API_PATH + "/event/actions/:event_id", async function (req, res) {

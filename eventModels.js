@@ -151,6 +151,22 @@ const readAllActions = () => {
 };
 
 //Hämta actions via Eventid
+const readAllEventActions = (event_id) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `SELECT actions.*, images.fullpath FROM actions
+                    JOIN images on images.id = actions.image_id      
+                    WHERE event_id = ?`;
+        database.db.query(database.mysql.format(sql,[event_id]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            resolve(result);
+        });
+    })
+};
+
+//Hämta actions via Eventid
 const readActions = (event_id) => {
     return new Promise(function (resolve, reject) {
         const sql = `SELECT actions.*, images.fullpath FROM actions
@@ -166,12 +182,27 @@ const readActions = (event_id) => {
     })
 };
 
-//Skapa en action
-const createAction = (event_id, description_sv, description_en, image_id, rgbacolor) => {
+//Hämta action
+const readAction = (id) => {
     return new Promise(function (resolve, reject) {
-        const sql = `INSERT INTO actions(event_id, description_sv, description_en, image_id, rgbacolor)
-                VALUES(?, ?, ?, ?, ?)`;
-        database.db.query(database.mysql.format(sql,[event_id, description_sv, description_en, image_id, rgbacolor]), async function(err, result) {
+        const sql = `SELECT * FROM actions     
+                    WHERE id = ?`;
+        database.db.query(database.mysql.format(sql,[id]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            resolve(result);
+        });
+    })
+};
+
+//Skapa en action
+const createAction = (event_id, name, name_en, description, description_en, image_id, rgbacolor) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `INSERT INTO actions(event_id, name, name_en, description, description_en, image_id, rgbacolor)
+                VALUES(?, ?, ?, ?, ?, ?, ?)`;
+        database.db.query(database.mysql.format(sql,[event_id, name, name_en, description, description_en, image_id, rgbacolor]), async function(err, result) {
             if(err) {
                 reject(err.message)
             } else {
@@ -182,12 +213,12 @@ const createAction = (event_id, description_sv, description_en, image_id, rgbaco
     })
 };
 
-const updateAction = (event_id, description_sv, description_en, image_id, rgbacolor, action_id) => {
+const updateAction = (event_id, name, name_en, description, description_en, image_id, rgbacolor, action_id) => {
     return new Promise(function (resolve, reject) {
         const sql = `UPDATE actions 
-                    set event_id = ?, description_sv = ?, description_en = ?, image_id = ?, rgbacolor = ?
+                    set event_id = ?, name= ?, name_en = ?, description = ?, description_en = ?, image_id = ?, rgbacolor = ?
                     WHERE id = ?`;
-        database.db.query(database.mysql.format(sql,[event_id, description_sv, description_en, image_id, rgbacolor, action_id]), async function(err, result) {
+        database.db.query(database.mysql.format(sql,[event_id, name, name_en, description, description_en, image_id, rgbacolor, action_id]), async function(err, result) {
             if(err) {
                 reject(err.message)
             } else {
@@ -211,6 +242,37 @@ const deleteAction= (id) => {
             }
             const successMessage = "The action was successfully deleted."
             resolve(successMessage);
+        });
+    })
+};
+
+//Hämta actionchoices via actionid
+const readAllActionChoices = (action_id) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `SELECT actionchoices.*, images.fullpath FROM actionchoices
+                        JOIN images on images.id = actionchoices.image_id      
+                        WHERE action_id = ?`;
+        database.db.query(database.mysql.format(sql,[action_id]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            resolve(result);
+        });
+    })
+};
+
+//Hämta actionchoice
+const readActionChoice = (id) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `SELECT * FROM actionchoices     
+                    WHERE id = ?`;
+        database.db.query(database.mysql.format(sql,[id]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            resolve(result);
         });
     })
 };
@@ -265,6 +327,37 @@ const deleteActionChoice = (id) => {
     })
 };
 
+//Hämta subactionchoices via actionchoiceid
+const readAllSubActionChoices = (actionchoice_id) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `SELECT subactionchoices.*, images.fullpath FROM subactionchoices
+                        JOIN images on images.id = subactionchoices.image_id      
+                        WHERE actionchoice_id = ?`;
+        database.db.query(database.mysql.format(sql,[actionchoice_id]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            resolve(result);
+        });
+    })
+};
+
+//Hämta subactionchoice
+const readSubActionChoice = (id) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `SELECT * FROM subactionchoices     
+                    WHERE id = ?`;
+        database.db.query(database.mysql.format(sql,[id]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            resolve(result);
+        });
+    })
+};
+
 //Skapa en subactionchoice
 const createSubActionChoice = (actionchoice_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder) => {
     return new Promise(function (resolve, reject) {
@@ -275,7 +368,7 @@ const createSubActionChoice = (actionchoice_id, actionchoicetype_id, name, name_
                 reject(err.message)
             } else {
                 const successMessage = "The subactionchoice was entered successfully."
-                resolve(result.insertId);
+                resolve(successMessage);
             }
         });
     })
@@ -331,6 +424,7 @@ const readActionChoiceTypes = () => {
 };
 
 //Hämta actionchoices via Actionid
+/*
 const readAllActionChoices = () => {
     return new Promise(function (resolve, reject) {
         const sql = `SELECT * FROM actionchoices       
@@ -344,6 +438,7 @@ const readAllActionChoices = () => {
         });
     })
 };
+*/
 
 //Hämta actionchoices via Actionid
 const readActionChoices = (action_id) => {
@@ -363,6 +458,7 @@ const readActionChoices = (action_id) => {
 };
 
 //Hämta alla subactionchoices
+/*
 const readAllSubActionChoices = () => {
     return new Promise(function (resolve, reject) {
         const sql = `SELECT * FROM subactionchoices       
@@ -376,6 +472,7 @@ const readAllSubActionChoices = () => {
         });
     })
 };
+*/
 //Hämta subactionchoices via actionchoice_id
 const readSubActionChoices = (actionchoice_id) => {
     return new Promise(function (resolve, reject) {
@@ -732,6 +829,77 @@ const deleteImage = (id) => {
     })
 };
 
+//Hämta skolor
+const readKthschools = () => {
+    return new Promise(function (resolve, reject) {
+        const sql = `SELECT * FROM kthschools`;
+        database.db.query(database.mysql.format(sql,[]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            resolve(result);
+        });
+    })
+};
+
+//Skapa en skola
+const createKthschool = (name, name_en, code) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `INSERT INTO kthschools(name, name_en, code)
+                VALUES(?, ?, ?)`;
+        database.db.query(database.mysql.format(sql,[name, name_en, code]), async function(err, result) {
+            if(err) {
+                reject(err.message)
+            } else {
+                const successMessage = "The school was entered successfully."
+                resolve(result.insertId);
+            }
+        });
+    })
+};
+
+//Uppdatera en skola
+const updateKthschool = (name, name_en, code, id) => {
+    return new Promise(function (resolve, reject) {
+
+        const sql = `UPDATE kthschools 
+                SET name = ?, name_en = ?, code = ? 
+                WHERE id = ?`;
+
+        database.db.query(database.mysql.format(sql,[name, name_en, code, id]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+
+            if(result.affectedRows > 0) {
+                const successMessage = "The school was successfully updated."
+                resolve(successMessage);
+            } else {
+                reject("Inget uppdaterades , kontakta KTH Bibliotekets IT-grupp")
+            }
+        });
+    })
+};
+
+//Radera en skola
+const deleteKthschool = (id) => {
+    return new Promise(function (resolve, reject) {
+
+        const sql = `DELETE FROM kthschools 
+                WHERE id = ?`;
+        database.db.query(database.mysql.format(sql,[id]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            const successMessage = "The event was successfully deleted."
+            resolve(successMessage);
+        });
+    })
+};
+
 module.exports = {
     readEvents,
     readEventsByDate,
@@ -742,7 +910,9 @@ module.exports = {
     deleteEvent,
     readAllUserTypes,
     readAllActions,
+    readAllEventActions,
     readActions,
+    readAction,
     createAction,
     updateAction,
     deleteAction,
@@ -754,8 +924,10 @@ module.exports = {
     deleteSubActionChoice,
     readActionChoiceTypes,
     readAllActionChoices,
+    readActionChoice,
     readActionChoices,
     readAllSubActionChoices,
+    readSubActionChoice,
     readSubActionChoices,
     createUserActionChoices,
     createUserSubActionChoices,
@@ -774,5 +946,9 @@ module.exports = {
     readImage,
     createImage,
     updateImage,
-    deleteImage
+    deleteImage,
+    readKthschools,
+    createKthschool,
+    updateKthschool,
+    deleteKthschool
 };

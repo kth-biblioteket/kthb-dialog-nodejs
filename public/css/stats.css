@@ -1,3 +1,7 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:200,300,400,500,600);*,:after,:before {
+    box-sizing: border-box
+}
+
 html {
     height: 100%;
     font-size: 12px;
@@ -7,7 +11,20 @@ body {
     margin: 0 auto;
     font-family: "Open Sans", Arial, "Helvetica Neue", helvetica, sans-serif;
     padding: 0em 20px 20px 20px;
-    background-color: #fff
+    background-color: #fff;
+    margin-top: 32px!important;
+}
+
+body #gradientBorder {
+    height: 6px;
+    background-image: linear-gradient(to left, #005ea4, #5c98c4);
+    margin-top: 10px;
+}
+
+@media (min-width: 768px) {
+    body {
+        font-size: 1.125rem;
+    }
 }
 
 .cardwrap {
@@ -18,3 +35,77 @@ body {
     border-top-left-radius: 0.25rem;
     border-top-right-radius: 0.25rem;
 }
+
+.navbar {
+    display: block !important;
+    padding: 20px 0px 0px 0px;
+}
+
+.navbar-brand {
+    display: inline-block;
+    padding-top: 0.3125rem;
+    padding-bottom: 0.3125rem;
+    margin-right: 1.3rem;
+    font-size: 1.25rem;
+    line-height: inherit;
+    white-space: nowrap;
+}
+
+.navbar-brand {
+    font-family: "Open Sans", Arial, "Helvetica Neue", helvetica, sans-serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #000;
+    line-height: 1.375;
+    margin-top: 0;
+    margin-bottom: 0;
+    height: auto;
+    max-width: calc(100% - 136px);
+    position: relative;
+    top: -5px;
+}
+
+.navbar-brand img {
+    margin: 0 30px 0 0;
+}
+
+.table-responsive-stack tr {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+  }
+  
+  
+  .table-responsive-stack td,
+  .table-responsive-stack th {
+     display:block;
+  /*      
+     flex-grow | flex-shrink | flex-basis   */
+     -ms-flex: 1 1 auto;
+      flex: 1 1 auto;
+  }
+  
+  .table-responsive-stack .table-responsive-stack-thead {
+     font-weight: bold;
+  }
+  
+  @media screen and (max-width: 768px) {
+     .table-responsive-stack tr {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+                flex-direction: column;
+        border-bottom: 3px solid #ccc;
+        display:block;
+        
+     }
+     /*  IE9 FIX   */
+     .table-responsive-stack td {
+        float: left\9;
+        width:100%;
+     }
+  }

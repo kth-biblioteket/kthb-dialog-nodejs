@@ -198,8 +198,10 @@ async function generateChoiceApp(req, res, next) {
 
         
         // Hämta KTH-skolor
-        let kthschools = await axios.get('https://www.kth.se/api/kopps/v2/schools')
-        let kthschools_en = await axios.get('https://www.kth.se/api/kopps/v2/schools?l=en')
+        //let kthschools = await axios.get('https://www.kth.se/api/kopps/v2/schools')
+        //let kthschools_en = await axios.get('https://www.kth.se/api/kopps/v2/schools?l=en')
+
+        let kthschools = await eventModel.readKthschools()
 
         let labels = {
             "submitActionButtonText_en": "Submit",
@@ -237,11 +239,13 @@ async function generateChoiceApp(req, res, next) {
         
         choicedata = {
             "url": req.protocol + '://' + req.get('host') + req.originalUrl,
+            "query": req.query,
             "language": language,
             "event": data.event,
             "labels": labels,
-            "kthschools": kthschools.data,
-            "kthschools_en": kthschools_en.data,
+            "kthschools": kthschools,
+            //"kthschools": kthschools.data,
+            //"kthschools_en": kthschools_en.data,
             "confirmationSynonyms_sv": confirmationSynonyms_sv,
             "confirmationSynonyms_en": confirmationSynonyms_en,
             "usertypes": usertypes
@@ -344,18 +348,53 @@ async function getkthschools(req, res) {
         .send(response.data);
     } catch(err) {
         console.log(err)
-        res.status(401)
-        res.json({ message: err });
+        res.status(400).send(err);
     }
 }
 
-async function readEvents() {
+async function readEvents(req, res) {
     try {
         let result = await eventModel.readEvents()
         return result
     } catch (err) {
         console.log(err.message)
         return "error: " + err.message
+    }
+}
+
+async function readEvent(req, res) {
+    try {
+        let response = await eventModel.readEventId(req.params.id)
+        res
+        .status(200)
+        .send(response);
+    } catch (err) {
+        console.log(err)
+        res.status(400).send(err);
+    }
+}
+
+async function readAllEvents(req, res) {
+    try {
+        let response = await eventModel.readEvents()
+        res
+        .status(200)
+        .send(response);
+    } catch (err) {
+        console.log(err)
+        res.status(400).send(err);
+    }
+}
+
+async function readAllEventActions(req, res) {
+    try {
+        let response = await eventModel.readAllEventActions(req.params.id)
+        res
+        .status(200)
+        .send(response);
+    } catch (err) {
+        console.log(err)
+        res.status(400).send(err);
     }
 }
 
@@ -418,18 +457,42 @@ async function readActions(event_id) {
     }
 }
 
-async function createAction(event_id, description_sv, description_en, image_id, rgbacolor) {
+async function readAllActions(req, res) {
     try {
-        let result = await eventModel.createAction(event_id, description_sv, description_en, image_id, rgbacolor)
+        let response = await eventModel.readAllActions()
+        res
+        .status(200)
+        .send(response);
+    } catch (err) {
+        console.log(err)
+        res.status(400).send(err);
+    }
+}
+
+async function readAction(req, res) {
+    try {
+        let response = await eventModel.readAction(req.params.id)
+        res
+        .status(200)
+        .send(response);
+    } catch (err) {
+        console.log(err)
+        res.status(400).send(err);
+    }
+}
+
+async function createAction(event_id, name, name_en, description, description_en, image_id, rgbacolor) {
+    try {
+        let result = await eventModel.createAction(event_id, name, name_en, description, description_en, image_id, rgbacolor)
         return result
     } catch (err) {
         return {"status": 0, "message": err }
     }
 }
 
-async function updateAction(event_id, description_sv, description_en, image_id, rgbacolor, action_id) {
+async function updateAction(event_id, name, name_en, description, description_en, image_id, rgbacolor, action_id) {
     try {
-        let result = await eventModel.updateAction(event_id, description_sv, description_en, image_id, rgbacolor, action_id)
+        let result = await eventModel.updateAction(event_id, name, name_en, description, description_en, image_id, rgbacolor, action_id)
         return result
     } catch (err) {
         return {"status": 0, "message": err }
@@ -443,6 +506,30 @@ async function deleteAction(action_id) {
     } catch (err) {
         console.log(err.message)
         return "error: " + err.message
+    }
+}
+
+async function readAllActionChoices(req, res) {
+    try {
+        let response = await eventModel.readAllActionChoices(req.params.id)
+        res
+        .status(200)
+        .send(response);
+    } catch (err) {
+        console.log(err)
+        res.status(400).send(err);
+    }
+}
+
+async function readActionChoice(req, res) {
+    try {
+        let response = await eventModel.readActionChoice(req.params.id)
+        res
+        .status(200)
+        .send(response);
+    } catch (err) {
+        console.log(err)
+        res.status(400).send(err);
     }
 }
 
@@ -474,12 +561,46 @@ async function deleteActionChoice(actionchoice_id) {
     }
 }
 
-async function createSubActionChoice(actionchoice_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder) {
+async function readAllSubActionChoices(req, res) {
     try {
-        let result = await eventModel.createSubActionChoice(actionchoice_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder)
-        return result
+        let response = await eventModel.readAllSubActionChoices(req.params.id)
+        res
+        .status(200)
+        .send(response);
     } catch (err) {
-        return {"status": 0, "message": err }
+        console.log(err)
+        res.status(400).send(err);
+    }
+}
+
+async function readSubActionChoice(req, res) {
+    try {
+        let response = await eventModel.readSubActionChoice(req.params.id)
+        res
+        .status(200)
+        .send(response);
+    } catch (err) {
+        console.log(err)
+        res.status(400).send(err);
+    }
+}
+
+async function createSubActionChoice(req, res) {
+    try {
+        let actionchoice_id = req.body.actionchoice_id
+        let actionchoicetype_id = req.body.actionchoicetype_id
+        let name = req.body.name
+        let name_en = req.body.name_en
+        let description = req.body.description
+        let description_en = req.body.description_en
+        let image_id = req.body.image_id
+        let sortorder = req.body.sortorder
+        let response = await eventModel.createSubActionChoice(actionchoice_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder)
+        res.status(200)
+        .json({ message: response });
+    } catch (err) {
+        console.log(err)
+        res.status(400).send(err);
     }
 }
 
@@ -492,13 +613,15 @@ async function updateSubActionChoice(actionchoice_id, actionchoicetype_id, name,
     }
 }
 
-async function deleteSubActionChoice(subactionchoice_id) {
+async function deleteSubActionChoice(req,res) {
     try {
-        let result = await eventModel.deleteSubActionChoice(subactionchoice_id)
-        return result
+        let response = await eventModel.deleteSubActionChoice(req.params.id)
+        res.status(200)
+        .json({ message: response });
     } catch (err) {
-        console.log(err.message)
-        return "error: " + err.message
+        console.log(err)
+        res.status(401)
+        res.json({ message: err });
     }
 }
 
@@ -689,6 +812,19 @@ async function deleteImage(id) {
     }
 }
 
+async function readKthschools(req, res) {
+    try {
+        let response = await eventModel.readKthschools(req.params.id)
+        res
+        .status(200)
+        .send(response);
+    } catch (err) {
+        console.log(err)
+        res.status(401)
+        res.json({ message: err });
+    }
+}
+
 function substrInBetween(whole_str, str1, str2) {
     if (whole_str.indexOf(str1) === -1 || whole_str.indexOf(str2) === -1) {
         return undefined;
@@ -713,18 +849,27 @@ module.exports = {
     logout,
     getkthschools,
     readEvents,
+    readEvent,
+    readAllEvents,
+    readAllEventActions,
     readEventsByDate,
     readEventId,
     createEvent,
     updateEvent,
     deleteEvent,
     readActions,
+    readAllActions,
+    readAction,
     createAction,
     updateAction,
     deleteAction,
+    readAllActionChoices,
+    readActionChoice,
     createActionChoice,
     updateActionChoice,
     deleteActionChoice,
+    readAllSubActionChoices,
+    readSubActionChoice,
     createSubActionChoice,
     updateSubActionChoice,
     deleteSubActionChoice,
@@ -745,6 +890,7 @@ module.exports = {
     createImage,
     updateImage,
     deleteImage,
+    readKthschools,
     substrInBetween,
     truncate
 };

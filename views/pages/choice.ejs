@@ -18,7 +18,6 @@
         <% event = choicedata.event %>
         <% choicedata.language =='sv' ? eventname = choicedata.event.name : eventname = choicedata.event.name_en%>
         <% choicedata.language =='sv' ? eventdescription = choicedata.event.description : eventdescription = choicedata.event.description_en %>
-        
         <!-- Caption -->
         <div id="caption">
           <div id="maincaption" class="title">
@@ -103,6 +102,7 @@
               <div id='emailTextbox'>
                 <textarea id="write" rows="1" resizeable="no"></textarea>
               </div>
+              <% if (choicedata.query.kiosk=="true") {%>
               <ul id="keyboard">
                   <li class="invisibleKey" style="width: 2.5px"></li>
                   <li class="email firstitem">@gmail.com</li>
@@ -168,6 +168,7 @@
                   <li class="invisibleKey" style="width: 268px"></li>
                   <li class="space lastitem">&nbsp;</li>
               </ul>
+              <% }%>
             </div>
             <div class="closeModalButton clickable shadow">
               <img src="/dialog/images/dismiss_icon.png" width="30" height="30" draggable="false" />
@@ -324,6 +325,13 @@
 
         let language = "";
 
+        function getQuerystringparam (querystringparam) {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const value = urlParams.get(querystringparam)
+            return value
+        }
+        
         function initlang() {
             $("#confirmationEmailQuestionNoButton").bind('click', function() {
                 showModal('thanks');
@@ -345,6 +353,9 @@
             SESSION_CATEGORY = null;
             SESSION_ACTION = null;
 
+            if (getQuerystringparam('kiosk') == 'true') {
+                //Använd timeoutfunktionen för session
+            }
             if(isDeviceiPad()) {
             
             } else {
@@ -555,7 +566,7 @@
                                     <div class="actionItemText">
                                         <div>${language =='sv' ? actionObject.choices[i].description : actionObject.choices[i].description_en}</div>
                                     </div>
-                                    <div class="subactions hide">`
+                                    <div class="subactions">`
                                     //Visa endast om mainaction är checked
                                     for (var j = 0; j < actionObject.choices[i].subchoices.length; j++) {
                                         //Fritext
@@ -632,13 +643,14 @@
                         `</div>`
 
                     let kthschools = JSON.parse('<%- JSON.stringify(choicedata.kthschools) %>')
-                    let kthschools_en = JSON.parse('<%- JSON.stringify(choicedata.kthschools_en) %>')
-                    let currents_kthschools = language == 'sv' ? kthschools : kthschools_en
+                    //let kthschools_en = JSON.parse('<%- JSON.stringify(choicedata.kthschools_en) %>')
+                    //let currents_kthschools = language == 'sv' ? kthschools : kthschools_en
                     checklistContainer += 
                         `<select id="school" class="form-select mb-2" aria-label="School">
                             <option value="" selected>${language == 'sv' ? 'Välj en skola' : 'Pick a school'}</option>`
-                            for (var i = 0; i < currents_kthschools.length; i++) {                        
-                                checklistContainer +=`<option value="${currents_kthschools[i].code}">${currents_kthschools[i].name}</option>`
+                            for (var i = 0; i < kthschools.length; i++) {                        
+
+                                checklistContainer +=`<option value="${kthschools[i].code}">${language == 'sv' ? kthschools[i].name : kthschools[i].name_en}</option>`
                             }
                     checklistContainer +=`
                         </select>
@@ -691,7 +703,11 @@
                     $('#thanksModal').removeClass('hide');
 
                     // Start timeout for thanks screen
-                    THANKS_TIMEOUT = window.setTimeout(function() { endSession(); }, 3000)
+                    if (getQuerystringparam('kiosk') == 'true') {
+                        //Använd timeoutfunktionen för session
+                        THANKS_TIMEOUT = window.setTimeout(function() { endSession(); }, 3000)
+                    }
+                    
 
                     break;
 
@@ -702,7 +718,7 @@
         }
 
         function togglesubchoices(element) {
-            $(element).parent().find('.subactions').toggleClass('hide');
+            //$(element).parent().find('.subactions').toggleClass('hide');
         }
 
         function animateTheVote() {
@@ -714,10 +730,14 @@
 
         function timerIncrement(ms) {
             idleTime = idleTime + ms;
-            if (idleTime > 80000) { // 80 seconds
-                idleTime = 0;
-                endSession();
+            if (getQuerystringparam('kiosk') == 'true') {
+                //Använd timeoutfunktionen för session
+                if (idleTime > 80000) { // 80 seconds
+                    idleTime = 0;
+                    endSession();
+                }
             }
+            
         }
 
         function changelang() {
