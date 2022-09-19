@@ -169,13 +169,7 @@ apiRoutes.put(process.env.API_PATH + "/event/:id", VerifyToken, async function (
 });
 
 // Ta bort ett event
-apiRoutes.delete(process.env.API_PATH + "/event/:id", VerifyToken, async function (req, res, next) {
-    try {
-        res.send(eventController.deleteEvent(req.params.id))   
-    } catch(err) {
-        res.send(err.message)
-    } 
-});
+apiRoutes.delete(process.env.API_PATH + "/event/:id", VerifyToken, eventController.deleteEvent);
 
 //Hämta alla actions
 apiRoutes.get(process.env.API_PATH + "/actions",eventController.readAllActions)
@@ -229,13 +223,7 @@ apiRoutes.put(process.env.API_PATH + "/action/:id", VerifyToken, async function 
 });
 
 // Ta bort action
-apiRoutes.delete(process.env.API_PATH + "/action/:id", VerifyToken, async function (req, res, next) {
-    try {
-        res.send(eventController.deleteAction(req.params.id))   
-    } catch(err) {
-        res.send(err.message)
-    } 
-});
+apiRoutes.delete(process.env.API_PATH + "/action/:id", VerifyToken,eventController.deleteAction)
 
 //Hämta alla actionchoices för action
 apiRoutes.get(process.env.API_PATH + "/action/:id/actionchoices",eventController.readAllActionChoices)
@@ -287,13 +275,7 @@ apiRoutes.put(process.env.API_PATH + "/actionchoice/:id", VerifyToken, async fun
 });
 
 // Ta bort actionchoice
-apiRoutes.delete(process.env.API_PATH + "/actionchoice/:id", VerifyToken, async function (req, res, next) {
-    try {
-        res.send(eventController.deleteActionChoice(req.params.id))   
-    } catch(err) {
-        res.send(err.message)
-    } 
-});
+apiRoutes.delete(process.env.API_PATH + "/actionchoice/:id", VerifyToken, eventController.deleteActionChoice)
 
 //Hämta alla subactionchoices för actionchoice
 apiRoutes.get(process.env.API_PATH + "/actionchoice/:id/subactionchoices",eventController.readAllSubActionChoices)
@@ -303,28 +285,6 @@ apiRoutes.get(process.env.API_PATH + "/subactionchoice/:id",eventController.read
 
 // Skapa subactionchoice
 apiRoutes.post(process.env.API_PATH + "/subactionchoice", VerifyToken, eventController.createSubActionChoice)
-/*    
-try {
-        let actionchoice_id = req.body.actionchoice_id
-        let actionchoicetype_id = req.body.actionchoicetype_id
-        let name = req.body.name
-        let name_en = req.body.name_en
-        let description = req.body.description
-        let description_en = req.body.description_en
-        let image_id = req.body.image_id
-        let sortorder = req.body.sortorder
-
-        let create = await eventController.createSubActionChoice(actionchoice_id, actionchoicetype_id, name, name_en, description, description_en, image_id, sortorder)
-        if(create.status == 0) {
-            res.status(400).send(create.message)
-        } else {
-            res.sendStatus(200);
-        }
-    } catch(err) {
-        res.status(400).send(err)
-    }
-});
-*/
 
 // Uppdatera subactionchoice
 apiRoutes.put(process.env.API_PATH + "/subactionchoice/:id", VerifyToken, async function (req, res, next) {
@@ -589,6 +549,7 @@ apiRoutes.post(process.env.API_PATH + "/choice/", async function (req, res) {
             }
         }
 
+        //Informationen om använderns skola och titel
         if (!error) {
             let create = await eventController.createUserActionData(req.body.usertype, req.body.school, req.body.uuid)
             if(create.status == 0) {
@@ -610,10 +571,9 @@ apiRoutes.post(process.env.API_PATH + "/choice/", async function (req, res) {
     }
 });
   
-//Skicka mail till användaren
+//Skicka mail till användaren och ett kontakta mig till edge om det är valt
 apiRoutes.post(process.env.API_PATH + "/reminder", async function (req, res) {
 
-    // point to the template folder
     const handlebarOptions = {
         viewEngine: {
             partialsDir: path.resolve('./templates/'),
@@ -635,49 +595,71 @@ apiRoutes.post(process.env.API_PATH + "/reminder", async function (req, res) {
     transporter.use('compile', hbs(handlebarOptions))
 
     //let htmlbody = require('templates/confirmEmailGeneral_' + req.body.lang + '.html');
-    let mailOptions;
+    let mailOptions = {}
     if (req.body.lang.toUpperCase() == "SV") {
         mailOptions = {
-        from: {
-            name: process.env.MAILFROM_NAME_SV,
-            address: process.env.MAILFROM_ADDRESS
-        },
-        to: req.body.email,
-        subject: process.env.MAILFROM_SUBJECT_SV,
-        template: 'email_' + req.body.lang,
-        context:{
-            name: "Anka",
-            company: 'KTH Bibilioteket'
-        },
-        generateTextFromHTML: true
-        };
+            from: {
+                name: process.env.MAILFROM_NAME_SV,
+                address: process.env.MAILFROM_ADDRESS
+            },
+            to: req.body.email,
+            subject: process.env.MAILFROM_SUBJECT_SV,
+            template: 'email_' + req.body.lang,
+            context:{
+                name: "Anka",
+                company: 'KTH Bibilioteket'
+            },
+            generateTextFromHTML: true,
+        }
     } else {
         mailOptions = {
-        from: {
-            name: process.env.MAILFROM_NAME_SV,
-            address: process.env.MAILFROM_ADDRESS
-        },
-        to: req.body.email,
-        subject: process.env.MAILFROM_SUBJECT_EN,
-        template: 'email_' + req.body.lang,
-        context:{
-            name: "Anka",
-            company: 'KTH Library'
-        },
-        generateTextFromHTML: true
-        };
+            from: {
+                name: process.env.MAILFROM_NAME_SV,
+                address: process.env.MAILFROM_ADDRESS
+            },
+            to: req.body.email,
+            subject: process.env.MAILFROM_SUBJECT_EN,
+            template: 'email_' + req.body.lang,
+            context:{
+                name: "Anka",
+                company: 'KTH Library'
+            },
+            generateTextFromHTML: true,
+        }
     }
 
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.log("error is " + error);
-            res.json({ 'error': error });
+    try {
+        let mailinfo = await transporter.sendMail(mailOptions);
+    } catch (err) {
+        //TODO
+    }
+
+    if (req.body.contactme) {
+        console.log("Kontakta mig")
+        let edgemailoptions = {}
+        edgemailoptions = {
+            from: {
+                name: req.body.name,
+                address: req.body.email
+            },
+            to: process.env.EDGE_MAIL_ADDRESS,
+            subject: "KTH Biblioteket matchmaking",
+            template: 'edge_email_sv',
+            context:{
+                name: req.body.name,
+                other: req.body.other,
+                company: 'KTH Bibilioteket',
+                session_user_choice: req.body.session_user_choice
+            },
+            generateTextFromHTML: true
+        };
+
+        try {
+            let contactmemailinfo = await transporter.sendMail(edgemailoptions);
+        } catch (err) {
+            //TODO
         }
-        else {
-            console.log('Email sent: ' + info.response);
-            res.json({ 'result': 'mail sent to ' + req.body.email });
-        }
-    });
+    }
 
 });
 

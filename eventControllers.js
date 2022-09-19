@@ -212,6 +212,8 @@ async function generateChoiceApp(req, res, next) {
             "thanksText_sv": "Tack!",
             "instruction_sv": "Välj dina alternativ och tryck på ”Skicka!”",
             "instruction_en": "Select your alternatives and press ”Submit!”",
+            "userinfo_sv": "Vänligen välj typ och skola",
+            "userinfo_en": "Please select type and school",
             "emailinstruction_sv": "Skriv in din mailadress och tryck på ”Skicka!”",
             "emailinstruction_en": "Enter your emailadress and press ”Submit!”",
             "confirmationSubtitle_sv": "Du valde att...",
@@ -219,7 +221,7 @@ async function generateChoiceApp(req, res, next) {
             "confirmationEmailQuestion_sv" : "Valen du gör",
             "confirmationEmailQuestion_en" : "Your choices...",
             "emailPrompt_sv": "Vill du att vi skickar ett uppföljningsmail med ytterligare information?",
-            "emailPrompt_en": "Do you want us to send you a confirmation mail...",
+            "emailPrompt_en": "Do you want us to send you a confirmation mail?",
             "confirmationEmailQuestionNoButton_sv": "Nej",
             "confirmationEmailQuestionNoButton_en": "No",
             "confirmationEmailQuestionYesButton_sv": "Ja",
@@ -437,13 +439,15 @@ async function updateEvent(name, name_en, description, description_en, startdate
     }
 }
 
-async function deleteEvent(id) {
+async function deleteEvent(req, res) {
     try {
-        let result = await eventModel.deleteEvent(id)
-        return result
+        let response = await eventModel.deleteEvent(req.params.id)
+        res
+        .status(200)
+        .send(response);
     } catch (err) {
-        console.log(err.message)
-        return "error: " + err.message
+        console.log(err)
+        res.status(400).send(err);
     }
 }
 
@@ -499,13 +503,15 @@ async function updateAction(event_id, name, name_en, description, description_en
     }
 }
 
-async function deleteAction(action_id) {
+async function deleteAction(req, res) {
     try {
-        let result = await eventModel.deleteAction(action_id)
-        return result
+        let response = await eventModel.deleteAction(req.params.id)
+        res
+        .status(200)
+        .send(response);
     } catch (err) {
-        console.log(err.message)
-        return "error: " + err.message
+        console.log(err)
+        res.status(400).send(err);
     }
 }
 
@@ -551,13 +557,15 @@ async function updateActionChoice(action_id, actionchoicetype_id, name, name_en,
     }
 }
 
-async function deleteActionChoice(actionchoice_id) {
+async function deleteActionChoice(req, res) {
     try {
-        let result = await eventModel.deleteActionChoice(actionchoice_id)
-        return result
+        let response = await eventModel.deleteActionChoice(req.params.id)
+        res
+        .status(200)
+        .send(response);
     } catch (err) {
-        console.log(err.message)
-        return "error: " + err.message
+        console.log(err)
+        res.status(400).send(err);
     }
 }
 
@@ -616,12 +624,12 @@ async function updateSubActionChoice(actionchoice_id, actionchoicetype_id, name,
 async function deleteSubActionChoice(req,res) {
     try {
         let response = await eventModel.deleteSubActionChoice(req.params.id)
-        res.status(200)
-        .json({ message: response });
+        res
+        .status(200)
+        .send(response);
     } catch (err) {
         console.log(err)
-        res.status(401)
-        res.json({ message: err });
+        res.status(400).send(err);
     }
 }
 

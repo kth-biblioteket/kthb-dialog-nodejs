@@ -60,7 +60,9 @@ body {
   color:#fff;
   font-family: "Open Sans",Arial,"Helvetica Neue",helvetica,sans-serif;
   margin: 0px;
-  -webkit-user-select: none !important;
+  user-select: none !important;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
 }
 
 @font-face {
@@ -483,12 +485,13 @@ html, body {
 
 #confirmationEmailQuestion {
   padding-top: 20px;
-    padding-bottom: 20px;
+  padding-bottom: 20px;
   font-size: 25px;
   line-height: 1.2;
 }
 
-#confirmationEmailPrivacyStatement {
+#confirmationEmailPrivacyStatement,
+#emailPrompt {
   padding-top: 20px;
     padding-bottom: 20px;
   font-size: 25px;
@@ -774,7 +777,9 @@ label .info {
 }
 
 @media screen and (max-width: 1600px) and (min-width: 0px) {
-  #write {
+  #write,
+  #contactName,
+  #contactOther {
     vertical-align: top;
     display: inline-block;
     font-size: 40px;
@@ -784,7 +789,7 @@ label .info {
     padding-top: 0px;
     width: 100%;
     margin-right: 10px;
-    height: 50px;
+    height: 70px;
     background: #fff;
     border-radius: 7px;
     resize: none;
@@ -1136,23 +1141,6 @@ label .info {
   #emailModal #container {
     width: 100%
   }
-
-  #write {
-    vertical-align: top;
-    display: inline-block;
-    font-size: 32px;
-    line-height: 50px;
-    font-family: verdana;
-    padding: 0px;
-    padding-top: 0px;
-    width: 100%;
-    margin-right: 0px;
-    height: 50px;
-    background: #fff;
-    border-radius: 7px;
-    resize: none;
-    border: none;
-    }
 
     .circle-text {
       width: 300px;

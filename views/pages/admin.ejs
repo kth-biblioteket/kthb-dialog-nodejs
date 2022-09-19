@@ -336,6 +336,7 @@
         $(document).ready(function(){
             //Definiera javascriptobject med data från EJS
             images = JSON.parse(`<%- JSON.stringify(admindata.images)%>`)
+            actionchoicetypes = JSON.parse(`<%- JSON.stringify(admindata.actionchoicetypes)%>`)
 
             $('#events-select-list').on('change', function() {
                 getevent_($(this).val());
@@ -408,27 +409,7 @@
                         beforeSend: function () {
                         },
                         success: function (response) {
-                            /*
-                            var html = `<form action="/dialog/api/v1/event/" id="editevent-form">`
-                            for(i=0 ; i< response.length ; i++) {
-                                for (var colheader in response[i]) {
-                                    if (i === 0) {
-                                        //id i första kolumnen
-                                       console.log(colheader)
-                                       var html = `<input class="form-control" type="hidden" name="${colheader}" value="${response[i][colheader]}">`
-                                    } else {
-                                        var html = `<div class="form-group">
-                                                        <label for="${colheader}">Namn</label>
-                                                        <input class="form-control" type="text" name="${colheader}" value="${response[i][colheader]}">
-                                                    </div>`
-                                    }
-                                    
-                                    console.log(response[i][colheader])
-                                }
-                            }
-                            */
                             response=response[0]
-                            console.log(response)
                             
                             startdate_locale = new Date(response.startdate).toLocaleDateString()
                             enddate_locale = new Date(response.enddate).toLocaleDateString()
@@ -476,7 +457,7 @@
                                         <input class="form-control" type="text" name="resultssubtitle_en">
                                     </div>
                                     <button type="button" class="btn btn-primary float-right" onclick="db_update(this, 'editevent-form', 'PUT', 'events-select-list', '/dialog/api/v1/events')" id="btnUpdateEventSubmit">Update</button>
-                                    <button type="button" class="btn btn-danger float-right" onclick="deleteevent(this)" id="btnDeleteEventSubmit">Delete</button>
+                                    <button type="button" class="btn btn-danger float-right" onclick="db_delete(this, 'editevent-form', 'DELETE', 'events-select-list', '/dialog/api/v1/events', 'event-edit', '', '', '')" id="btnDeleteEventSubmit">Delete</button>
                                 </form>
                             `
                             $('#event-edit').html(html);
@@ -523,12 +504,12 @@
                                 <input class="form-control" type="hidden" name="id">
                                 <input class="form-control" type="hidden" name="event_id">
                                 <div class="form-group">
-                                        <select id="image_id" name="image_id" class="form-select">`
-                                                images.forEach(image => {
-                                                    console.log(image.name)
-                                                    html += `<option ${image.id==response.image_id ? 'selected' : ''} value="${image.id}">${image.name}</option>`
-                                                })
-                                html += `</select>
+                                    <label for="image_id">Bild</label>
+                                    <select id="image_id" name="image_id" class="form-select">`
+                                            images.forEach(image => {
+                                                html += `<option ${image.id==response.image_id ? 'selected' : ''} value="${image.id}">${image.name}</option>`
+                                            })
+                            html += `</select>
                                 </div>
                                 <div class="form-group">
                                     <label for="name">Namn</label>
@@ -555,7 +536,7 @@
                                     <input data-jscolor="{alpha:${parseFloat(response.rgbacolor.split(',')[3])}}" class="form-control" type="text" id="action-${response.id}-rgbacolor" name="rgbacolor" value="${response.rgbacolor}">
                                 </div>
                                 <button type="button" class="btn btn-primary float-right" onclick="db_update(this, 'editaction-form', 'PUT', 'actions-select-list', '/dialog/api/v1/event/parentid/actions', true, 'event_id', 'dialog-actions-event_id')" id="btnUpdateActionSubmit">Update</button>
-                                <button type="button" class="btn btn-danger float-right" onclick="deleteaction(this)" id="btnDeleteActionSubmit">Delete</button>
+                                <button type="button" class="btn btn-danger float-right" onclick="db_delete(this, 'editaction-form', 'DELETE', 'actions-select-list', '/dialog/api/v1/event/parentid/actions', 'action-edit', true, 'event_id', 'dialog-actions-event_id')" id="btnDeleteActionSubmit">Delete</button>
                             </form>
                         `
                         $('#action-edit').html(html);
@@ -593,13 +574,6 @@
                             <form action="/dialog/api/v1/actionchoice/" id="editchoice-form">
                                 <input class="form-control" type="hidden" name="id">
                                 <input class="form-control" type="hidden" name="action_id">
-                                <!--div class="form-select">
-                                    <div class="select-wrapper">
-                                        <select id="action-event_id" class="form-control">
-                                        
-                                        </select>
-                                    </div>
-                                </div-->
                                 <div class="form-group">
                                     <label for="name">Namn</label>
                                     <input class="form-control" type="text" name="name">
@@ -616,20 +590,32 @@
                                     <label for="description_en">Description</label>
                                     <input class="form-control" type="text" name="description_en">
                                 </div>
-                                <div class="form-group">
+                                <!--div class="form-group">
                                     <label for="name">Typ</label>
                                     <input class="form-control" type="text" name="actionchoicetype_id">
+                                </div-->
+                                <div class="form-group">
+                                    <label for="actionchoicetype_id">Typ</label>
+                                    <select id="actionchoicetype_id" name="actionchoicetype_id" class="form-select">`
+                                        actionchoicetypes.forEach(type => {
+                                                html += `<option ${type.id==response.actionchoicetype_id ? 'selected' : ''} value="${type.id}">${type.type}</option>`
+                                            })
+                            html += `</select>
                                 </div>
                                 <div class="form-group">
                                     <label for="image_id">Bild</label>
-                                    <input class="form-control" type="text" name="image_id">
+                                    <select id="image_id" name="image_id" class="form-select">`
+                                            images.forEach(image => {
+                                                html += `<option ${image.id==response.image_id ? 'selected' : ''} value="${image.id}">${image.name}</option>`
+                                            })
+                            html += `</select>
                                 </div>
                                 <div class="form-group">
                                     <label for="sortorder">Sortering</label>
                                     <input class="form-control" type="text" name="sortorder">
                                 </div>
                                 <button type="button" class="btn btn-primary float-right" onclick="db_update(this, 'editchoice-form', 'PUT', 'choices-select-list', '/dialog/api/v1/action/parentid/actionchoices', true, 'action_id', 'dialog-choices-action_id')" id="btnUpdateActionChoiceSubmit">Update</button>
-                                <button type="button" class="btn btn-danger float-right" onclick="deletechoice(this)" id="btnDeleteActionChoiceSubmit">Delete</button>
+                                <button type="button" class="btn btn-danger float-right" onclick="db_delete(this, 'editchoice-form', 'DELETE', 'choices-select-list', '/dialog/api/v1/action/parentid/actionchoices', 'choice-edit', true, 'action_id', 'dialog-choices-action_id')" id="btnDeleteActionChoiceSubmit">Delete</button>
                             </form>
                         `
                         $('#choice-edit').html(html);
@@ -688,19 +674,27 @@
                                     <input class="form-control" type="text" name="description_en">
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">Typ</label>
-                                    <input class="form-control" type="text" name="actionchoicetype_id">
+                                    <label for="actionchoicetype_id">Typ</label>
+                                    <select id="actionchoicetype_id" name="actionchoicetype_id" class="form-select">`
+                                        actionchoicetypes.forEach(type => {
+                                                html += `<option ${type.id==response.actionchoicetype_id ? 'selected' : ''} value="${type.id}">${type.type}</option>`
+                                            })
+                            html += `</select>
                                 </div>
                                 <div class="form-group">
                                     <label for="image_id">Bild</label>
-                                    <input class="form-control" type="text" name="image_id">
+                                    <select id="image_id" name="image_id" class="form-select">`
+                                            images.forEach(image => {
+                                                html += `<option ${image.id==response.image_id ? 'selected' : ''} value="${image.id}">${image.name}</option>`
+                                            })
+                            html += `</select>
                                 </div>
                                 <div class="form-group">
                                     <label for="sortorder">Sortering</label>
                                     <input class="form-control" type="text" name="sortorder">
                                 </div>
                                 <button type="button" class="btn btn-primary float-right" onclick="db_update(this, 'editsubchoice-form', 'PUT', 'subchoices-select-list', '/dialog/api/v1/actionchoice/parentid/subactionchoices', true, 'actionchoice_id', 'dialog-subchoices-actionchoice_id')" id="btnUpdateSubActionChoiceSubmit">Update</button>
-                                <button type="button" class="btn btn-danger float-right" onclick="deletesubchoice(this)" id="btnDeleteSubActionChoiceSubmit">Delete</button>
+                                <button type="button" class="btn btn-danger float-right" onclick="db_delete(this, 'editsubchoice-form', 'DELETE', 'subchoices-select-list', '/dialog/api/v1/actionchoice/parentid/subactionchoices', 'subchoice-edit', true, 'actionchoice_id', 'dialog-subchoices-actionchoice_id')" id="btnDeleteSubActionChoiceSubmit">Delete</button>
                             </form>
                         `
                         $('#subchoice-edit').html(html);
@@ -728,7 +722,6 @@
                 selectlisturl = selectlisturl.replace("parentid", $("#" + parentid_selector).val());
                 formData.push({name: parentid_name, value: $("#" + parentid_selector).val()});
             }
-            console.log(route)
             $.ajax({
                 type: requesttype,
                 url: route,
@@ -780,6 +773,36 @@
             });
         }
 
+        function db_delete(thiz, formselector, requesttype, selectlistselector, selectlisturl, formparentselector, hasparentid, parentid_name, parentid_selector) {
+            var $this = $(thiz);
+            var $caption = $this.html();
+            //var form = "#editevent-form";
+            var form            = "#" + formselector;
+            var formData = $(form).serializeArray();
+            var route = $(form).attr('action');
+
+            if (hasparentid==true) {
+                selectlisturl = selectlisturl.replace("parentid", $("#" + parentid_selector).val());
+            }
+
+            $.ajax({
+                type: requesttype,
+                url: route + formData[0].value,
+                beforeSend: function () {
+                    $this.attr('disabled', true).html("Processing...");
+                },
+                success: function (response) {
+                    $this.attr('disabled', false).html($caption);
+                    $("#" + formparentselector).html('');
+                    getselectcontent(selectlistselector, selectlisturl)
+                    alert(response);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                }
+            });
+        }
+
+
         function deleteevent(thiz) {
             var $this = $(thiz);
             var $caption = $this.html();
@@ -799,32 +822,6 @@
                     alert(response);
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                }
-            });
-        }
-
-        function updateaction(thiz) {
-            var $this           = $(thiz); 
-            var $caption        = $this.html();
-            var form            = "#editaction-form";
-            var formData        = $(form).serializeArray();
-            var route           = $(form).attr('action');
-
-            $.ajax({
-                type: "PUT",
-                url: route + formData[0].value,
-                data: formData,
-                beforeSend: function () {
-                    $this.attr('disabled', true).html("Processing...");
-                },
-                success: function (response) {
-                    $this.attr('disabled', false).html($caption);
-
-                    alert(response);
-
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-
                 }
             });
         }
@@ -851,32 +848,6 @@
             });
         }
 
-        function updatechoice(thiz) {
-            var $this           = $(thiz); 
-            var $caption        = $this.html();
-            var form            = "#editchoice-form";
-            var formData        = $(form).serializeArray();
-            var route           = $(form).attr('action');
-
-            $.ajax({
-                type: "PUT",
-                url: route + formData[0].value,
-                data: formData,
-                beforeSend: function () {
-                    $this.attr('disabled', true).html("Processing...");
-                },
-                success: function (response) {
-                    $this.attr('disabled', false).html($caption);
-
-                    alert(response);
-
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-
-                }
-            });
-        }
-
         function deletechoice(thiz) {
             var $this = $(thiz);
             var $caption = $this.html();
@@ -895,58 +866,6 @@
                     alert(response);
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                }
-            });
-        }
-
-        function updatesubchoice(thiz) {
-            var $this           = $(thiz); 
-            var $caption        = $this.html();
-            var form            = "#editsubchoice-form";
-            var formData        = $(form).serializeArray();
-            var route           = $(form).attr('action');
-
-            $.ajax({
-                type: "PUT",
-                url: route + formData[0].value,
-                data: formData,
-                beforeSend: function () {
-                    $this.attr('disabled', true).html("Processing...");
-                },
-                success: function (response) {
-                    $this.attr('disabled', false).html($caption);
-
-                    alert(response);
-
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    $this.attr('disabled', false).html($caption);
-                    alert(errorThrown + ": " + XMLHttpRequest.responseText)
-                }
-            });
-        }
-
-        function deletesubchoice(thiz) {
-            var $this = $(thiz);
-            var $caption = $this.html();
-            var form = "#editsubchoice-form";
-            var formData = $(form).serializeArray();
-            var route = $(form).attr('action');
-            $.ajax({
-                type: "DELETE",
-                url: route + formData[0].value,
-                beforeSend: function () {
-                    $this.attr('disabled', true).html("Processing...");
-                },
-                success: function (response) {
-                    $this.attr('disabled', false).html($caption);
-                    $("#subchoice-edit").html('');
-                    alert(response.message);
-                    getselectcontent("subchoices-select-list", "/dialog/api/v1/actionchoice/" + $("#dialog-subchoices-actionchoice_id").val() + "/subactionchoices")
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    $this.attr('disabled', false).html($caption);
-                    alert(errorThrown + ": " + XMLHttpRequest.responseText)
                 }
             });
         }

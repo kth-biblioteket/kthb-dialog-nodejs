@@ -31,7 +31,7 @@
         <div id="circlelabels">
         <%for (const action_ of choicedata.event.actions) { %>
             <div class="circle-label circle-text categoryLabel shadow clickable" id="Label<%=action_.id%>" name="<%=action_.id%>" onclick="startSession('<%=action_.id%>')">
-                <span class="inner-text center-align"><%- choicedata.language =='sv' ? action_.description_sv :action_.description_en %></span>
+                <span class="inner-text center-align"><%- choicedata.language =='sv' ? action_.description :action_.description_en %></span>
             </div>
         <%} %>
         </div>
@@ -67,25 +67,27 @@
 
         <div class="dialog_modal largeModal shadow hide" id="confirmationModal">
             <div id="confirmationContainer">
-              <div id="confirmationTitle" class="title"></div>
-              <div id="confirmationSubtitle" class="title"><%- choicedata.language =='sv' ? choicedata.labels.confirmationSubtitle_sv : choicedata.labels.confirmationSubtitle_en%><span id="confirmationAction"></span></div>
-              <div id="confirmationEmailQuestion">
+                <div id="confirmationTitle" class="title"></div>
+                <!--div id="confirmationSubtitle" class="title"><%- choicedata.language =='sv' ? choicedata.labels.confirmationSubtitle_sv : choicedata.labels.confirmationSubtitle_en%>
+                    <span id="confirmationAction"></span>
+                </div-->
+                <!--div id="confirmationEmailQuestion">
                 <%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailQuestion_sv : choicedata.labels.confirmationEmailQuestion_en%>
-              </div>
-              <div id="emailPrompt">
-                  <%- choicedata.language =='sv' ? choicedata.labels.emailPrompt_sv : choicedata.labels.emailPrompt_en%>
-              </div>
-              <div id="confirmationEmailQuestionButtons">
+                </div-->
+                <div id="emailPrompt">
+                    <%- choicedata.language =='sv' ? choicedata.labels.emailPrompt_sv : choicedata.labels.emailPrompt_en%>
+                </div>
+                <div id="confirmationEmailQuestionButtons">
                 <div id="confirmationEmailQuestionNoButton" class="clickable shadow">
                     <%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailQuestionNoButton_sv : choicedata.labels.confirmationEmailQuestionNoButton_en%>
                 </div>
                 <div id="confirmationEmailQuestionYesButton" class="clickable shadow">
                     <%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailQuestionYesButton_sv : choicedata.labels.confirmationEmailQuestionYesButton_en%>
                 </div>
-              </div>
-              <div id="confirmationEmailPrivacyStatement" class="body">
+                </div>
+                <div id="confirmationEmailPrivacyStatement" class="body">
                 <%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailPrivacyStatement_sv : choicedata.labels.confirmationEmailPrivacyStatement_en%>
-              </div>
+                </div>
             </div>
             <div class="closeModalButton clickable shadow">
               <img src="/dialog/images/dismiss_icon.png" width="30" height="30" draggable="false" />
@@ -101,6 +103,24 @@
             <div id="container">
               <div id='emailTextbox'>
                 <textarea id="write" rows="1" resizeable="no"></textarea>
+              </div>
+              <div id="contactme">
+                <input onclick="contacttoggle()" class="" type="checkbox" id="contactmecheckbox" name="contactmecheckbox" value=""/>
+                <label for="contactmecheckbox">
+                    <img class="unchecked" id="contactmecheckboxUnchecked" src="/dialog/images/unchecked_box.png"/>
+                    <img class="checked" id="contactmecheckboxChecked" src="/dialog/images/checked_box.png"/>
+                    <div class="actionItemBody">
+                        <div class="actionItemName title">
+                            <%- choicedata.language =='sv' ? 'Kontakta mig(GDPR bla bla?)' : 'Contact me(GDPR bla bla?)'%>
+                        </div>
+                    </div>
+                </label>
+                <div id="contactmefields" class="hide">
+                    <label for="contactName">Namn</label>
+                    <input type="text" id="contactName">
+                    <label for="contactOther">Annat</label>
+                    <input type="text" id="contactOther">
+                </div>
               </div>
               <% if (choicedata.query.kiosk=="true") {%>
               <ul id="keyboard">
@@ -198,6 +218,8 @@
 
         function pledge(action_id) {
 
+            // 
+            SESSION_USER_CHOICE = {};
             //skapa ett unikt id för att samla ihop alla svar för sessionen
             uuid = uuidv4();
 
@@ -260,6 +282,8 @@
                 "uuid": uuid
             }
 
+            SESSION_USER_CHOICE = body;
+
             //verify at least one choice made
             if (session_choices.length > 0) {
                 //Mandatory fields
@@ -267,7 +291,6 @@
                     alert("Please select type and school ", 'danger', 'errorPlaceholder' );
                     $("#submitActionButton").removeClass('hide');
                 } else {
-                    console.log(body)
                     
                     $.post({
                         url: '/dialog/api/v1/choice',
@@ -294,12 +317,16 @@
             // 404 not found
         }
 
-        function reminder(subcategory, email) {
+        function reminder(subcategory, email, contactme, name, other) {
             // All the data you need is the emailadress and the subcategory
             body = JSON.stringify({
                 email: email,
+                contactme: contactme,
+                name: name,
+                other: other,
                 subcategory: subcategory,
-                "lang": getcurrentlangfromHTML_Tag()
+                "lang": getcurrentlangfromHTML_Tag(),
+                session_user_choice : SESSION_USER_CHOICE
             });
             $.ajax({
                 type: 'POST',
@@ -313,6 +340,7 @@
         }
 
         //////////////////////// GLOBAL VARS ///////////////////////
+        var SESSION_USER_CHOICE
         var THANKS_TIMEOUT;
         var SYNONYM_INDEX;
         var SESSION_CATEGORY; // travels, clothing, purchases, food, living
@@ -379,7 +407,11 @@
                 let actionObject = actions.find(action => action.id === parseInt(SESSION_CATEGORY))
                 idleTime = 0;
                 var choice_id = parseInt(SESSION_CATEGORY);
-                reminder(choice_id, $('#write').val());
+                reminder(choice_id, $('#write').val(), $('#contactmecheckbox').prop('checked'), $('#contactName').val(), $('#contactOther').val());
+                document.getElementById("contactmecheckbox").checked = false;
+                contacttoggle();
+                document.getElementById("contactName").value = '';
+                document.getElementById("contactOther").value = '';
                 showModal('thanks');
             });
             $('#write').html('');
@@ -464,7 +496,6 @@
                     // Add the character
                     $write.html($write.html() + character);
                     $write.val($write.val() + character);
-                    console.log($write.val())
                     if ($write.val().length > 0) {
                         $("#submitEmail").removeClass('hide');
                     } else {
@@ -475,6 +506,8 @@
         }
 
         function startSession(action) {
+            //Clear user choice
+            SESSION_USER_CHOICE = {}
             idleTime = 0;
             // Hide lure screen labels, prompt, and click events
             $("#caption").addClass( "hide" );
@@ -536,6 +569,7 @@
 
         //Visa respektive gränssnitt för dialogen(välja, maila, tack etc)
         function showModal(modal) {
+            let labels = JSON.parse('<%- JSON.stringify(choicedata.labels) %>')
             
             let actionObject = actions.find(action => action.id === parseInt(SESSION_CATEGORY))
 
@@ -544,7 +578,7 @@
                 case 'checklist':
                     // Populate checklist html
                     language = getcurrentlangfromHTML_Tag()
-                    $('#checklistPrompt').html(language == 'sv' ? actionObject.description_sv.toUpperCase() : actionObject.description_en.toUpperCase());
+                    $('#checklistPrompt').html(language == 'sv' ? actionObject.description.toUpperCase() : actionObject.description_en.toUpperCase());
                     checklistContainer = '';
                     for (var i = 0; i < actionObject.choices.length; i++) {
                         checklistContainer += 
@@ -627,7 +661,7 @@
                     checklistContainer += 
                     `<div class="userinfo">
                         <div>
-                            Select your type and school:
+                            ${language == 'sv' ? labels.userinfo_sv : labels.userinfo_en}
                         </div>
                         <div class="mb-2">`
                     for (var i = 0; i < usertypes.length; i++) {
@@ -657,7 +691,6 @@
                     </div>`
 
                     $("#checklistContainer").html(checklistContainer)
-                    console.log(actionObject)
                     $("#checklistLogo").attr('src', actionObject.fullpath)
 
                     // Show checklist modal
@@ -677,11 +710,16 @@
                     let current_confirmationSynonyms= language == 'sv' ? confirmationSynonyms_sv : confirmationSynonyms_en
                     $('#confirmationTitle').html(current_confirmationSynonyms[Math.floor(Math.random() * current_confirmationSynonyms.length)]);
                     
-                    let labels = JSON.parse(`<%- JSON.stringify(choicedata.labels) %>`)
                     if(language != 'en') {
-                        $('#emailPrompt').html(labels.emailPrompt_sv + " " + actionObject.description_sv.toLowerCase() + "?");
+                        thistext = labels.emailPrompt_sv
+                        //thistext += " " + actionObject.description.toLowerCase()
+                        //thistext += "?"
+                        $('#emailPrompt').html(thistext);
                     } else {
-                        $('#emailPrompt').html(labels.emailPrompt_en + " " + actionObject.description_en.toLowerCase() + "?");
+                        thistext = labels.emailPrompt_en
+                        //thistext += " " + actionObject.description_en.toLowerCase()
+                        //thistext += "?"
+                        $('#emailPrompt').html(thistext);
                     }
                     // Hide checklist and show confirmation
                     $('#checklistModal').addClass('hide');
@@ -703,10 +741,10 @@
                     $('#thanksModal').removeClass('hide');
 
                     // Start timeout for thanks screen
-                    if (getQuerystringparam('kiosk') == 'true') {
+                    //if (getQuerystringparam('kiosk') == 'true') {
                         //Använd timeoutfunktionen för session
                         THANKS_TIMEOUT = window.setTimeout(function() { endSession(); }, 3000)
-                    }
+                    //}
                     
 
                     break;
@@ -719,6 +757,10 @@
 
         function togglesubchoices(element) {
             //$(element).parent().find('.subactions').toggleClass('hide');
+        }
+
+        function contacttoggle() {
+            $("#contactmefields").toggleClass('hide');
         }
 
         function animateTheVote() {
@@ -760,7 +802,7 @@
                 let circlelabels_html ='';
                 for (i=0; i<actions.length; i++) {
                     circlelabels_html += `<div class="circle-label circle-text categoryLabel shadow clickable" id="Label${actions[i].id}" name="${actions[i].id}" onclick="startSession('${actions[i].id}')">
-                        <span class="inner-text center-align">${actions[i].description_sv}</span>
+                        <span class="inner-text center-align">${actions[i].description}</span>
                     </div>`
                 }
                 $('#circlelabels').html(circlelabels_html)
@@ -822,9 +864,7 @@
         $(document).ready(function() {
             if(getcurrentlangfromHTML_Tag() == 'sv') {
                 currentlanguage = 'en';
-            } 
-
-            choicedata = console.log(`<%- JSON.stringify(choicedata) %>`)
+            }
 
             //Definiera javascriptobject med data från EJS
             actions = JSON.parse(`<%- JSON.stringify(choicedata.event.actions) %>`)

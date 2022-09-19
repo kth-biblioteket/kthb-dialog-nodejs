@@ -556,7 +556,7 @@ const readActionChoicesResult = (event_id) => {
             SELECT 
                 actions.id, 
                 actions.description_en, 
-                actions.description_sv,
+                actions.description,
                 actions.rgbacolor,
                 count(actions.id) AS 'choices' 
             FROM actions
@@ -568,7 +568,7 @@ const readActionChoicesResult = (event_id) => {
                 ON actions.event_id = events.id
             WHERE events.id = ?
             GROUP BY 
-                actions.id,actions.description_en,actions.description_sv, actions.rgbacolor`;
+                actions.id,actions.description_en,actions.description, actions.rgbacolor`;
         database.db.query(database.mysql.format(sql,[event_id]),(err, result) => {
             if(err) {
                 console.error(err);
@@ -585,7 +585,7 @@ const readStatsUserActions = (event_id) => {
         const sql = `
         SELECT 
             actions.id as 'ActionID', 
-            actions.description_sv AS 'Beskrivning', 
+            actions.name AS 'Beskrivning', 
             count(actions.id) AS 'Antal' 
         FROM actions
         INNER JOIN actionchoices
@@ -596,7 +596,7 @@ const readStatsUserActions = (event_id) => {
             ON actions.event_id = events.id
         WHERE events.id = ?
         GROUP BY 
-            actions.id,actions.description_sv`;
+            actions.id,actions.name`;
         database.db.query(database.mysql.format(sql,[event_id]),(err, result) => {
             if(err) {
                 console.error(err);
@@ -611,7 +611,7 @@ const readStatsUserActionChoices = (event_id) => {
     return new Promise(function (resolve, reject) {
         const sql = `
         SELECT
-            useractiondata.usertype_code AS 'Användare',
+            --useractiondata.usertype_code AS 'Användare',
             actionchoices.name AS 'Beskrivning',
             count(useractionchoices.id) AS 'Antal'
         FROM 
@@ -626,7 +626,8 @@ const readStatsUserActionChoices = (event_id) => {
             events ON events.id = actions.event_id
         WHERE event_id = ?
         GROUP BY
-            useractiondata.usertype_code,actionchoices.name`;
+            --useractiondata.usertype_code,
+            actionchoices.name`;
         database.db.query(database.mysql.format(sql,[event_id]),(err, result) => {
             if(err) {
                 console.error(err);
@@ -641,7 +642,7 @@ const readStatsUserSubActionChoices = (event_id) => {
     return new Promise(function (resolve, reject) {
         const sql = `
         SELECT
-            useractiondata.usertype_code AS 'Användare',
+            --useractiondata.usertype_code AS 'Användare',
             actionchoices.name AS 'Kategorival',
             subactionchoices.name AS 'Beskrivning',
             count(usersubactionchoices.id) AS 'Antal'
@@ -659,7 +660,9 @@ const readStatsUserSubActionChoices = (event_id) => {
             events ON events.id = actions.event_id
         WHERE event_id = ?
         GROUP BY
-            useractiondata.usertype_code,actionchoices.name, subactionchoices.name`;
+            --useractiondata.usertype_code,
+            actionchoices.name,
+            subactionchoices.name`;
         database.db.query(database.mysql.format(sql,[event_id]),(err, result) => {
             if(err) {
                 console.error(err);
