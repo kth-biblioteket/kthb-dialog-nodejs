@@ -204,8 +204,8 @@ async function generateChoiceApp(req, res, next) {
         let kthschools = await eventModel.readKthschools()
 
         let labels = {
-            "submitActionButtonText_en": "Submit",
-            "submitActionButtonText_sv": "Skicka",
+            "submitActionButtonText_en": "Continue",
+            "submitActionButtonText_sv": "Gå vidare",
             "submitEmailButtonText_en": "Submit",
             "submitEmailButtonText_sv": "Skicka",
             "thanksText_en": "Thanks!",
@@ -220,22 +220,20 @@ async function generateChoiceApp(req, res, next) {
             "confirmationSubtitle_en": "You chose to...",
             "confirmationEmailQuestion_sv" : "Valen du gör",
             "confirmationEmailQuestion_en" : "Your choices...",
-            "emailPrompt_sv": "Vill du att vi skickar ett uppföljningsmail med ytterligare information?",
-            "emailPrompt_en": "Do you want us to send you a confirmation mail?",
-            "confirmationEmailQuestionNoButton_sv": "Nej",
-            "confirmationEmailQuestionNoButton_en": "No",
-            "confirmationEmailQuestionYesButton_sv": "Ja",
-            "confirmationEmailQuestionYesButton_en": "Yes",
-            "confirmationEmailPrivacyStatement_sv": "Vi sparar inte din epostadress och kommer bara att använda den till att skicka ett uppföljningsmail med ytterligare information.<br />Vi kommer inte att använda den till att skicka skräppost.",
-            "confirmationEmailPrivacyStatement_en": "We do not save your email and will only use it..."
+            "emailPrompt_sv": "Jag vill blir kontaktad av en bibliotekarie",
+            "emailPrompt_en": "I want to be contacted by a librarian",
+            "confirmationEmailQuestionNoButton_sv": "Nej tack",
+            "confirmationEmailQuestionNoButton_en": "No please",
+            "confirmationEmailQuestionYesButton_sv": "Kontakta mig",
+            "confirmationEmailQuestionYesButton_en": "Contact me",
+            "confirmationEmailPrivacyStatement_sv": "",
+            "confirmationEmailPrivacyStatement_en": ""
         }
         let confirmationSynonyms_sv = [
-            "Toppen!",
-            "Bra!"
+            "Tack"
         ]
         let confirmationSynonyms_en = [
-            "Super!",
-            "Good!"
+            "Thank you"
         ]
         //Skapa dataobjekt att skicka till webbapp
         

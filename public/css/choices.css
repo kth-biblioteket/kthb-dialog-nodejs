@@ -512,6 +512,10 @@ html, body {
   color:#fff;
 }
 
+#yescontact {
+  display: flex;
+}
+
 
 /* Email Modal Style */
 

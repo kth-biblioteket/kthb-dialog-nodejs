@@ -67,8 +67,11 @@
 
         <div class="dialog_modal largeModal shadow hide" id="confirmationModal">
             <div id="confirmationContainer">
-                <div id="confirmationTitle" class="title"></div>
-                <!--div id="confirmationSubtitle" class="title"><%- choicedata.language =='sv' ? choicedata.labels.confirmationSubtitle_sv : choicedata.labels.confirmationSubtitle_en%>
+                <div id="confirmationTitle" class="title">
+                    <%- choicedata.language =='sv' ? choicedata.confirmationSynonyms_sv[Math.floor(Math.random() * choicedata.confirmationSynonyms_sv.length)] : choicedata.labels.confirmationSynonyms_en[Math.floor(Math.random() * choicedata.labels.confirmationSynonyms_sv.length)]%>
+                </div>
+                <!--div id="confirmationSubtitle" class="title">
+                    <%- choicedata.language =='sv' ? choicedata.labels.confirmationSubtitle_sv : choicedata.labels.confirmationSubtitle_en%>
                     <span id="confirmationAction"></span>
                 </div-->
                 <!--div id="confirmationEmailQuestion">
@@ -78,12 +81,17 @@
                     <%- choicedata.language =='sv' ? choicedata.labels.emailPrompt_sv : choicedata.labels.emailPrompt_en%>
                 </div>
                 <div id="confirmationEmailQuestionButtons">
-                <div id="confirmationEmailQuestionNoButton" class="clickable shadow">
-                    <%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailQuestionNoButton_sv : choicedata.labels.confirmationEmailQuestionNoButton_en%>
-                </div>
-                <div id="confirmationEmailQuestionYesButton" class="clickable shadow">
-                    <%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailQuestionYesButton_sv : choicedata.labels.confirmationEmailQuestionYesButton_en%>
-                </div>
+                    <div id="yescontact">
+                        <div id='emailTextbox'>
+                            <textarea placeholder="Skriv din epost" id="write" rows="1" resizeable="no"></textarea>
+                        </div>
+                        <div id="confirmationEmailQuestionYesButton" class="clickable shadow">
+                            <%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailQuestionYesButton_sv : choicedata.labels.confirmationEmailQuestionYesButton_en%>
+                        </div>
+                    </div>
+                    <div id="confirmationEmailQuestionNoButton" class="clickable shadow">
+                        <%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailQuestionNoButton_sv : choicedata.labels.confirmationEmailQuestionNoButton_en%>
+                    </div>
                 </div>
                 <div id="confirmationEmailPrivacyStatement" class="body">
                 <%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailPrivacyStatement_sv : choicedata.labels.confirmationEmailPrivacyStatement_en%>
@@ -368,7 +376,16 @@
 
             $("#confirmationEmailQuestionYesButton").bind('click', function() {
                 idleTime = 0;
-                showModal('email');
+                let actionObject = actions.find(action => action.id === parseInt(SESSION_CATEGORY))
+                idleTime = 0;
+                var choice_id = parseInt(SESSION_CATEGORY);
+                reminder(choice_id, $('#write').val(), $('#contactmecheckbox').prop('checked'), $('#contactName').val(), $('#contactOther').val());
+                document.getElementById("contactmecheckbox").checked = false;
+                contacttoggle();
+                document.getElementById("contactName").value = '';
+                document.getElementById("contactOther").value = '';
+                showModal('thanks');
+                //showModal('email');
             });
         }
         
@@ -600,7 +617,7 @@
                                     <div class="actionItemText">
                                         <div>${language =='sv' ? actionObject.choices[i].description : actionObject.choices[i].description_en}</div>
                                     </div>
-                                    <div class="subactions">`
+                                    <div class="subactions hide">`
                                     //Visa endast om mainaction är checked
                                     for (var j = 0; j < actionObject.choices[i].subchoices.length; j++) {
                                         //Fritext
@@ -610,7 +627,7 @@
                                             <label for="myTextarea-${j}">
                                                 <div class="">
                                                     <div class="subactionItemName">
-                                                        ${language == 'sv' ? actionObject.choices[i].subchoices[j].name : actionObject.choices[i].subchoices[j].name_en}
+                                                        ${language == 'sv' ? actionObject.choices[i].subchoices[j].description : actionObject.choices[i].subchoices[j].description_en}
                                                     </div>
                                                 </div>
                                             </label>
@@ -669,7 +686,7 @@
                             `<div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="usertype" id="${usertypes[i].code}" value="${usertypes[i].code}">
                                 <label class="form-check-label" for="${usertypes[i].code}">
-                                    ${language == 'sv' ? usertypes[i].name_sv : usertypes[i].name_en}
+                                    ${language == 'sv' ? usertypes[i].description : usertypes[i].description_en}
                                 </label>
                             </div>`
                     }
@@ -681,7 +698,7 @@
                     //let currents_kthschools = language == 'sv' ? kthschools : kthschools_en
                     checklistContainer += 
                         `<select id="school" class="form-select mb-2" aria-label="School">
-                            <option value="" selected>${language == 'sv' ? 'Välj en skola' : 'Pick a school'}</option>`
+                            <option value="" selected>${language == 'sv' ? 'Min skola' : 'My school'}</option>`
                             for (var i = 0; i < kthschools.length; i++) {                        
 
                                 checklistContainer +=`<option value="${kthschools[i].code}">${language == 'sv' ? kthschools[i].name : kthschools[i].name_en}</option>`
@@ -703,24 +720,6 @@
                 case 'confirmation':
                     // Populate confirmation html
                     $('#confirmationAction').html(actionObject.description_en.toLowerCase());
-
-                    let confirmationSynonyms_sv = JSON.parse('<%- JSON.stringify(choicedata.confirmationSynonyms_sv) %>')
-                    let confirmationSynonyms_en = JSON.parse('<%- JSON.stringify(choicedata.confirmationSynonyms_en) %>')
-                    language = getcurrentlangfromHTML_Tag()
-                    let current_confirmationSynonyms= language == 'sv' ? confirmationSynonyms_sv : confirmationSynonyms_en
-                    $('#confirmationTitle').html(current_confirmationSynonyms[Math.floor(Math.random() * current_confirmationSynonyms.length)]);
-                    
-                    if(language != 'en') {
-                        thistext = labels.emailPrompt_sv
-                        //thistext += " " + actionObject.description.toLowerCase()
-                        //thistext += "?"
-                        $('#emailPrompt').html(thistext);
-                    } else {
-                        thistext = labels.emailPrompt_en
-                        //thistext += " " + actionObject.description_en.toLowerCase()
-                        //thistext += "?"
-                        $('#emailPrompt').html(thistext);
-                    }
                     // Hide checklist and show confirmation
                     $('#checklistModal').addClass('hide');
                     $('#confirmationModal').removeClass('hide');
@@ -756,7 +755,7 @@
         }
 
         function togglesubchoices(element) {
-            //$(element).parent().find('.subactions').toggleClass('hide');
+            $(element).parent().find('.subactions').toggleClass('hide');
         }
 
         function contacttoggle() {
