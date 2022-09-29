@@ -177,78 +177,92 @@
                     console.log('Hämtat stats', 'success', 'createEventPlaceholder')
                     var stats = JSON.parse(xhttp.response)
                     
-                    var html = ``
-                    var tablehead=`<thead><tr>`
-                    let tablefoot = ''
-                    var tablebody = `<tbody>`
-                    let nrofcolumns = 0;
-                    for(i=0 ; i< stats.length ; i++) {
-                        tablebody += `<tr>`
-                        for (var colheader in stats[i]) {
-                            if (i === 0) {
-                                tablehead += `<th>${colheader}</th>`
-                                tablefoot += `<th></th>`
-                                nrofcolumns++
+                    if(stats.length > 0) {
+                        var html = ``
+                        var tablehead=`<thead><tr>`
+                        let tablefoot = ''
+                        var tablebody = `<tbody>`
+                        let nrofcolumns = 0;
+                        for(i=0 ; i< stats.length ; i++) {
+                            tablebody += `<tr>`
+                            for (var colheader in stats[i]) {
+                                if (i === 0) {
+                                    tablehead += `<th>${colheader}</th>`
+                                    tablefoot += `<th></th>`
+                                    nrofcolumns++
+                                }
+                                
+                                tablebody += `<td>${stats[i][colheader]}</td>`
                             }
-                            
-                            tablebody += `<td>${stats[i][colheader]}</td>`
+                            tablebody += `</tr>`
                         }
-                        tablebody += `</tr>`
-                    }
-                    tablehead += `</thead></tr>`
-                    tablebody += `</tbody>`
-                    html += tablehead + tablebody +
-                    `<tfoot>
-                        <tr>` +
-                        //tablehead +
-		                tablefoot + 
-                        `</tr>
-                    </tfoot>`
-                    $('#' + type).html(html)
-                    $('#' + type).DataTable().destroy()
-                    $('#' + type).DataTable({
-                        "dom": '<Bplfi<t>>',
-                        "columnDefs": [
-                            { 
-                                "orderDataType": "dom-text",
-                                "type": "string",
-                                "width": "60%", 
-                                "targets": 1 
-                            }
-                        ],
-                        "order": [[ 1, 'desc' ]],
-                        buttons: [ {
-                            extend: 'excelHtml5',
-                            autoFilter: true,
-                            filename: 'Dialog_statistik',
-                            sheetName: 'Statistik'
-                        } ],
-                        "footerCallback": function ( row, data, start, end, display ) {
-                            nrofcolumns= $('#' + type).dataTable().fnSettings().aoColumns.length
+                        tablehead += `</thead></tr>`
+                        tablebody += `</tbody>`
+                        html += tablehead + tablebody +
+                        `<tfoot>
+                            <tr>` +
+                            //tablehead +
+                            tablefoot + 
+                            `</tr>
+                        </tfoot>`
+                        $('#' + type).html(html)
+                        $('#' + type).DataTable().destroy()
+                        $('#' + type).DataTable({
+                            "dom": '<Bplfi<t>>',
+                            "columnDefs": [
+                                { 
+                                    "orderDataType": "dom-text",
+                                    "type": "string",
+                                    "width": "60%", 
+                                    "targets": 1 
+                                }
+                            ],
+                            "order": [[ 1, 'desc' ]],
+                            buttons: [ {
+                                extend: 'excelHtml5',
+                                autoFilter: true,
+                                filename: 'Dialog_statistik',
+                                sheetName: 'Statistik'
+                            } ],
+                            "footerCallback": function ( row, data, start, end, display ) {
+                                nrofcolumns= $('#' + type).dataTable().fnSettings().aoColumns.length
 
-                            var api = this.api(), data;
- 
-                            var intVal = function ( i ) {
-                                return typeof i === 'string' ? i.replace(/[\$,]/g, '')*1 : typeof i === 'number' ? i : 0;
-                            };
-            
-                            var total = api
-                                .column( nrofcolumns - 1 )
-                                .data()
-                                .reduce( function (a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0 );
-                            
-                            // Update footer by showing the total with the reference of the column index 
-                            $( api.column( 0 ).footer() ).html('Total');
-                            $( api.column( nrofcolumns - 1 ).footer() ).html(total);
-                        },
-                    });
-                    //$('#' + type + diagramtype).destroy()
-                    if(diagramtype != '') {
-                        cirkeldiagram(diagramtype, stats, type + diagramtype)
+                                var api = this.api(), data;
+    
+                                var intVal = function ( i ) {
+                                    return typeof i === 'string' ? i.replace(/[\$,]/g, '')*1 : typeof i === 'number' ? i : 0;
+                                };
+                
+                                var total = api
+                                    .column( nrofcolumns - 1 )
+                                    .data()
+                                    .reduce( function (a, b) {
+                                        return intVal(a) + intVal(b);
+                                    }, 0 );
+                                
+                                // Update footer by showing the total with the reference of the column index 
+                                $( api.column( 0 ).footer() ).html('Total');
+                                $( api.column( nrofcolumns - 1 ).footer() ).html(total);
+                            },
+                        });
+                        //$('#' + type + diagramtype).destroy()
+                        if(diagramtype != '') {
+                            cirkeldiagram(diagramtype, stats, type + diagramtype)
+                        }
+                    } else {
+                        removediv = document.getElementById(type + diagramtype + 'chart');
+                        if (removediv) {
+                            removediv.remove();
+                        }
+
+                        if ( ! $.fn.DataTable.isDataTable( '#' + type ) ) {
+                        } else {
+                            $('#' + type).DataTable().destroy()
+                        }
+                        
+                        $('#' + type).html('')
                     }
-                }
+                } 
             };
             xhttp.open("GET", url, true);
             xhttp.send();
