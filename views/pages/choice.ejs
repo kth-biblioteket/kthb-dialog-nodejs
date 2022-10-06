@@ -327,6 +327,8 @@
 
         function reminder(subcategory, email, contactme, name, other) {
             // All the data you need is the emailadress and the subcategory
+            //contactme is always true at the moment
+            contactme = true;
             body = JSON.stringify({
                 email: email,
                 contactme: contactme,
