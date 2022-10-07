@@ -502,7 +502,19 @@ html, body {
   color: #d2d940; /* hightlight yellow */
 }
 
-#confirmationEmailQuestionNoButton, #confirmationEmailQuestionYesButton {
+#confirmationEmailQuestionYesButton {
+  display: inline-block;
+  height: 70px;
+  padding: 0px 40px;
+  border-radius: 40px;
+  line-height: 70px;
+  margin-right: 50px;
+  color:#fff;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+#confirmationEmailQuestionNoButton {
   display: inline-block;
   height: 80px;
   padding: 0px 40px;
@@ -958,11 +970,10 @@ label .info {
     font-size: 32px;
     line-height: 50px;
     font-family: verdana;
-    padding: 0px;
-    padding-top: 0px;
+    padding: 10px;
     width: 100%;
     margin-right: 0px;
-    height: 50px;
+    height: 70px;
     background: #fff;
     border-radius: 7px;
     resize: none;
