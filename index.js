@@ -599,10 +599,9 @@ apiRoutes.post(process.env.API_PATH + "/reminder", async function (req, res) {
         const usertype = await eventController.getusertype(req.body.session_user_choice.user_type)
         const action = await eventController.getAction(req.body.action_id)
     } catch(err) {
-        res.send(err.message)
+        console.log(err.message)
     }
     const uuid = req.body.session_user_choice.uuid
-    console.log(kthschool[0].name)
     if (req.body.contactme) {
         console.log("Kontakta mig")
         let edgemailoptions = {}
