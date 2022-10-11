@@ -594,18 +594,21 @@ apiRoutes.post(process.env.API_PATH + "/reminder", async function (req, res) {
 
     transporter.use('compile', hbs(handlebarOptions))
 
+    let kthschool;
+    let usertype;
+    let action;
     try {
-        const kthschool = await eventController.getkthschool(req.body.session_user_choice.school)
+        kthschool = await eventController.getkthschool(req.body.session_user_choice.school)
     } catch(err) {
         console.log(err)
     }
     try {
-        const usertype = await eventController.getusertype(req.body.session_user_choice.user_type)
+        usertype = await eventController.getusertype(req.body.session_user_choice.user_type)
     } catch(err) {
         console.log(err)
     }
     try {
-        const action = await eventController.getAction(req.body.action_id)
+        action = await eventController.getAction(req.body.action_id)
     } catch(err) {
         console.log(err)
     }
