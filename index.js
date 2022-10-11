@@ -597,17 +597,17 @@ apiRoutes.post(process.env.API_PATH + "/reminder", async function (req, res) {
     try {
         const kthschool = await eventController.getkthschool(req.body.session_user_choice.school)
     } catch(err) {
-        console.log(err.message)
+        console.log(err)
     }
     try {
         const usertype = await eventController.getusertype(req.body.session_user_choice.user_type)
     } catch(err) {
-        console.log(err.message)
+        console.log(err)
     }
     try {
         const action = await eventController.getAction(req.body.action_id)
     } catch(err) {
-        console.log(err.message)
+        console.log(err)
     }
     
     const uuid = req.body.session_user_choice.uuid
