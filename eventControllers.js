@@ -692,6 +692,16 @@ async function readActionChoicesResult(events_id) {
     }
 }
 
+async function readActionChoicesSession(uuid) {
+    try {
+        let result = await eventModel.readActionChoicesSession(events_id)
+        return result
+    } catch (err) {
+        console.log(err.message)
+        return "error: " + err.message
+    }
+}
+
 async function readStatsUserActions(req, res, next) {
     try {
         let result = await eventModel.readStatsUserActions(req.params.event_id)
@@ -831,6 +841,24 @@ async function readKthschools(req, res) {
     }
 }
 
+async function getkthschool(code) {
+    try {
+        let response = await eventModel.getkthschool(code)
+        return response;
+    } catch (err) {
+        return err.message;
+    }
+}
+
+async function getusertype(code) {
+    try {
+        let response = await eventModel.getusertype(code)
+        return response;
+    } catch (err) {
+        return err.message;
+    }
+}
+
 function substrInBetween(whole_str, str1, str2) {
     if (whole_str.indexOf(str1) === -1 || whole_str.indexOf(str2) === -1) {
         return undefined;
@@ -897,6 +925,8 @@ module.exports = {
     updateImage,
     deleteImage,
     readKthschools,
+    getkthschool,
+    getusertype,
     substrInBetween,
     truncate
 };

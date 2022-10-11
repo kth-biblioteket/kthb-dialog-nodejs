@@ -325,7 +325,7 @@
             // 404 not found
         }
 
-        function reminder(subcategory, email, contactme, name, other) {
+        function reminder(choiceid, email, contactme, name, other) {
             // All the data you need is the emailadress and the subcategory
             //contactme is always true at the moment
             contactme = true;
@@ -334,8 +334,8 @@
                 contactme: contactme,
                 name: name,
                 other: other,
-                subcategory: subcategory,
-                "lang": getcurrentlangfromHTML_Tag(),
+                choiceid: choiceid,
+                lang: getcurrentlangfromHTML_Tag(),
                 session_user_choice : SESSION_USER_CHOICE
             });
             $.ajax({

@@ -579,6 +579,32 @@ const readActionChoicesResult = (event_id) => {
     })
 };
 
+//Hämta useractionchoices för en session
+const readActionChoicesSession = (uuid) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `
+            SELECT 
+               *
+            FROM useractionchoices
+            INNER JOIN actionchoices
+                ON actions.id = actionchoices.action_id
+            INNER JOIN useractionchoices
+                ON actionchoices.id = useractionchoices.actionchoice_id
+            INNER JOIN events
+                ON actions.event_id = events.id
+            WHERE events.id = ?
+            GROUP BY 
+                actions.id,actions.description_en,actions.description, actions.rgbacolor`;
+        database.db.query(database.mysql.format(sql,[event_id]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            resolve(result);
+        });
+    })
+};
+
 //Hämta stastistik
 const readStatsUserActions = (event_id) => {
     return new Promise(function (resolve, reject) {
@@ -903,6 +929,36 @@ const deleteKthschool = (id) => {
     })
 };
 
+//Hämta skola
+const getkthschool = (code) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `SELECT * FROM kthschools
+                        WHERE code = ?`;
+        database.db.query(database.mysql.format(sql,[code]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            resolve(result);
+        });
+    })
+};
+
+//Hämta usertyp(forskare / doktorand)
+const getusertype = (code) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `SELECT * FROM usertypes
+                        WHERE code = ?`;
+        database.db.query(database.mysql.format(sql,[code]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            resolve(result);
+        });
+    })
+};
+
 module.exports = {
     readEvents,
     readEventsByDate,
@@ -937,6 +993,7 @@ module.exports = {
     createUserActionMessages,
     createUserActionData,
     readActionChoicesResult,
+    readActionChoicesSession,
     readStatsUserActions,
     readStatsUserActionChoices,
     readStatsUserSubActionChoices,
@@ -953,5 +1010,7 @@ module.exports = {
     readKthschools,
     createKthschool,
     updateKthschool,
-    deleteKthschool
+    deleteKthschool,
+    getkthschool,
+    getusertype
 };

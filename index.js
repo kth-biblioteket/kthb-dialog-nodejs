@@ -571,7 +571,7 @@ apiRoutes.post(process.env.API_PATH + "/choice/", async function (req, res) {
     }
 });
   
-//Skicka mail till användaren och ett kontakta mig till edge om det är valt
+//Skicka mail till edge med alla val som användaren gjort
 apiRoutes.post(process.env.API_PATH + "/reminder", async function (req, res) {
 
     const handlebarOptions = {
@@ -594,61 +594,33 @@ apiRoutes.post(process.env.API_PATH + "/reminder", async function (req, res) {
 
     transporter.use('compile', hbs(handlebarOptions))
 
-    //let htmlbody = require('templates/confirmEmailGeneral_' + req.body.lang + '.html');
-    let mailOptions = {}
-    if (req.body.lang.toUpperCase() == "SV") {
-        mailOptions = {
-            from: {
-                name: process.env.MAILFROM_NAME_SV,
-                address: process.env.MAILFROM_ADDRESS
-            },
-            to: req.body.email,
-            subject: process.env.MAILFROM_SUBJECT_SV,
-            template: 'email_' + req.body.lang,
-            context:{
-                name: "Anka",
-                company: 'KTH Bibilioteket'
-            },
-            generateTextFromHTML: true,
-        }
-    } else {
-        mailOptions = {
-            from: {
-                name: process.env.MAILFROM_NAME_SV,
-                address: process.env.MAILFROM_ADDRESS
-            },
-            to: req.body.email,
-            subject: process.env.MAILFROM_SUBJECT_EN,
-            template: 'email_' + req.body.lang,
-            context:{
-                name: "Anka",
-                company: 'KTH Library'
-            },
-            generateTextFromHTML: true,
-        }
-    }
-
-    try {
-        let mailinfo = await transporter.sendMail(mailOptions);
-    } catch (err) {
-        //TODO
-    }
-
+    const kthschool = await eventController.getkthschool(req.body.session_user_choice.school)
+    const usertype = await eventController.getkthschool(req.body.session_user_choice.user_type)
+    const action = await eventController.readAction(req.body.action_id)
+    const uuid = req.body.session_user_choice.uuid
+    console.log(kthschool[0].name)
     if (req.body.contactme) {
         console.log("Kontakta mig")
         let edgemailoptions = {}
+        let template = 'edge_email_sv'
+        if (req.body.lang.toUpperCase() == "EN") {
+            template = 'edge_email_en'
+        } else {
+
+        }
         edgemailoptions = {
             from: {
-                name: req.body.name,
+                //name: req.body.name,
                 address: req.body.email
             },
             to: process.env.EDGE_MAIL_ADDRESS,
             subject: "KTH Biblioteket matchmaking",
             template: 'edge_email_sv',
             context:{
-                name: req.body.name,
-                other: req.body.other,
-                company: 'KTH Bibilioteket',
+                email: req.body.email,
+                schoolname: kthschool[0].name,
+                usertype: usertype[0].name,
+                action: action[0].name,
                 session_user_choice: req.body.session_user_choice
             },
             generateTextFromHTML: true
