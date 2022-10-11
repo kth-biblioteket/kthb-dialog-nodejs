@@ -882,7 +882,7 @@
                 xhttp.onload = function () {
                     if (xhttp.status == 401) {  
                     }
-                    //location.href = "/dialog/admin"
+                    location.href = "/dialog/admin"
                 };
                 xhttp.open("POST", "/dialog/api/v1/logout", true);
                 xhttp.setRequestHeader('Content-Type', 'application/json');
