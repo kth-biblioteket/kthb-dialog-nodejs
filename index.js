@@ -599,26 +599,37 @@ apiRoutes.post(process.env.API_PATH + "/reminder", async function (req, res) {
     let action;
     try {
         kthschool = await eventController.getkthschool(req.body.session_user_choice.school)
-        console.log(kthschool)
     } catch(err) {
         console.log(err)
     }
+
     try {
         usertype = await eventController.getusertype(req.body.session_user_choice.usertype)
-        console.log(usertype)
     } catch(err) {
         console.log(err)
     }
+
     try {
-        action = await eventController.getAction(req.body.session_user_choice.action_id)
-        console.log(action)
+        session = await eventController.getAction(req.body.session_user_choice.action_id)
+    } catch(err) {
+        console.log(err)
+    }
+
+    try {
+        let sessionchoices = []
+        let useractionchoices = await eventController.readsessionuseractionchoices(req.body.session_user_choice.uuid)
+        for(i=0;i<useractionchoices.length;i++) {
+            let usermessage = await eventController.readsessionuseractionmessage(req.body.session_user_choice.uuid, useractionchoices[i].actionchoice_id)
+            sessionchoices.push[{"name": useractionchoices[i].name, "message": usermessage[0]}]
+        }
     } catch(err) {
         console.log(err)
     }
     
+    
+
     const uuid = req.body.session_user_choice.uuid
     if (req.body.contactme) {
-        console.log("Kontakta mig")
         let edgemailoptions = {}
         let template = 'edge_email_sv'
         if (req.body.lang.toUpperCase() == "EN") {
@@ -639,6 +650,7 @@ apiRoutes.post(process.env.API_PATH + "/reminder", async function (req, res) {
                 schoolname: kthschool[0].name,
                 usertype: usertype[0].name,
                 action: action[0].name,
+                sessionchoices: sessionchoices,
                 session_user_choice: req.body.session_user_choice
             },
             generateTextFromHTML: true

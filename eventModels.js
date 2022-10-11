@@ -959,6 +959,44 @@ const getusertype = (code) => {
     })
 };
 
+const readsessionuseractionchoices = (uuid) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `SELECT * FROM useractionchoices
+                        INNER JOIN actionchoices
+                        ON actionchoices.id = useractionchoices.actionchoice_id
+                        WHERE useractionchoices.uuid = ?`;
+        database.db.query(database.mysql.format(sql,[uuid]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            resolve(result);
+        });
+    })
+};
+
+const readsessionuseractionmessage = (uuid, actionchoice_id) => {
+    return new Promise(function (resolve, reject) {
+        const sql = `SELECT * FROM useractionmessages
+                        INNER JOIN subactionchoices
+                        ON subactionchoices.id = useractionmessages.subactionchoice_id
+                        INNER JOIN useractionchoices
+                        ON useractionchoices.actionchoice_id = subactionchoices.actionchoice_id
+                        AND useractionchoices.uuid = useractionmessages.uuid
+                        wHERE useractionmessages.uuid = ?
+                        AND useractionchoices.actionchoice_id = ?`;
+        database.db.query(database.mysql.format(sql,[uuid, actionchoice_id]),(err, result) => {
+            if(err) {
+                console.error(err);
+                reject(err.message)
+            }
+            resolve(result);
+        });
+    })
+};
+
+
+
 module.exports = {
     readEvents,
     readEventsByDate,
@@ -1012,5 +1050,8 @@ module.exports = {
     updateKthschool,
     deleteKthschool,
     getkthschool,
-    getusertype
+    getusertype,
+    readsessionuseractionchoices,
+    readsessionuseractionmessage
+
 };

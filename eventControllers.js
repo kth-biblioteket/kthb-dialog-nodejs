@@ -868,6 +868,24 @@ async function getAction(action_id) {
     }
 }
 
+async function readsessionuseractionchoices(uuid) {
+    try {
+        let response = await eventModel.readsessionactionchoices(action_id)
+        return response;
+    } catch (err) {
+        return err.message;
+    }
+}
+
+async function readsessionuseractionmessage(uuid, actionchoice_id) {
+    try {
+        let response = await eventModel.readsessionmessage(uuid, action_id)
+        return response;
+    } catch (err) {
+        return err.message;
+    }
+}
+
 function substrInBetween(whole_str, str1, str2) {
     if (whole_str.indexOf(str1) === -1 || whole_str.indexOf(str2) === -1) {
         return undefined;
@@ -937,6 +955,8 @@ module.exports = {
     getkthschool,
     getusertype,
     getAction,
+    readsessionuseractionchoices,
+    readsessionuseractionmessage,
     substrInBetween,
     truncate
 };
