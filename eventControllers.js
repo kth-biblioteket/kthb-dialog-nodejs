@@ -870,7 +870,7 @@ async function getAction(action_id) {
 
 async function readsessionuseractionchoices(uuid) {
     try {
-        let response = await eventModel.readsessionactionchoices(uuid)
+        let response = await eventModel.readsessionuseractionchoices(uuid)
         return response;
     } catch (err) {
         return err.message;
@@ -879,7 +879,7 @@ async function readsessionuseractionchoices(uuid) {
 
 async function readsessionuseractionmessage(uuid, actionchoice_id) {
     try {
-        let response = await eventModel.readsessionmessage(uuid, actionchoice_id)
+        let response = await eventModel.readsessionuseractionmessage(uuid, actionchoice_id)
         return response;
     } catch (err) {
         return err.message;
