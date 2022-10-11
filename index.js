@@ -604,13 +604,13 @@ apiRoutes.post(process.env.API_PATH + "/reminder", async function (req, res) {
         console.log(err)
     }
     try {
-        usertype = await eventController.getusertype(req.body.session_user_choice.user_type)
+        usertype = await eventController.getusertype(req.body.session_user_choice.usertype)
         console.log(usertype)
     } catch(err) {
         console.log(err)
     }
     try {
-        action = await eventController.getAction(req.body.action_id)
+        action = await eventController.getAction(req.body.session_user_choice.action_id)
         console.log(action)
     } catch(err) {
         console.log(err)
