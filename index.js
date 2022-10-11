@@ -595,7 +595,7 @@ apiRoutes.post(process.env.API_PATH + "/reminder", async function (req, res) {
     transporter.use('compile', hbs(handlebarOptions))
 
     const kthschool = await eventController.getkthschool(req.body.session_user_choice.school)
-    const usertype = await eventController.getkthschool(req.body.session_user_choice.user_type)
+    const usertype = await eventController.getusertype(req.body.session_user_choice.user_type)
     const action = await eventController.getAction(req.body.action_id)
     const uuid = req.body.session_user_choice.uuid
     console.log(kthschool[0].name)
