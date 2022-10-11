@@ -46,7 +46,7 @@ apiRoutes.get("/", async function (req, res, next) {
         let verify = await VerifyAdmin(req, res, next)
         res.redirect(process.env.APP_PATH + "/admin")
     } catch(err) {
-        res.render('login', {logindata: {"status":"ok", "message":"login"}})
+        res.render('pages/login', {logindata: {"status":"ok", "message":"login"}})
     }
 });
 
