@@ -18,6 +18,9 @@
                 <div class="navbar-nav">
                 </div>
             </div>
+            <form style="flex:2;display:flex;justify-content:flex-end">
+                <button type="button" class="btn btn-outline-success" onclick="logout()">Logout</button>
+            </form>
             <div id="gradientBorder"></div>
         </nav>
         <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -874,5 +877,16 @@
             input.value = selectedColor
         }
         
+        function logout() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onload = function () {
+                    if (xhttp.status == 401) {  
+                    }
+                    location.href = "/dialog/admin"
+                };
+                xhttp.open("POST", "/dialog/api/v1/logout", true);
+                xhttp.setRequestHeader('Content-Type', 'application/json');
+                xhttp.send();
+            }
     </script>
 </html>
