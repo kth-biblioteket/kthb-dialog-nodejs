@@ -88,10 +88,6 @@ apiRoutes.get('/public/FarnhamDisplay-RegularOSF.ttf', function(req, res) {
     });
 });
 
-apiRoutes.post("/login", eventController.login)
-
-apiRoutes.post("/logout", VerifyToken, eventController.logout)
-
 // AdmininstrationsApp
 apiRoutes.get("/admin", VerifyToken, eventController.generateEventsAdminApp)
 
@@ -103,6 +99,15 @@ apiRoutes.get("/results/:event_id", eventController.generateChoiceResultsApp)
 
 // DialogStatsApp
 apiRoutes.get("/stats", eventController.generateStatsApp)
+
+/****
+ * 
+ * API
+ * 
+ ********* */
+apiRoutes.post(process.env.API_PATH + "/login", eventController.login)
+
+apiRoutes.post(process.env.API_PATH + "/logout", VerifyToken, eventController.logout)
 
 // Hämta KTH-skolor
 apiRoutes.get(process.env.API_PATH + "/kthschoolsapi",eventController.getkthschools)
