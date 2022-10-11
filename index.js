@@ -610,7 +610,7 @@ apiRoutes.post(process.env.API_PATH + "/reminder", async function (req, res) {
     }
 
     try {
-        session = await eventController.getAction(req.body.session_user_choice.action_id)
+        action = await eventController.getAction(req.body.session_user_choice.action_id)
     } catch(err) {
         console.log(err)
     }
@@ -618,7 +618,7 @@ apiRoutes.post(process.env.API_PATH + "/reminder", async function (req, res) {
     try {
         let sessionchoices = []
         let useractionchoices = await eventController.readsessionuseractionchoices(req.body.session_user_choice.uuid)
-        for(i=0;i<useractionchoices.length;i++) {
+        for(let i=0 ; i<useractionchoices.length ; i++) {
             let usermessage = await eventController.readsessionuseractionmessage(req.body.session_user_choice.uuid, useractionchoices[i].actionchoice_id)
             sessionchoices.push[{"name": useractionchoices[i].name, "message": usermessage[0]}]
         }
