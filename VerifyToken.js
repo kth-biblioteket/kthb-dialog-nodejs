@@ -57,7 +57,7 @@ function verifyToken(req, res, next) {
                 }
             } else {
                 res.clearCookie("jwt")
-                res.render('login',{logindata: {"status":"error", "message":"No user found"}})
+                res.render('pages/login',{logindata: {"status":"error", "message":"No user found"}})
             }
         });
     } else {
