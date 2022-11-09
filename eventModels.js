@@ -31,24 +31,6 @@ const readEventsByDate = (startdate) => {
     })
 };
 
-//Hämta alla Events med paginering
-const readEventsPaginated = (page, limit) => {
-    return new Promise(function (resolve, reject) {
-        limit = parseInt(limit)
-        let offset = (limit * page) - limit;
-        const sql = `SELECT * FROM events
-                    ORDER BY startdate
-                    LIMIT ? OFFSET ?`;
-        database.db.query(database.mysql.format(sql,[limit, offset]),(err, result) => {
-            if(err) {
-                console.error(err);
-                reject(err.message)
-            }
-            resolve(result);
-        });
-    })
-};
-
 //Hämta ett event via ID
 const readEventId = (id) => {
     return new Promise(function (resolve, reject) {
@@ -1000,7 +982,6 @@ const readsessionuseractionmessage = (uuid, actionchoice_id) => {
 module.exports = {
     readEvents,
     readEventsByDate,
-    readEventsPaginated,
     readEventId,
     createEvent,
     updateEvent,

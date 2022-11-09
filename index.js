@@ -1,6 +1,7 @@
 'use strict';
 
 require('dotenv').config()
+const bunyan = require('bunyan');
 
 const jwt = require("jsonwebtoken");
 const VerifyToken = require('./VerifyToken');
@@ -39,6 +40,17 @@ app.use(process.env.APP_PATH, express.static(path.join(__dirname, "public")));
 app.use(cors({ origin: '*' }));
 
 const apiRoutes = express.Router();
+
+const logger = bunyan.createLogger({
+    name: "kthbdialog",
+    streams: [{
+        type: 'rotating-file',
+        path: 'kthbdialog.log',
+        period: '1d',
+        count: 3,
+        level: process.env.LOG_LEVEL || 'info',
+    }]
+});
 
 //Hänvisa root till admin
 apiRoutes.get("/", async function (req, res, next) {
@@ -100,11 +112,11 @@ apiRoutes.get("/results/:event_id", eventController.generateChoiceResultsApp)
 // DialogStatsApp
 apiRoutes.get("/stats", eventController.generateStatsApp)
 
-/****
- * 
- * API
- * 
- ********* */
+/////////////
+// 
+// API
+// 
+/////////////
 apiRoutes.post(process.env.API_PATH + "/login", eventController.login)
 
 apiRoutes.post(process.env.API_PATH + "/logout", VerifyToken, eventController.logout)
@@ -663,6 +675,7 @@ apiRoutes.post(process.env.API_PATH + "/reminder", async function (req, res) {
         };
 
         try {
+            logger.debug(JSON.stringify(edgemailoptions))
             let contactmemailinfo = await transporter.sendMail(edgemailoptions);
         } catch (err) {
             //TODO

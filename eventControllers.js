@@ -9,65 +9,6 @@ const path = require('path');
 
 
 // Funktion som genererar ett 
-// admingränssnitt med alla events
-async function readEventsPaginated(req, res, next) {
-    
-    let data = []
-    let eventsarray = []
-    let events
-    let eventsbydate
-    let imagebank
-    let page = 1
-    let size = 10
-
-    if (req.query.page) {
-        page = req.query.page;
-    } 
-
-    if (req.query.size) {
-        size = req.query.size;
-    }
-
-    try {
-        imagebank = await eventModel.readImages()
-        data.imagebank = imagebank
-    } catch(err) {
-        res.send("error: " + err.message)
-    }
-    
-    //Läs in alla events
-    try {
-        events = await readEvents()
-    } catch(err) {
-        res.send("error: " + err.message)
-    }
-
-    data.pagination = {
-        "page": page,
-        "size": size,
-        "total": events.length
-    }
-
-    let contentid = ""
-    try {
-        //Hämta paginerade events
-        events = await eventModel.readEventsPaginated(page, size)
-        data.events = events;
-        admindata = {
-            "url": req.protocol + '://' + req.get('host') + req.originalUrl,
-            "pagination": data.pagination,
-            "imagebank":  data.imagebank,
-            "events": data.events
-        }
-        res.render('admin', admindata);
-
-    } catch(err) {
-        res.send("error: " + err.message)
-    }
-    
-}
-
-// Funktion som genererar ett 
 // admingränssnitt
 async function generateEventsAdminApp(req, res, next) {
 
@@ -288,6 +229,7 @@ async function generateChoiceResultsApp(req, res, next) {
     }
 }
 
+//App för att visa statistik
 async function generateStatsApp(req, res, next) {
 
     let events
@@ -312,6 +254,7 @@ async function generateStatsApp(req, res, next) {
     }
 }
 
+//Logga in via aKTH LDAP
 async function login(req, res) {
     try {
         const response = await axios.post(process.env.LDAPAPIPATH + '/login', req.body)
@@ -330,6 +273,7 @@ async function login(req, res) {
     }
 }
 
+//Logga ut
 async function logout(req, res) {
     res
     .clearCookie("jwt")
@@ -337,6 +281,7 @@ async function logout(req, res) {
     .json({ message: "Success" });
 }
 
+//Hämta alla KTH-skolor via KOPPS API
 async function getkthschools(req, res) {
     try {
         const response = await axios.get('https://www.kth.se/api/kopps/v2/schools')
@@ -349,16 +294,7 @@ async function getkthschools(req, res) {
     }
 }
 
-async function readEvents(req, res) {
-    try {
-        let result = await eventModel.readEvents()
-        return result
-    } catch (err) {
-        console.log(err.message)
-        return "error: " + err.message
-    }
-}
-
+//Hämta ett event via id
 async function readEvent(req, res) {
     try {
         let response = await eventModel.readEventId(req.params.id)
@@ -371,6 +307,7 @@ async function readEvent(req, res) {
     }
 }
 
+//Hämta alla events
 async function readAllEvents(req, res) {
     try {
         let response = await eventModel.readEvents()
@@ -398,16 +335,6 @@ async function readAllEventActions(req, res) {
 async function readEventsByDate(eventtime) {
     try {
         let result = await eventModel.readEventsByDate(eventtime)
-        return result
-    } catch (err) {
-        console.log(err.message)
-        return "error: " + err.message
-    }
-}
-
-async function readEventId(id) {
-    try {
-        let result = await eventModel.readEventId(id)
         return result
     } catch (err) {
         console.log(err.message)
@@ -898,7 +825,6 @@ function truncate(str, max, suffix) {
 }
 
 module.exports = {
-    readEventsPaginated,
     generateEventsAdminApp,
     generateChoiceApp,
     generateChoiceResultsApp,
@@ -906,12 +832,10 @@ module.exports = {
     login,
     logout,
     getkthschools,
-    readEvents,
     readEvent,
     readAllEvents,
     readAllEventActions,
     readEventsByDate,
-    readEventId,
     createEvent,
     updateEvent,
     deleteEvent,
