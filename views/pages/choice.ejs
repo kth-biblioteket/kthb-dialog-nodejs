@@ -103,7 +103,7 @@
                         <div id='emailTextbox'>
                             <textarea placeholder="<%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailTextboxPlaceholder_sv : choicedata.labels.confirmationEmailTextboxPlaceholder_en%>" id="write" rows="1" resizeable="no"></textarea>
                         </div>
-                        <button id="confirmationEmailQuestionYesButton" class="btn btn-success"><i class="pulse fas fa-heart" aria-hidden="true"></i> Matcha mig</button>
+                        <button id="confirmationEmailQuestionYesButton" class="btn btn-success"><i class="pulse fas fa-heart" aria-hidden="true"></i> <%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailQuestionYesButton_sv[Math.floor(Math.random() * choicedata.labels.confirmationEmailQuestionYesButton_sv.length)] : choicedata.labels.confirmationEmailQuestionYesButton_en[Math.floor(Math.random() * choicedata.labels.confirmationEmailQuestionYesButton_en.length)]%></button>
                         <!--div id="confirmationEmailQuestionYesButton" class="">
                             <div id="" class="heartemailmebutton">
                                 <i class="pulse fas fa-heart" aria-hidden="true">
@@ -902,7 +902,6 @@
                 $('#checklistInstruction1').html(labels.instruction1_sv)
                 $('#checklistInstruction2').html(labels.instruction2_sv)
                 $('#checklistEmailInstruction').html(labels.emailinstruction_sv)
-                console.log($('#submitActionButton .text').text())
                 $('#submitActionButton .text').text(labels.submitActionButtonText_sv)
                 $('#submitEmail').text(labels.submitEmailButtonText_sv)
                 $('#thanksText').text(labels.thanksText_sv)
@@ -910,7 +909,7 @@
                 $('#confirmationEmailQuestion').html(labels.confirmationEmailQuestion_sv);
                 $('#emailPrompt').html(labels.emailPrompt_sv);
                 $('#confirmationEmailQuestionNoButton  .text').html(labels.confirmationEmailQuestionNoButton_sv);
-                $('#confirmationEmailQuestionYesButton').html(labels.confirmationEmailQuestionYesButton_sv);
+                $('#confirmationEmailQuestionYesButton').html('<i class="pulse fas fa-heart" aria-hidden="true"></i>' + labels.confirmationEmailQuestionYesButton_sv[Math.floor(Math.random() * labels.confirmationEmailQuestionYesButton_sv.length)]);
                 $('#emailTextbox textarea').attr("placeholder", labels.confirmationEmailTextboxPlaceholder_sv);
                 $('#confirmationEmailPrivacyStatement').html(labels.confirmationEmailPrivacyStatement_sv);
                 $('#confirmationEmailQuestion').html(labels.confirmationEmailQuestion_sv);
@@ -945,7 +944,7 @@
                 $('#confirmationEmailQuestion').html(labels.confirmationEmailQuestion_en);
                 $('#emailPrompt').html(labels.emailPrompt_en);
                 $('#confirmationEmailQuestionNoButton .text').html(labels.confirmationEmailQuestionNoButton_en);
-                $('#confirmationEmailQuestionYesButton').html(labels.confirmationEmailQuestionYesButton_en);
+                $('#confirmationEmailQuestionYesButton').html('<i class="pulse fas fa-heart" aria-hidden="true"></i>' + labels.confirmationEmailQuestionYesButton_en[Math.floor(Math.random() * labels.confirmationEmailQuestionYesButton_en.length)]);
                 $('#emailTextbox textarea').attr("placeholder", labels.confirmationEmailTextboxPlaceholder_en);
                 $('#confirmationEmailPrivacyStatement').html(labels.confirmationEmailPrivacyStatement_en);
                 $('#confirmationEmailQuestion').html(labels.confirmationEmailQuestion_en);
