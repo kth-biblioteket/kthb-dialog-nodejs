@@ -683,6 +683,7 @@ apiRoutes.post(process.env.API_PATH + "/reminder", async function (req, res) {
             let contactmemailinfo = await transporter.sendMail(edgemailoptions);
         } catch (err) {
             //TODO
+            logger.debug(JSON.stringify(err))
         }
         res.send("success")
     }
