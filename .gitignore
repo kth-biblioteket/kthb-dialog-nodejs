@@ -13,3 +13,5 @@ imagebank/*.jpg
 imagebank/*.jpeg
 imagebank/*.png
 *.db
+formobject.json
+actionform.json

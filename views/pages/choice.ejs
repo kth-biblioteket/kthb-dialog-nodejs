@@ -30,8 +30,12 @@
         <!-- Category Labels -->
         <div id="circlelabels">
         <%for (const action_ of choicedata.event.actions) { %>
-            <div class="circle-label circle-text categoryLabel shadow clickable" id="Label<%=action_.id%>" name="<%=action_.id%>" onclick="startSession('<%=action_.id%>')">
+            <!--div class="circle-label circle-text categoryLabel shadow clickable" id="Label<%=action_.id%>" name="<%=action_.id%>" onclick="startSession('<%=action_.id%>')">
                 <span class="inner-text center-align"><%- choicedata.language =='sv' ? action_.description :action_.description_en %></span>
+            </div-->
+
+            <div class="heart" id="Label<%=action_.id%>" name="<%=action_.id%>" onclick="startSession('<%=action_.id%>')">
+                <span class="text"><%- choicedata.language =='sv' ? action_.description :action_.description_en %></span>
             </div>
         <%} %>
         </div>
@@ -45,24 +49,38 @@
                 <div id="checklistHeaderText">
                     <div id="checklistPrompt" class="title frontTitle">
                     </div>
-                    <div id="checklistInstruction" class="instruction">
-                        <%- choicedata.language =='sv' ? choicedata.labels.instruction_sv : choicedata.labels.instruction_en %>
+                    <div id="checklistInstruction1" class="instruction">
+                        <%- choicedata.language =='sv' ? choicedata.labels.instruction1_sv : choicedata.labels.instruction1_en %>
+                    </div>
+                    <div id="checklistInstruction2" class="instruction">
+                        <%- choicedata.language =='sv' ? choicedata.labels.instruction2_sv : choicedata.labels.instruction2_en %>
                     </div>
                 </div>
             </div>
             <div id="checklistBody">
                 <div id="checklistContainer">
                 </div>
-                <div id="checklistSeparator">
-                </div>
+                <!--div id="checklistSeparator">
+                </div-->
                 <div id="checklistlearnMoreText" class="body">
                 </div>
             </div>
-            <div class="closeModalButton clickable shadow">
+            <div class="closeModalButton heartclosebutton">
+                <i class="fas fa-heart" aria-hidden="true">
+                    <!--img src="/dialog/images/dismiss_icon.png" width="30" height="30" draggable="false"-->
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </i>
+            </div>
+            <!--div class="closeModalButton clickable shadow">
                 <img src="/dialog/images/dismiss_icon.png" width="30" height="30" draggable="false" />
+            </div-->
+            <div id="submitActionButton" class="heartcontinuebutton">
+                <i class="fas fa-heart" aria-hidden="true">
+                    <div class="text"><%- choicedata.language =='sv' ? choicedata.labels.submitActionButtonText_sv : choicedata.labels.submitActionButtonText_en%></div>
+                </i>
             </div>
-            <div id="submitActionButton" class="hide clickable shadow"><%- choicedata.language =='sv' ? choicedata.labels.submitActionButtonText_sv : choicedata.labels.submitActionButtonText_en%>
-            </div>
+            <!--div id="submitActionButton" class="hide buttonheart"><div class="text"><%- choicedata.language =='sv' ? choicedata.labels.submitActionButtonText_sv : choicedata.labels.submitActionButtonText_en%></div>
+            </div-->
         </div>
 
         <div class="dialog_modal largeModal shadow hide" id="confirmationModal">
@@ -83,26 +101,36 @@
                 <div id="confirmationEmailQuestionButtons">
                     <div id="yescontact">
                         <div id='emailTextbox'>
-                            <textarea placeholder="Skriv din epost" id="write" rows="1" resizeable="no"></textarea>
+                            <textarea placeholder="<%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailTextboxPlaceholder_sv : choicedata.labels.confirmationEmailTextboxPlaceholder_en%>" id="write" rows="1" resizeable="no"></textarea>
                         </div>
-                        <div id="confirmationEmailQuestionYesButton" class="clickable shadow">
-                            <%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailQuestionYesButton_sv : choicedata.labels.confirmationEmailQuestionYesButton_en%>
+                        <button id="confirmationEmailQuestionYesButton" class="btn btn-success"><i class="pulse fas fa-heart" aria-hidden="true"></i> Matcha mig</button>
+                        <!--div id="confirmationEmailQuestionYesButton" class="">
+                            <div id="" class="heartemailmebutton">
+                                <i class="pulse fas fa-heart" aria-hidden="true">
+                                    <div class="text"><%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailQuestionYesButton_sv[Math.floor(Math.random() * choicedata.labels.confirmationEmailQuestionYesButton_sv.length)] : choicedata.labels.confirmationEmailQuestionYesButton_en[Math.floor(Math.random() * choicedata.labels.confirmationEmailQuestionYesButton_en.length)]%></div>
+                                </i>
+                            </div>
+                        </div-->
+                    </div>
+                    <button id="confirmationEmailQuestionNoButton" class="btn btn-primary"><i class="fas fa-heart-broken" aria-hidden="true"></i> <%- choicedata.language =='sv' ? choicedata.labels.breakuplines_sv[Math.floor(Math.random() * choicedata.labels.breakuplines_sv.length)] : choicedata.labels.breakuplines_en[Math.floor(Math.random() * choicedata.labels.breakuplines_en.length)]%></button>
+                    <!--div id="confirmationEmailQuestionNoButton" class="">
+                        <div id="" class="heartnothanksbutton">
+                            <i class="fas fa-heart-broken" aria-hidden="true">
+                                <div class="text"><%- choicedata.language =='sv' ? choicedata.labels.breakuplines_sv[Math.floor(Math.random() * choicedata.labels.breakuplines_sv.length)] : choicedata.labels.breakuplines_en[Math.floor(Math.random() * choicedata.labels.breakuplines_en.length)]%></div>
+                            </i>
                         </div>
-                    </div>
-                    <div id="confirmationEmailQuestionNoButton" class="clickable shadow">
-                        <%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailQuestionNoButton_sv : choicedata.labels.confirmationEmailQuestionNoButton_en%>
-                    </div>
+                    </div-->
                 </div>
                 <div id="confirmationEmailPrivacyStatement" class="body">
                 <%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailPrivacyStatement_sv : choicedata.labels.confirmationEmailPrivacyStatement_en%>
                 </div>
             </div>
-            <div class="closeModalButton clickable shadow">
+            <!--div class="closeModalButton clickable shadow">
               <img src="/dialog/images/dismiss_icon.png" width="30" height="30" draggable="false" />
-            </div>
+            </div-->
         </div>
 
-        <div class="dialog_modal largeModal shadow hide" id="emailModal">
+        <!--div class="dialog_modal largeModal shadow hide" id="emailModal">
             <div id="checklistHeaderText">
                 <div id="checklistEmailInstruction" class="instruction">
                     <%- choicedata.language =='sv' ? choicedata.labels.emailinstruction_sv : choicedata.labels.emailinstruction_en %>
@@ -202,9 +230,15 @@
               <img src="/dialog/images/dismiss_icon.png" width="30" height="30" draggable="false" />
             </div>
             <div id="submitEmail" class="clickable shadow hide"><%- choicedata.language =='sv' ? choicedata.labels.submitActionButtonText_sv : choicedata.labels.submitActionButtonText_en%></div>
-        </div>
+        </div-->
 
         <div class="dialog_modal shadow hide" id="thanksModal">
+            <div class="closeModalButton heartclosebutton">
+                <i class="fas fa-heart" aria-hidden="true">
+                    <!--img src="/dialog/images/dismiss_icon.png" width="30" height="30" draggable="false"-->
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                </i>
+            </div>
             <div id="thanksText" class="title"><%- choicedata.language =='sv' ? choicedata.labels.thanksText_sv : choicedata.labels.thanksText_en%></div>
         </div>
 
@@ -351,6 +385,8 @@
 
         //////////////////////// GLOBAL VARS ///////////////////////
         var SESSION_USER_CHOICE
+        var heartrain;
+        var heartremove;
         var THANKS_TIMEOUT;
         var SYNONYM_INDEX;
         var SESSION_CATEGORY; // travels, clothing, purchases, food, living
@@ -372,7 +408,7 @@
         
         function initlang() {
             $("#confirmationEmailQuestionNoButton").bind('click', function() {
-                showModal('thanks');
+                showModal('thanks', {"broken": true});
                 idleTime = 0;
             });
 
@@ -381,11 +417,11 @@
                 let actionObject = actions.find(action => action.id === parseInt(SESSION_CATEGORY))
                 idleTime = 0;
                 var choice_id = parseInt(SESSION_CATEGORY);
-                reminder(choice_id, $('#write').val(), $('#contactmecheckbox').prop('checked'), $('#contactName').val(), $('#contactOther').val());
-                document.getElementById("contactmecheckbox").checked = false;
+                reminder(choice_id, $('#write').val(), true, $('#contactName').val(), $('#contactOther').val());
+                //document.getElementById("contactmecheckbox").checked = false;
                 contacttoggle();
-                document.getElementById("contactName").value = '';
-                document.getElementById("contactOther").value = '';
+                //document.getElementById("contactName").value = '';
+                //document.getElementById("contactOther").value = '';
                 showModal('thanks');
                 //showModal('email');
             });
@@ -395,6 +431,8 @@
 
             initlang();
 
+            heartrain = null;
+            heartremove = null;
             THANKS_TIMEOUT = null;
             SYNONYM_INDEX = 0;
             SESSION_CATEGORY = null;
@@ -426,11 +464,11 @@
                 let actionObject = actions.find(action => action.id === parseInt(SESSION_CATEGORY))
                 idleTime = 0;
                 var choice_id = parseInt(SESSION_CATEGORY);
-                reminder(choice_id, $('#write').val(), $('#contactmecheckbox').prop('checked'), $('#contactName').val(), $('#contactOther').val());
-                document.getElementById("contactmecheckbox").checked = false;
+                reminder(choice_id, $('#write').val(), true, $('#contactName').val(), $('#contactOther').val());
+                //document.getElementById("contactmecheckbox").checked = false;
                 contacttoggle();
-                document.getElementById("contactName").value = '';
-                document.getElementById("contactOther").value = '';
+                //document.getElementById("contactName").value = '';
+                //document.getElementById("contactOther").value = '';
                 showModal('thanks');
             });
             $('#write').html('');
@@ -532,6 +570,7 @@
             $("#caption").addClass( "hide" );
             $("#lang").addClass( "hide" );
             $(".categoryLabel").addClass( "hide" );
+            $(".heart").addClass( "hide" );
             $(".categoryLabel").unbind( "click" );
             $(".category").unbind( "click" );
             $("#map").css("opacity", 0.5);
@@ -542,7 +581,7 @@
             showModal('checklist');
         }
 
-        function endSession() {
+        function endSession(options = {}) {
 
             // Close modals
             $('.dialog_modal').addClass('hide');
@@ -562,13 +601,32 @@
             });
             $("#lang").removeClass( "hide" );
             $(".categoryLabel").removeClass( "hide" );
+            $(".heart").removeClass( "hide" );
             $("#caption").removeClass( "hide" );
             $("#map").css("opacity", 1);
 
             // Clear thanks timeout
             if (THANKS_TIMEOUT !== null) {
                 window.clearTimeout(THANKS_TIMEOUT);
+                window.clearInterval(heartrain);
+                window.clearInterval(heartremove);
+                var heartclass = "";
+                if (options.broken) {
+                    heartclass = "rain fas fa-heart-broken";    
+                    heartclassSelector = ".rain.fas";
+                } else {
+                    heartclass = "rain fas fa-heart";
+                    heartclassSelector = ".rain.fas";
+                }
+                var heartArr = document.querySelectorAll(heartclassSelector)
+                heartArr.forEach(heart => {
+                    heart.remove();
+                });
+
+                //document.querySelectorAll(".fa-heart").style.display = "none"
                 THANKS_TIMEOUT = null;
+                heartrain = null;
+                heartremove = null;
             }
 
             // Clear divs, html, applied style
@@ -587,7 +645,7 @@
         }
 
         //Visa respektive gränssnitt för dialogen(välja, maila, tack etc)
-        function showModal(modal) {
+        function showModal(modal, options={}) {
             let labels = JSON.parse('<%- JSON.stringify(choicedata.labels) %>')
             
             let actionObject = actions.find(action => action.id === parseInt(SESSION_CATEGORY))
@@ -744,7 +802,40 @@
                     // Start timeout for thanks screen
                     //if (getQuerystringparam('kiosk') == 'true') {
                         //Använd timeoutfunktionen för session
-                        THANKS_TIMEOUT = window.setTimeout(function() { endSession(); }, 3000)
+                        THANKS_TIMEOUT = window.setTimeout(function() { endSession(options); }, 10000)
+                        const body = document.querySelector("body");
+                        var heartclass = ""
+                        var heartclassSelector = ".rain.fas";
+                        function createHeart() {
+                            const heart = document.createElement("div");
+                            if (options.broken) {
+                                heartclass = "rain fas fa-heart-broken";    
+                            } else {
+                                var hearts = document.querySelectorAll(heartclassSelector)
+                                if ((hearts.length % 7) === 0) {
+                                    heartclass = "rain fas fa-kiss-wink-heart";
+                                } else {
+                                    if ((hearts.length % 5) === 0) {
+                                        heartclass = "rain fas fa-heart white";
+                                    } else {
+                                        heartclass = "rain fas fa-heart";
+                                    }
+                                     
+                                }
+                            }
+
+                            heart.className = heartclass
+                            heart.style.left = (Math.random() * 95)+"vw";
+                            heart.style.animationDuration = (Math.random()*3)+6+"s"
+                            body.appendChild(heart);
+                        }
+                        heartrain = window.setInterval(createHeart,100);
+                        heartremove = window.setInterval(function name(params) {
+                            var heartArr = document.querySelectorAll(heartclassSelector)
+                            if (heartArr.length > 200) {
+                                heartArr[0].remove()
+                            }
+                        },100)
                     //}
                     
 
@@ -765,10 +856,10 @@
         }
 
         function animateTheVote() {
-            $("#checklistLogo").addClass('voted');
-            window.setTimeout(function() {
+            //$("#checklistLogo").addClass('voted');
+            //window.setTimeout(function() {
                 showModal('confirmation');
-            }, 3000);
+            //}, 3000);
         }
 
         function timerIncrement(ms) {
@@ -802,22 +893,25 @@
                 $('#subcaption').html(event.description)
                 let circlelabels_html ='';
                 for (i=0; i<actions.length; i++) {
-                    circlelabels_html += `<div class="circle-label circle-text categoryLabel shadow clickable" id="Label${actions[i].id}" name="${actions[i].id}" onclick="startSession('${actions[i].id}')">
-                        <span class="inner-text center-align">${actions[i].description}</span>
+                    circlelabels_html += `<div class="heart" id="Label${actions[i].id}" name="${actions[i].id}" onclick="startSession('${actions[i].id}')">
+                        <span class="text">${actions[i].description}</span>
                     </div>`
                 }
                 $('#circlelabels').html(circlelabels_html)
                 $('#checklistPrompt').text()
-                $('#checklistInstruction').html(labels.instruction_sv)
+                $('#checklistInstruction1').html(labels.instruction1_sv)
+                $('#checklistInstruction2').html(labels.instruction2_sv)
                 $('#checklistEmailInstruction').html(labels.emailinstruction_sv)
-                $('#submitActionButton').text(labels.submitActionButtonText_sv)
+                console.log($('#submitActionButton .text').text())
+                $('#submitActionButton .text').text(labels.submitActionButtonText_sv)
                 $('#submitEmail').text(labels.submitEmailButtonText_sv)
                 $('#thanksText').text(labels.thanksText_sv)
                 $('#confirmationSubtitle').html(labels.confirmationSubtitle_sv);
                 $('#confirmationEmailQuestion').html(labels.confirmationEmailQuestion_sv);
                 $('#emailPrompt').html(labels.emailPrompt_sv);
-                $('#confirmationEmailQuestionNoButton').html(labels.confirmationEmailQuestionNoButton_sv);
+                $('#confirmationEmailQuestionNoButton  .text').html(labels.confirmationEmailQuestionNoButton_sv);
                 $('#confirmationEmailQuestionYesButton').html(labels.confirmationEmailQuestionYesButton_sv);
+                $('#emailTextbox textarea').attr("placeholder", labels.confirmationEmailTextboxPlaceholder_sv);
                 $('#confirmationEmailPrivacyStatement').html(labels.confirmationEmailPrivacyStatement_sv);
                 $('#confirmationEmailQuestion').html(labels.confirmationEmailQuestion_sv);
                 
@@ -835,22 +929,24 @@
                 $('#subcaption').html(event.description_en)
                 let circlelabels_html ='';
                 for (i=0; i<actions.length; i++) {
-                    circlelabels_html += `<div class="circle-label circle-text categoryLabel shadow clickable" id="Label${actions[i].id}" name="${actions[i].id}" onclick="startSession('${actions[i].id}')">
-                        <span class="inner-text center-align">${actions[i].description_en}</span>
+                    circlelabels_html += `<div class="heart" id="Label${actions[i].id}" name="${actions[i].id}" onclick="startSession('${actions[i].id}')">
+                        <span class="text">${actions[i].description_en}</span>
                     </div>`
                 }
                 $('#circlelabels').html(circlelabels_html)
                 $('#checklistPrompt').text()
-                $('#checklistInstruction').html(labels.instruction_en)
+                $('#checklistInstruction1').html(labels.instruction1_en)
+                $('#checklistInstruction2').html(labels.instruction2_en)
                 $('#checklistEmailInstruction').html(labels.emailinstruction_en)
-                $('#submitActionButton').text(labels.submitActionButtonText_en)
+                $('#submitActionButton .text').text(labels.submitActionButtonText_en)
                 $('#submitEmail').text(labels.submitEmailButtonText_en)
                 $('#thanksText').text(labels.thanksText_en)
                 $('#confirmationSubtitle').html(labels.confirmationSubtitle_en);
                 $('#confirmationEmailQuestion').html(labels.confirmationEmailQuestion_en);
                 $('#emailPrompt').html(labels.emailPrompt_en);
-                $('#confirmationEmailQuestionNoButton').html(labels.confirmationEmailQuestionNoButton_en);
+                $('#confirmationEmailQuestionNoButton .text').html(labels.confirmationEmailQuestionNoButton_en);
                 $('#confirmationEmailQuestionYesButton').html(labels.confirmationEmailQuestionYesButton_en);
+                $('#emailTextbox textarea').attr("placeholder", labels.confirmationEmailTextboxPlaceholder_en);
                 $('#confirmationEmailPrivacyStatement').html(labels.confirmationEmailPrivacyStatement_en);
                 $('#confirmationEmailQuestion').html(labels.confirmationEmailQuestion_en);
             }
@@ -925,20 +1021,6 @@
                 });
             }, 2000);
             */
-        }
-
-        function checkjwt() {
-        
-        }
-
-        function copytext(field_id) {
-            var copyText = document.getElementById(field_id);
-            text = $(copyText).val()
-            navigator.clipboard.writeText(text);
-        }
-
-        function showElement(imgFileName) {
-            $('#' + imgFileName).show()
         }
 
         // SOCKET

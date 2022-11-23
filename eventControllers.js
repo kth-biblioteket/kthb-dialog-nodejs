@@ -141,29 +141,45 @@ async function generateChoiceApp(req, res, next) {
 
         let kthschools = await eventModel.readKthschools()
 
+        let breakuplines_en = [
+            "Let’s just be friends",
+            "I am not ready for a relationship",
+            "I want to take it slow",
+            "It’s not you, it’s me"
+        ]
+        let breakuplines_sv = [
+            "Hej men nej"
+        ]
+
         let labels = {
             "submitActionButtonText_en": "Continue",
-            "submitActionButtonText_sv": "Gå vidare",
+            "submitActionButtonText_sv": "Fortsätt",
             "submitEmailButtonText_en": "Submit",
             "submitEmailButtonText_sv": "Skicka",
             "thanksText_en": "Thanks!",
             "thanksText_sv": "Tack!",
-            "instruction_sv": "Gör dina val och tryck på ”Gå vidare”",
-            "instruction_en": "Make your choices and press ”Continue”",
+            "instruction1_sv": "Beskriv ditt behov av stöd samt inom vilket område",
+            "instruction1_en": "Describe support needs and in which area",
+            "instruction2_sv": "Gör dina val och tryck på ”matcha mig”",
+            "instruction2_en": "Make your selections and select ”match me!”",
             "userinfo_sv": "",
             "userinfo_en": "",
             "emailinstruction_sv": "Skriv in din mailadress och tryck på ”Skicka!”",
             "emailinstruction_en": "Enter your emailadress and press ”Submit!”",
+            "confirmationEmailTextboxPlaceholder_sv": "Skriv din epost",
+            "confirmationEmailTextboxPlaceholder_en": "Write your email",
             "confirmationSubtitle_sv": "Du valde att...",
             "confirmationSubtitle_en": "You chose to...",
             "confirmationEmailQuestion_sv" : "Valen du gör",
             "confirmationEmailQuestion_en" : "Your choices...",
-            "emailPrompt_sv": "Jag vill blir kontaktad av en bibliotekarie",
-            "emailPrompt_en": "I want to be contacted by a librarian",
-            "confirmationEmailQuestionNoButton_sv": "Nej tack",
-            "confirmationEmailQuestionNoButton_en": "No please",
-            "confirmationEmailQuestionYesButton_sv": "Kontakta mig",
-            "confirmationEmailQuestionYesButton_en": "Contact me",
+            "emailPrompt_sv": "Jag vill matchad med någon på biblioteket",
+            "emailPrompt_en": "I want to be matched with someone at the library",
+            "confirmationEmailQuestionNoButton_sv": "Hej men nej",
+            "breakuplines_sv" : breakuplines_sv,
+            "breakuplines_en" : breakuplines_en,
+            "confirmationEmailQuestionNoButton_en": "Let’s just be friends.",
+            "confirmationEmailQuestionYesButton_sv": ["Matcha mig"],
+            "confirmationEmailQuestionYesButton_en": ["Match me"],
             "confirmationEmailPrivacyStatement_sv": "",
             "confirmationEmailPrivacyStatement_en": ""
         }

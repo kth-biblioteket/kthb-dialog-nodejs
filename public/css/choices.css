@@ -1,4 +1,6 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:200,300,400,500,600);*,:after,:before {
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:200,300,400,500,600);
+
+*,:after,:before {
   box-sizing: border-box
 }
 
@@ -65,6 +67,7 @@ body {
   -ms-user-select: none; /* IE 10 and IE 11 */
 }
 
+
 @font-face {
   font-family: 'GillSansLight';
   src: url('fonts/Gill_Sans_Light.woff') format('woff');
@@ -98,7 +101,7 @@ a {
   display: flex;
   flex-flow: column;
   height: 100%;
-  padding: 40px
+  padding: 40px 40px 120px 40px
 }
 
 .frame {
@@ -195,7 +198,8 @@ html, body {
 }
 
 .shadow {
-  box-shadow: 0px 0px 2px #373735;
+  /*box-shadow: 0px 0px 2px #373735;*/
+  box-shadow: 0 1.5rem 1rem rgba(0,0,0,0.35)!important;
 }
 
 .clickable {
@@ -216,11 +220,12 @@ html, body {
 }
 
 .dialog_modal {
-  background-color: rgba(4, 70, 78, 0.85);  /* base darkest blue */
+  background-color: #1954a6;  /* base darkest blue */
   position: relative;
   border-radius: 7px;
   padding: 10px;
   flex-grow: 1;
+  width: 100%;
 }
 
 .smallModal {
@@ -233,7 +238,7 @@ html, body {
   padding-left: 6.1%;
 }
 
-.closeModalButton {
+.closeModalButton_NOT_USED {
   position: absolute;
   font-size: 25px;
   top: -25px;
@@ -245,7 +250,7 @@ html, body {
   cursor: pointer;
 }
 
-.closeModalButton img {
+.closeModalButton_NOT_USED img {
   vertical-align: baseline;
 }
 
@@ -265,9 +270,6 @@ html, body {
 /* Lure Screen Style */
 
 #caption {
-  position: absolute;
-  top: 8%;
-  left: 5%;
   color: #fff;
 }
 
@@ -278,23 +280,23 @@ html, body {
 
 
 #circlelabels>div:nth-child(1) {
-  top: 45%;
-  left: 10%;
+  top: 25%;
+  left: 5%;
 }
 
 #circlelabels>div:nth-child(2) {
-  top: 55%;
-  left: 35%;
+  top: 50%;
+  left: 25%;
 }
 
 #circlelabels>div:nth-child(3) {
-  top: 25%;
+  top: 15%;
   left: 50%;
 }
 
 #circlelabels>div:nth-child(4) {
-  top: 35%;
-  left: 75%;
+  top: 55%;
+  left: 65%;
 }
 
 .alert {
@@ -357,8 +359,9 @@ html, body {
 }
 
 #checklistContainer {
-  padding-top: 20px;
+  padding-top: 40px;
   flex: 65;
+  padding-bottom: 60px;
 }
 
 #checklistSeparator {
@@ -458,9 +461,9 @@ html, body {
 
 
 
-#submitActionButton {
+#submitActionButton_NOT_USED {
   position: absolute;
-  bottom: -20px;
+  bottom: 50px;
   right: -20px;
   height: 80px;
   padding: 0px 40px;
@@ -503,29 +506,47 @@ html, body {
 }
 
 #confirmationEmailQuestionYesButton {
+  /*
   display: inline-block;
-  height: 70px;
-  padding: 0px 40px;
   border-radius: 40px;
   line-height: 70px;
   margin-right: 50px;
   color:#fff;
-  margin-top: 10px;
-  margin-left: 10px;
+  margin-top: 0px;
+  margin-left: 0px;
+  */
+  height: 80px;
+  /*
+  background-color: #64a5ff;
+  border-color: #64a5ff;
+  */
+}
+
+#confirmationEmailQuestionYesButton i {
+  color: red;
 }
 
 #confirmationEmailQuestionNoButton {
+  /*
   display: inline-block;
   height: 80px;
-  padding: 0px 40px;
   border-radius: 40px;
   line-height: 80px;
   margin-right: 50px;
+  */
   color:#fff;
+  height: 80px;
+  margin-top: 50px;
+}
+
+#confirmationEmailQuestionNoButton i {
+  /*color: rgba(67, 164, 249, 0.70);*/
+  color: red;
 }
 
 #yescontact {
   display: flex;
+  align-items: center;
 }
 
 
@@ -537,8 +558,9 @@ html, body {
 }
 
 #emailTextbox {
-  margin-top: 10px;
-  margin-bottom: 100px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-right: 10px;
 }
 
 #write {
@@ -773,6 +795,298 @@ label .info {
   line-height: 1.42857;
 }
 
+.heart {
+  position: absolute;
+  width: 400px;
+  height: 150px;
+  text-align: center;
+  font-weight: 700;
+  line-height: normal;
+  cursor: pointer;
+}
+
+.heart:hover::before,
+.heart:hover::after {
+  background-color: rgb(150, 7, 7);
+}
+
+.heart:before,
+.heart:after {
+  position: absolute;
+  content: "";
+  left: 200px;
+  top: 0;
+  width: 200px;
+  height: 300px;
+  background: rgb(200, 39, 39);
+  -moz-border-radius: 100px 100px 0 0;
+  border-radius: 100px 100px 0 0;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  -webkit-transform-origin: 0 100%;
+  -moz-transform-origin: 0 100%;
+  -ms-transform-origin: 0 100%;
+  -o-transform-origin: 0 100%;
+  transform-origin: 0 100%;
+}
+
+.heart:after {
+  left: 0;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+  -webkit-transform-origin: 100% 100%;
+  -moz-transform-origin: 100% 100%;
+  -ms-transform-origin: 100% 100%;
+  -o-transform-origin: 100% 100%;
+  transform-origin: 100% 100%;
+}
+
+.heart .text {
+  position: absolute;
+  z-index: 99;
+  top: 75%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.2em;
+}
+
+.buttonheart {
+  position: absolute;
+  width: 200px;
+  height: 75px;
+  text-align: center;
+  font-weight: 700;
+  line-height: normal;
+  cursor: pointer;
+}
+
+.buttonheart:hover::before,
+.buttonheart:hover::after {
+  background-color: rgb(150, 7, 7);
+}
+
+.buttonheart:before,
+.buttonheart:after {
+  position: absolute;
+  content: "";
+  left: 100px;
+  top: 0;
+  width: 100px;
+  height: 150px;
+  background: rgb(200, 39, 39);
+  -moz-border-radius: 50px 50px 0 0;
+  border-radius: 50px 50px 0 0;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  -webkit-transform-origin: 0 100%;
+  -moz-transform-origin: 0 100%;
+  -ms-transform-origin: 0 100%;
+  -o-transform-origin: 0 100%;
+  transform-origin: 0 100%;
+}
+
+.buttonheart:after {
+  left: 0;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+  -webkit-transform-origin: 100% 100%;
+  -moz-transform-origin: 100% 100%;
+  -ms-transform-origin: 100% 100%;
+  -o-transform-origin: 100% 100%;
+  transform-origin: 100% 100%;
+}
+
+.buttonheart .text {
+  position: absolute;
+  z-index: 99;
+  top: 75%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.6em;
+  white-space: nowrap;
+}
+
+.rain.fa-heart, .rain.fa-kiss-wink-heart {
+  /*color: rgb(200, 39, 39, 0.70);*/
+  color: red;
+  font-size: 25px;
+  position: absolute;
+  animation:  heartMove linear 1;
+  top: -10vh;
+  z-index: 0;
+}
+
+.rain.fa-heart.white {
+  color: white;
+}
+
+.rain.fa-heart-broken {
+  /*color: rgba(67, 164, 249, 0.70);*/
+  color: red;
+  font-size: 25px;
+  position: absolute;
+  animation:  heartMove linear 1;
+  top: -10vh;
+  z-index: 0;
+}
+
+.pulse.fa-heart {
+  animation: fa-beat 3s ease infinite;
+}
+
+.heartclosebutton {
+  position: absolute;
+  top: -50px;
+  right: -20px;
+  height: 80px;
+  width: 80px;
+  padding-top: 25px;
+  cursor: pointer;
+  font-size: 80px;
+  color: rgb(67 165 249);
+}
+
+.heartclosebutton:hover {
+  color: rgb(0 131 243);
+}
+
+.heartclosebutton img {
+  position: relative;
+  left: 25px;
+  top: -90px;
+}
+
+.heartclosebutton .fa-xmark {
+  color: #ffffff;
+  position:relative;
+  top:-96px;
+  left:25px;
+  font-size: 48px
+
+}
+
+.heartcontinuebutton {
+  position: absolute;
+  bottom: -40px;
+  right: -20px;
+  height: 120px;
+  width: 120px;
+  padding-top: 0px;
+  cursor: pointer;
+  font-size: 120px;
+  color: #c82727;
+}
+
+.heartcontinuebutton:hover {
+  color:rgb(150, 7, 7);
+}
+
+.heartcontinuebutton img {
+  position: relative;
+  left: 25px;
+  top: -90px;
+}
+
+.heartcontinuebutton .text {
+  position: relative;
+    left: 0;
+    top: -80px;
+    font-size: 20px;
+    color: white;
+    font-family: 'Open Sans';
+    text-align: center;
+}
+
+.heartnothanksbutton {
+  position: relative;
+  height: 120px;
+  width: 120px;
+  padding-top: 0px;
+  cursor: pointer;
+  font-size: 120px;
+  color: rgba(67, 165, 249, 0.7);
+}
+
+.heartnothanksbutton:hover {
+  color: rgba(0, 131, 243, 0.7);
+}
+
+.heartnothanksbutton .text {
+  position: relative;
+  left: 0;
+  top: -95px;
+  font-size: 16px;
+  color: white;
+  font-family: 'Open Sans';
+  text-align: center;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.heartemailmebutton {
+  position: relative;
+  height: 120px;
+  width: 120px;
+  padding-top: 0px;
+  cursor: pointer;
+  font-size: 120px;
+  color: #c82727;
+}
+
+.heartemailmebutton:hover {
+  color:rgb(150, 7, 7);
+}
+
+.heartemailmebutton .text {
+  position: relative;
+    left: 0;
+    top: -80px;
+    font-size: 22px;
+    color: white;
+    font-family: 'Open Sans';
+    text-align: center;
+}
+
+@keyframes heartMove {
+  0%{
+      transform: translateY(0vh) ;
+  }
+  100%{
+      transform: translateY(100vh) ;
+  }
+}
+
+@keyframes fa-beat {
+  0% {
+    transform:scale(1);
+  }
+  10% {
+    transform:scale(1.40);
+  }
+  30% {
+    transform:scale(1);
+  }
+  40% {
+    transform:scale(1.40);
+  }
+  60% {
+    transform:scale(1);
+  }
+}
+
+
 @media screen and (max-width: 1920px) and (min-width: 0px){
   #keyboard {
     width: 80%;
@@ -839,6 +1153,61 @@ label .info {
   .circle-text {
     width: 300px;
     height: 250px;
+  }
+
+  .heart {
+    position: absolute;
+    width: 300px;
+    height: 150px;
+    text-align: center;
+    font-weight: 700;
+    line-height: normal;
+  }
+  
+  .heart:before,
+  .heart:after {
+    position: absolute;
+    content: "";
+    left: 150px;
+    top: 0;
+    width: 150px;
+    height: 240px;
+    background: rgb(200, 39, 39);;
+    -moz-border-radius: 75px 75px 0 0;
+    border-radius: 75px 75px 0 0;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    -webkit-transform-origin: 0 100%;
+    -moz-transform-origin: 0 100%;
+    -ms-transform-origin: 0 100%;
+    -o-transform-origin: 0 100%;
+    transform-origin: 0 100%;
+  }
+  
+  .heart:after {
+    left: 0;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    -webkit-transform-origin: 100% 100%;
+    -moz-transform-origin: 100% 100%;
+    -ms-transform-origin: 100% 100%;
+    -o-transform-origin: 100% 100%;
+    transform-origin: 100% 100%;
+  }
+  
+  .heart .text {
+    position: absolute;
+    z-index: 99;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1em;
   }
 
   #keyboard {
@@ -930,6 +1299,10 @@ label .info {
     font-size: 2vw;
   }
 
+  #lang {
+    font-size: 16px;
+  }
+
   label img {
     width: 2vw;
     height: 2vw;
@@ -943,9 +1316,17 @@ label .info {
     font-size: 2vw;
   }
 
+  #confirmationEmailQuestionYesButton {
+    height: 70px;
+  }
+
+  #confirmationEmailQuestionNoButton {
+    height: 70px;
+  }
+
   #emailTextbox {
-    margin-top: 10px;
-    margin-bottom: 100px;
+    margin-top: 0px;
+    margin-bottom: 0px;
   }
 
   #submitEmail {
@@ -997,7 +1378,8 @@ label .info {
       font-size: 25px;
       padding-left: 20px;
       padding-right: 20px;
-    } 
+    }
+    
 }
 
 /* polopoly */
@@ -1017,11 +1399,15 @@ label .info {
   }
   */
 
+  body {
+    overflow: auto;
+  }
+
   #wrapper {
     display:flex;
     flex-direction: column;
     align-items: center;
-    height: unset;
+    padding: 25px;
   }
 
   #caption {
@@ -1029,11 +1415,16 @@ label .info {
     top: 10px;
     left: 0%;
     color: #2d5f6f;
-    padding: 10px;
+    padding: 10px 10px 30px 10px;
+  }
+
+  #maincaption {
+    font-size: 20px;
   }
 
   #subcaption {
     width: 100%;
+    font-size: 16px;
   }
 
   .categoryLabel {
@@ -1092,6 +1483,10 @@ label .info {
     background-position: center;
   }
 
+  #checklistPrompt {
+    padding-bottom: 10px;
+  }
+
   #checklistBody {
     position: relative;
     display: flex;
@@ -1100,10 +1495,23 @@ label .info {
 
   #checklistHeader {
     margin-right: 40px;
-    flex-direction: row;
+    flex-direction: column;
   }
 
-  .ccloseModalButton {
+  #checklistHeaderText {
+    margin-top: 30px;
+  }
+
+  #checklistContainer {
+    padding-top: 20px;
+    padding-bottom: 40px;
+  }
+
+  .userinfo {
+    padding-top: 10px;
+  }
+
+  .closeModalButton_NOT_USED {
     position: absolute;
     top: -12px;
     right: -4px;
@@ -1114,12 +1522,12 @@ label .info {
     cursor: pointer;
   }
 
-  .ccloseModalButton img {
+  .closeModalButton_NOT_USED img {
     width: 25px;
     height: 25px;
   }
 
-  #submitActionButton {
+  #submitActionButton_NOT_USED {
     position: relative;
     bottom: 0px;
     right: 0px;
@@ -1131,12 +1539,54 @@ label .info {
     margin: 10px 0px;
     }
 
+  .heartclosebutton {
+    top: -30px;
+    right: -10px;
+    height: 50px;
+    width: 50px;
+    font-size: 50px;
+  }
+
+  .heartclosebutton .fa-xmark {
+    top: -60px;
+    left: 16px;
+    font-size: 28px;
+  }
+
+  .heartcontinuebutton {
+    bottom: -20px;
+    right: -20px;
+    height: 80px;
+    width: 80px;
+    font-size: 80px;
+}
+
+  .heartcontinuebutton .text {
+    left: 0px;
+    top: -56px;
+    font-size: 14px;
+  }
+
   #checklistSeparator {
       width: 100%;
       padding-top: 5px;
       border-radius: 2.5px;
       background-color: #2d606f;
       margin: 0px 0px 0px 0px;
+  }
+
+  .heartemailmebutton .text {
+    font-size: 16px;
+  }
+  
+  .heartnothanksbutton .text {
+    font-size: 16px;
+    top: -80px;
+  }
+
+  #write {
+    font-size: 20px;
+    margin-bottom: 50px;
   }
 
   #keyboard {
@@ -1168,17 +1618,80 @@ label .info {
     }
 
     .title {
-      font-size: 5vw 
+      font-size: 4.5vw 
     }
 
     .instruction {
       font-size: 3vw;
   }
 
-    #checklistLogo { 
-      height: 120px;
-      width: 120px;
-    }
+  #checklistLogo { 
+    height: 120px;
+    width: 120px;
+  }
+
+  .heart {
+    position: relative;
+    width: 300px;
+    height: 240px;
+    text-align: center;
+    font-weight: 700;
+    line-height: normal;
+    margin: 10px 10px;
+    padding: 20px;
+  }
+  
+  .heart:before,
+  .heart:after {
+    position: absolute;
+    content: "";
+    left: 150px;
+    top: 0;
+    width: 150px;
+    height: 240px;
+    background: rgb(200, 39, 39);;
+    -moz-border-radius: 75px 75px 0 0;
+    border-radius: 75px 75px 0 0;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    -webkit-transform-origin: 0 100%;
+    -moz-transform-origin: 0 100%;
+    -ms-transform-origin: 0 100%;
+    -o-transform-origin: 0 100%;
+    transform-origin: 0 100%;
+  }
+  
+  .heart:after {
+    left: 0;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    -webkit-transform-origin: 100% 100%;
+    -moz-transform-origin: 100% 100%;
+    -ms-transform-origin: 100% 100%;
+    -o-transform-origin: 100% 100%;
+    transform-origin: 100% 100%;
+  }
+  
+  .heart .text {
+    position: absolute;
+    z-index: 99;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1em;
+  }
+
+  #yescontact {
+    align-items: flex-start;;
+    flex-direction: column;
+  }
+
 }
 
 

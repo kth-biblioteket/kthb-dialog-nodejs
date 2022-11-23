@@ -635,9 +635,13 @@ apiRoutes.post(process.env.API_PATH + "/reminder", async function (req, res) {
 
     try {
         let useractionchoices = await eventController.readsessionuseractionchoices(req.body.session_user_choice.uuid)
+        let message = 0;
         for(let i=0 ; i<useractionchoices.length ; i++) {
             let usermessage = await eventController.readsessionuseractionmessage(req.body.session_user_choice.uuid, useractionchoices[i].actionchoice_id)
-            sessionchoices.push({"name": useractionchoices[i].name, "message": usermessage[0].message})
+            if (usermessage.length > 0) {
+                message = usermessage[0].message
+            }
+            sessionchoices.push({"name": useractionchoices[i].name, "message": message})
         }
         
     } catch(err) {
