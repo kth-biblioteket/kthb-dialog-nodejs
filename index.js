@@ -662,7 +662,7 @@ apiRoutes.post(process.env.API_PATH + "/reminder", async function (req, res) {
         edgemailoptions = {
             from: {
                 //name: req.body.name,
-                address: req.body.email
+                address: process.env.MAILFROM_ADDRESS
             },
             to: process.env.EDGE_MAIL_ADDRESS,
             subject: "KTH Biblioteket matchmaking",
