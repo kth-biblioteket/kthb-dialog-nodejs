@@ -655,7 +655,7 @@
                 case 'checklist':
                     // Populate checklist html
                     language = getcurrentlangfromHTML_Tag()
-                    $('#checklistPrompt').html(language == 'sv' ? actionObject.description.toUpperCase() : actionObject.description_en.toUpperCase());
+                    $('#checklistPrompt').html(language == 'sv' ? actionObject.description : actionObject.description_en);
                     checklistContainer = '';
                     for (var i = 0; i < actionObject.choices.length; i++) {
                         checklistContainer += 
