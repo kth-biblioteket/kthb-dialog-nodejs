@@ -1,0 +1,263 @@
+{
+  "formobjects": [
+    {
+      "id": 1,
+      "label": {
+        "swedish": "Bokad handledning",
+        "english": "Booked consultation"
+      },
+      "value": "",
+      "type": "checkbox",
+      "enabled": true,
+      "showcriteria": [
+      ],
+      "options": [
+        {
+          "label": {
+            "swedish": "Huvudbiblioteket",
+            "english": "Main Library"
+          },
+          "value": "MAIN",
+          "enabled": true,
+          "hidden": false
+        },
+        {
+          "label": {
+            "swedish": "Kista",
+            "english": "Kista"
+          },
+          "value": "ELECTRUM",
+          "enabled": true,
+          "hidden": false
+        },
+        {
+          "label": {
+            "swedish": "Södertälje",
+            "english": "Södertälje"
+          },
+          "value": "TELGE",
+          "enabled": true,
+          "hidden": false
+        }
+      ],
+      "validation": {
+        "required": {
+          "value": true,
+          "errormessage": {
+            "swedish": "måste fyllas i",
+            "english": "is required"
+          }
+        }
+      }
+    },
+    {
+      "id": 2,
+      "parentobject_id": 1,
+      "label": {
+        "swedish": "Beskriv",
+        "english": "Describe"
+      },
+      "value": "",
+      "type": "textbox",
+      "enabled": true,
+      "showcriteria": [
+        {
+          "formobject_id": 1,
+          "values": [
+            true
+          ]
+        }
+      ],
+      "options": [
+      ],
+      "validation": {
+        "required": {
+          "value": false
+        }
+      }
+    },
+    {
+      "id": 3,
+      "parentobject_id": null,
+      "label": {
+        "swedish": "Workshops",
+        "english": "Workshops"
+      },
+      "value": "",
+      "type": "checkbox",
+      "enabled": true,
+      "showcriteria": [
+      ],
+      "options": [
+      ],
+      "validation": {
+        "required": {
+          "value": false
+        }
+      }
+    },
+    {
+      "id": 4,
+      "parentobject_id": 3,
+      "label": {
+        "swedish": "Beskriv",
+        "english": "Describe"
+      },
+      "value": "",
+      "type": "textbox",
+      "enabled": true,
+      "showcriteria": [
+        {
+          "formobject_id": 3,
+          "values": [
+            true
+          ]
+        }
+      ],
+      "options": [
+      ],
+      "validation": {
+        "required": {
+          "value": false
+        }
+      }
+    },
+    {
+      "id": 5,
+      "parentobject_id": null,
+      "label": {
+        "swedish": "",
+        "english": ""
+      },
+      "value": "",
+      "type": "radio",
+      "enabled": true,
+      "showcriteria": [
+      ],
+      "options": [
+        {
+          "label": {
+            "swedish": "Jag är forskare",
+            "english": "I am a researcher"
+          },
+          "value": "res",
+          "enabled": true,
+          "hidden": false
+        },
+        {
+          "label": {
+            "swedish": "Jag är doktorand",
+            "english": "I am a Ph.D.Student"
+          },
+          "value": "phd",
+          "enabled": true,
+          "hidden": false
+        }
+      ],
+      "validation": {
+        "required": {
+          "value": true,
+          "errormessage": {
+            "swedish": "måste fyllas i",
+            "english": "is required"
+          }
+        }
+      }
+    },
+    {
+      "id": 6,
+      "parentobject_id": null,
+      "label": {
+        "swedish": "",
+        "english": ""
+      },
+      "value": "",
+      "type": "select",
+      "enabled": true,
+      "showcriteria": [
+      ],
+      "options": [
+        {
+          "label": {
+            "swedish": "Min skola",
+            "english": "My school"
+          },
+          "value": "",
+          "enabled": true,
+          "hidden": false
+        },
+        {
+          "label": {
+            "swedish": "Arkitektur och samhällsbyggnad",
+            "english": "Architecture"
+          },
+          "value": "ABE",
+          "enabled": true,
+          "hidden": false
+        },
+        {
+          "label": {
+            "swedish": "Elektroteknik och datavetenskap",
+            "english": "Electro"
+          },
+          "value": "EECS",
+          "enabled": true,
+          "hidden": false
+        },
+        {
+          "label": {
+            "swedish": "Industriell teknik och management",
+            "english": "Industrial"
+          },
+          "value": "ITM",
+          "enabled": true,
+          "hidden": false
+        },
+        {
+          "label": {
+            "swedish": "Kemi, bioteknologi och hälsa",
+            "english": "Chemistry"
+          },
+          "value": "CBH",
+          "enabled": true,
+          "hidden": false
+        },
+        {
+          "label": {
+            "swedish": "Teknikvetenskap",
+            "english": "Technic"
+          },
+          "value": "SCI",
+          "enabled": true,
+          "hidden": false
+        }
+      ],
+      "validation": {
+        "required": {
+          "value": true,
+          "errormessage": {
+            "swedish": "måste fyllas i",
+            "english": "is required"
+          }
+        }
+      }
+    },
+    {
+      "id": 7,
+      "parentobject_id": null,
+      "label": {
+        "swedish": ["Matcha mig"],
+        "english": ["Match me"]
+      },
+      "value": "",
+      "type": "button",
+      "layout": "heart",
+      "enabled": true,
+      "validation": {
+        "required": {
+          "value": false
+        }
+      }
+    }
+  ]
+}

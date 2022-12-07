@@ -1,0 +1,50 @@
+{
+    "labels": {
+        "submitActionButtonText_en": "Continue",
+        "submitActionButtonText_sv": "Fortsätt",
+        "submitEmailButtonText_en": "Submit",
+        "submitEmailButtonText_sv": "Skicka",
+        "thanksText_en": "Thanks!",
+        "thanksText_sv": "Tack!",
+        "instruction1_sv": "Beskriv ditt behov av stöd samt inom vilket område",
+        "instruction1_en": "Describe support needs and in which area",
+        "instruction2_sv": "Gör dina val och tryck på ”fortsätt”",
+        "instruction2_en": "Make your selections and select ”continue”",
+        "userinfo_sv": "",
+        "userinfo_en": "",
+        "emailinstruction_sv": "Skriv in din mailadress och tryck på ”Skicka!”",
+        "emailinstruction_en": "Enter your emailadress and press ”Submit!”",
+        "confirmationEmailTextboxPlaceholder_sv": "Skriv din epost",
+        "confirmationEmailTextboxPlaceholder_en": "Write your email",
+        "confirmationSubtitle_sv": "Du valde att...",
+        "confirmationSubtitle_en": "You chose to...",
+        "confirmationEmailQuestion_sv": "Valen du gör",
+        "confirmationEmailQuestion_en": "Your choices...",
+        "emailPrompt_sv": "Jag vill matchad med någon på biblioteket",
+        "emailPrompt_en": "I want to be matched with someone at the library",
+        "confirmationEmailQuestionNoButton_sv": "Hej men nej",
+        "confirmationEmailQuestionNoButton_en": "Let’s just be friends.",
+        "confirmationEmailQuestionYesButton_sv": [
+            "Matcha mig"
+        ],
+        "confirmationEmailQuestionYesButton_en": [
+            "Match me"
+        ],
+        "confirmationEmailPrivacyStatement_sv": "",
+        "confirmationEmailPrivacyStatement_en": "",
+        "breakuplines_en": [
+            "Let’s just be friends",
+            "I want to take it slow",
+            "It’s not you, it’s me"
+        ],
+        "breakuplines_sv": [
+            "Hej men nej"
+        ],
+        "confirmationSynonyms_sv": [
+            "Tack"
+        ],
+        "confirmationSynonyms_en": [
+            "Thank you"
+        ]
+    }
+}

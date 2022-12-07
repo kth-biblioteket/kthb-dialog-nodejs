@@ -86,7 +86,7 @@
         <div class="dialog_modal largeModal shadow hide" id="confirmationModal">
             <div id="confirmationContainer">
                 <div id="confirmationTitle" class="title">
-                    <%- choicedata.language =='sv' ? choicedata.confirmationSynonyms_sv[Math.floor(Math.random() * choicedata.confirmationSynonyms_sv.length)] : choicedata.confirmationSynonyms_en[Math.floor(Math.random() * choicedata.confirmationSynonyms_sv.length)]%>
+                    <%- choicedata.language =='sv' ? choicedata.labels.confirmationSynonyms_sv[Math.floor(Math.random() * choicedata.labels.confirmationSynonyms_sv.length)] : choicedata.labels.confirmationSynonyms_en[Math.floor(Math.random() * choicedata.labels.confirmationSynonyms_en.length)]%>
                 </div>
                 <!--div id="confirmationSubtitle" class="title">
                     <%- choicedata.language =='sv' ? choicedata.labels.confirmationSubtitle_sv : choicedata.labels.confirmationSubtitle_en%>
@@ -880,6 +880,7 @@
             let actions = event.actions
             lang_ = getcurrentlangfromHTML_Tag()
 
+            //Om nuvarande språk är engelska --> byt till svenska
             if (lang_ == 'en') {
                 /*
                 history.replaceState({
@@ -904,17 +905,19 @@
                 $('#checklistEmailInstruction').html(labels.emailinstruction_sv)
                 $('#submitActionButton .text').text(labels.submitActionButtonText_sv)
                 $('#submitEmail').text(labels.submitEmailButtonText_sv)
+                $('#confirmationTitle').text(labels.thanksText_sv)
                 $('#thanksText').text(labels.thanksText_sv)
                 $('#confirmationSubtitle').html(labels.confirmationSubtitle_sv);
                 $('#confirmationEmailQuestion').html(labels.confirmationEmailQuestion_sv);
                 $('#emailPrompt').html(labels.emailPrompt_sv);
-                $('#confirmationEmailQuestionNoButton  .text').html(labels.confirmationEmailQuestionNoButton_sv);
+                $('#confirmationEmailQuestionNoButton').html('<i class="pulse fas fa-heart-broken" aria-hidden="true"></i> ' + labels.breakuplines_sv[Math.floor(Math.random() * labels.breakuplines_sv.length)]);
                 $('#confirmationEmailQuestionYesButton').html('<i class="pulse fas fa-heart" aria-hidden="true"></i> ' + labels.confirmationEmailQuestionYesButton_sv[Math.floor(Math.random() * labels.confirmationEmailQuestionYesButton_sv.length)]);
                 $('#emailTextbox textarea').attr("placeholder", labels.confirmationEmailTextboxPlaceholder_sv);
                 $('#confirmationEmailPrivacyStatement').html(labels.confirmationEmailPrivacyStatement_sv);
                 $('#confirmationEmailQuestion').html(labels.confirmationEmailQuestion_sv);
                 
             }
+            //Om nuvarande språk är svenska --> byt till engelska
             if (lang_ == 'sv'){
                 /*
                 history.replaceState({
@@ -939,11 +942,12 @@
                 $('#checklistEmailInstruction').html(labels.emailinstruction_en)
                 $('#submitActionButton .text').text(labels.submitActionButtonText_en)
                 $('#submitEmail').text(labels.submitEmailButtonText_en)
+                $('#confirmationTitle').text(labels.thanksText_en)
                 $('#thanksText').text(labels.thanksText_en)
                 $('#confirmationSubtitle').html(labels.confirmationSubtitle_en);
                 $('#confirmationEmailQuestion').html(labels.confirmationEmailQuestion_en);
                 $('#emailPrompt').html(labels.emailPrompt_en);
-                $('#confirmationEmailQuestionNoButton .text').html(labels.confirmationEmailQuestionNoButton_en);
+                $('#confirmationEmailQuestionNoButton').html('<i class="pulse fas fa-heart-broken" aria-hidden="true"></i> ' + labels.breakuplines_en[Math.floor(Math.random() * labels.breakuplines_en.length)]);
                 $('#confirmationEmailQuestionYesButton').html('<i class="pulse fas fa-heart" aria-hidden="true"></i> ' + labels.confirmationEmailQuestionYesButton_en[Math.floor(Math.random() * labels.confirmationEmailQuestionYesButton_en.length)]);
                 $('#emailTextbox textarea').attr("placeholder", labels.confirmationEmailTextboxPlaceholder_en);
                 $('#confirmationEmailPrivacyStatement').html(labels.confirmationEmailPrivacyStatement_en);

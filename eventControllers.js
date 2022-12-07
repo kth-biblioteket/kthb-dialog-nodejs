@@ -107,7 +107,7 @@ async function generateChoiceApp(req, res, next) {
     }
 
     //Hämta config/data från JSON-fil
-    let choicedata_json = await axios.get('https://apps-ref.lib.kth.se/kthbdialog/config/config.json')
+    let config_json = require('./config.json')
 
     //Hämta config/data från DB
     try {
@@ -135,60 +135,15 @@ async function generateChoiceApp(req, res, next) {
         data.usertypes = usertypes;
 
         
-        // Hämta KTH-skolor
+        // Hämta KTH-skolor via KTH's API
         //let kthschools = await axios.get('https://www.kth.se/api/kopps/v2/schools')
         //let kthschools_en = await axios.get('https://www.kth.se/api/kopps/v2/schools?l=en')
 
+        //Skolor via DB
         let kthschools = await eventModel.readKthschools()
 
-        let breakuplines_en = [
-            "Let’s just be friends",
-            "I am not ready for a relationship",
-            "I want to take it slow",
-            "It’s not you, it’s me"
-        ]
-        let breakuplines_sv = [
-            "Hej men nej"
-        ]
+        let labels = config_json.labels;
 
-        let labels = {
-            "submitActionButtonText_en": "Continue",
-            "submitActionButtonText_sv": "Fortsätt",
-            "submitEmailButtonText_en": "Submit",
-            "submitEmailButtonText_sv": "Skicka",
-            "thanksText_en": "Thanks!",
-            "thanksText_sv": "Tack!",
-            "instruction1_sv": "Beskriv ditt behov av stöd samt inom vilket område",
-            "instruction1_en": "Describe support needs and in which area",
-            "instruction2_sv": "Gör dina val och tryck på ”fortsätt”",
-            "instruction2_en": "Make your selections and select ”continue”",
-            "userinfo_sv": "",
-            "userinfo_en": "",
-            "emailinstruction_sv": "Skriv in din mailadress och tryck på ”Skicka!”",
-            "emailinstruction_en": "Enter your emailadress and press ”Submit!”",
-            "confirmationEmailTextboxPlaceholder_sv": "Skriv din epost",
-            "confirmationEmailTextboxPlaceholder_en": "Write your email",
-            "confirmationSubtitle_sv": "Du valde att...",
-            "confirmationSubtitle_en": "You chose to...",
-            "confirmationEmailQuestion_sv" : "Valen du gör",
-            "confirmationEmailQuestion_en" : "Your choices...",
-            "emailPrompt_sv": "Jag vill matchad med någon på biblioteket",
-            "emailPrompt_en": "I want to be matched with someone at the library",
-            "confirmationEmailQuestionNoButton_sv": "Hej men nej",
-            "breakuplines_sv" : breakuplines_sv,
-            "breakuplines_en" : breakuplines_en,
-            "confirmationEmailQuestionNoButton_en": "Let’s just be friends.",
-            "confirmationEmailQuestionYesButton_sv": ["Matcha mig"],
-            "confirmationEmailQuestionYesButton_en": ["Match me"],
-            "confirmationEmailPrivacyStatement_sv": "",
-            "confirmationEmailPrivacyStatement_en": ""
-        }
-        let confirmationSynonyms_sv = [
-            "Tack"
-        ]
-        let confirmationSynonyms_en = [
-            "Thank you"
-        ]
         //Skapa dataobjekt att skicka till webbapp
         
         choicedata = {
@@ -198,15 +153,8 @@ async function generateChoiceApp(req, res, next) {
             "event": data.event,
             "labels": labels,
             "kthschools": kthschools,
-            //"kthschools": kthschools.data,
-            //"kthschools_en": kthschools_en.data,
-            "confirmationSynonyms_sv": confirmationSynonyms_sv,
-            "confirmationSynonyms_en": confirmationSynonyms_en,
             "usertypes": usertypes
         }
-        
-
-        //choicedata = choicedata_json.data;
 
         res.render('pages/choice', choicedata);
 
