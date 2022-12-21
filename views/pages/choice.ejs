@@ -5,13 +5,14 @@
 </head>
 
 <body>
+    <!-- bakgrundsbild -->
     <!--div style="width:100%">
         <img id="map" src="/dialog/images/wintersun.jpg" />
     </div-->
     <div id="errorPlaceholder"></div>
     <!-- Language -->
     <div id="lang" class="title">
-        <span onclick="changelang()"><%- choicedata.language =='sv' ? 'English' : 'Svenska' %></span>
+        <span onclick="changelang()"><%- choicedata.language =='sv' ? choicedata.labels.englishText_en : choicedata.labels.swedishText_sv %></span>
     </div>
     <div id="wrapper">
         <%let event%>
@@ -28,24 +29,32 @@
           </div>
         </div>
         <!-- Category Labels -->
-        <div id="circlelabels">
-        <%for (const action_ of choicedata.event.actions) { %>
-            <!--div class="circle-label circle-text categoryLabel shadow clickable" id="Label<%=action_.id%>" name="<%=action_.id%>" onclick="startSession('<%=action_.id%>')">
-                <span class="inner-text center-align"><%- choicedata.language =='sv' ? action_.description :action_.description_en %></span>
-            </div-->
+        <div id="labelwrapper">
+            <div id="circlelabels">
+            <%for (const action_ of choicedata.event.actions) { %>
+                <!-- Cirklar -->
+                <!--div class="circle-label circle-text categoryLabel shadow clickable" id="Label<%=action_.id%>" name="<%=action_.id%>" onclick="startSession('<%=action_.id%>')">
+                    <span class="inner-text center-align"><%- choicedata.language =='sv' ? action_.description :action_.description_en %></span>
+                </div-->
 
-            <div class="heart" id="Label<%=action_.id%>" name="<%=action_.id%>" onclick="startSession('<%=action_.id%>')">
-                <span class="text"><%- choicedata.language =='sv' ? action_.description :action_.description_en %></span>
+                <!-- Hjärtan -->
+                <div class="heartcontainer" id="Label<%=action_.id%>" name="<%=action_.id%>" onclick="startSession('<%=action_.id%>')">
+                    <i class="fa <%=choicedata.labeltype%>" aria-hidden="true">
+                        <div class="text"><%- choicedata.language =='sv' ? action_.description :action_.description_en %></div>
+                    </i>
+                </div>
+                <!--div class="heartcontainer">
+                    <div class="heart" id="Label<%=action_.id%>" name="<%=action_.id%>" onclick="startSession('<%=action_.id%>')">
+                        <span class="text"><%- choicedata.language =='sv' ? action_.description :action_.description_en %></span>
+                    </div>
+                </div-->
+            <%} %>
             </div>
-        <%} %>
         </div>
-
         <!-- Modals -->
         <div class="dialog_modal largeModal shadow hide" id="checklistModal">
             <div id="checklistHeader">
-                <!-- TODO Lägg in bildpath från DB-->
-                <img id="checklistLogo" class="shadow" src="/dialog/images/habitat_icon.png" width="150" height="150" draggable="false" />
-                <!-- TODO Lägg in texter i tabell DB-->
+                <img id="checklistLogo" class="shadow" src="" width="150" height="150" draggable="false" />
                 <div id="checklistHeaderText">
                     <div id="checklistPrompt" class="title frontTitle">
                     </div>
@@ -66,16 +75,16 @@
                 </div>
             </div>
             <div class="closeModalButton heartclosebutton">
-                <i class="fas fa-heart" aria-hidden="true">
+                <i class="fa fa-heart" aria-hidden="true">
                     <!--img src="/dialog/images/dismiss_icon.png" width="30" height="30" draggable="false"-->
-                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                    <i class="fa fa-times" aria-hidden="true"></i>
                 </i>
             </div>
             <!--div class="closeModalButton clickable shadow">
                 <img src="/dialog/images/dismiss_icon.png" width="30" height="30" draggable="false" />
             </div-->
             <div id="submitActionButton" class="heartcontinuebutton">
-                <i class="fas fa-heart" aria-hidden="true">
+                <i class="fa fa-heart" aria-hidden="true">
                     <div class="text"><%- choicedata.language =='sv' ? choicedata.labels.submitActionButtonText_sv : choicedata.labels.submitActionButtonText_en%></div>
                 </i>
             </div>
@@ -103,7 +112,7 @@
                         <div id='emailTextbox'>
                             <textarea placeholder="<%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailTextboxPlaceholder_sv : choicedata.labels.confirmationEmailTextboxPlaceholder_en%>" id="write" rows="1" resizeable="no"></textarea>
                         </div>
-                        <button id="confirmationEmailQuestionYesButton" class="btn btn-success"><i class="pulse fas fa-heart" aria-hidden="true"></i> <%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailQuestionYesButton_sv[Math.floor(Math.random() * choicedata.labels.confirmationEmailQuestionYesButton_sv.length)] : choicedata.labels.confirmationEmailQuestionYesButton_en[Math.floor(Math.random() * choicedata.labels.confirmationEmailQuestionYesButton_en.length)]%></button>
+                        <button id="confirmationEmailQuestionYesButton" class="btn btn-success"><i class="pulse fa fa-heart" aria-hidden="true"></i> <%- choicedata.language =='sv' ? choicedata.labels.confirmationEmailQuestionYesButton_sv[Math.floor(Math.random() * choicedata.labels.confirmationEmailQuestionYesButton_sv.length)] : choicedata.labels.confirmationEmailQuestionYesButton_en[Math.floor(Math.random() * choicedata.labels.confirmationEmailQuestionYesButton_en.length)]%></button>
                         <!--div id="confirmationEmailQuestionYesButton" class="">
                             <div id="" class="heartemailmebutton">
                                 <i class="pulse fas fa-heart" aria-hidden="true">
@@ -234,9 +243,9 @@
 
         <div class="dialog_modal shadow hide" id="thanksModal">
             <div class="closeModalButton heartclosebutton">
-                <i class="fas fa-heart" aria-hidden="true">
+                <i class="fa fa-heart" aria-hidden="true">
                     <!--img src="/dialog/images/dismiss_icon.png" width="30" height="30" draggable="false"-->
-                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                    <i class="fa fa-times" aria-hidden="true"></i>
                 </i>
             </div>
             <div id="thanksText" class="title"><%- choicedata.language =='sv' ? choicedata.labels.thanksText_sv : choicedata.labels.thanksText_en%></div>
@@ -327,10 +336,13 @@
             SESSION_USER_CHOICE = body;
 
             //verify at least one choice made
+            let labels = JSON.parse('<%- JSON.stringify(choicedata.labels) %>')
             if (session_choices.length > 0) {
                 //Mandatory fields
+                language = getcurrentlangfromHTML_Tag()
+                $('#checklistPrompt').html(language == 'sv' ? actionObject.description : actionObject.description_en);
                 if (school === ""|| user_type ==="" ) {
-                    alert("Please select type and school ", 'danger', 'errorPlaceholder' );
+                    alert(language == 'sv' ? labels.requireschoolText_sv : labels.requireschoolText_en, 'danger', 'errorPlaceholder' );
                     $("#submitActionButton").removeClass('hide');
                 } else {
                     
@@ -348,7 +360,7 @@
                 } 
             }
             else {
-                alert("Please make a choice", 'danger', 'errorPlaceholder' );
+                alert(language == 'sv' ? labels.requireselectionText_sv : labels.requireselectionText_en, 'danger', 'errorPlaceholder' );
                 $("#submitActionButton").removeClass('hide');
             }
             // 200 it worked
@@ -571,6 +583,8 @@
             $("#lang").addClass( "hide" );
             $(".categoryLabel").addClass( "hide" );
             $(".heart").addClass( "hide" );
+            $(".heartcontainer").addClass( "hide" );
+            $("#labelwrapper").addClass( "hide" );
             $(".categoryLabel").unbind( "click" );
             $(".category").unbind( "click" );
             $("#map").css("opacity", 0.5);
@@ -602,6 +616,8 @@
             $("#lang").removeClass( "hide" );
             $(".categoryLabel").removeClass( "hide" );
             $(".heart").removeClass( "hide" );
+            $(".heartcontainer").removeClass( "hide" );
+            $("#labelwrapper").removeClass( "hide" );
             $("#caption").removeClass( "hide" );
             $("#map").css("opacity", 1);
 
@@ -613,10 +629,10 @@
                 var heartclass = "";
                 if (options.broken) {
                     heartclass = "rain fas fa-heart-broken";    
-                    heartclassSelector = ".rain.fas";
+                    heartclassSelector = ".rain.fa";
                 } else {
-                    heartclass = "rain fas fa-heart";
-                    heartclassSelector = ".rain.fas";
+                    heartclass = "rain fa fa-heart";
+                    heartclassSelector = ".rain.fa";
                 }
                 var heartArr = document.querySelectorAll(heartclassSelector)
                 heartArr.forEach(heart => {
@@ -758,7 +774,7 @@
                     //let currents_kthschools = language == 'sv' ? kthschools : kthschools_en
                     checklistContainer += 
                         `<select id="school" class="form-select mb-2" aria-label="School">
-                            <option value="" selected>${language == 'sv' ? 'Min skola' : 'My school'}</option>`
+                            <option value="" selected>${language == 'sv' ? labels.myschoolText_sv : labels.myschoolText_en}</option>`
                             for (var i = 0; i < kthschools.length; i++) {                        
 
                                 checklistContainer +=`<option value="${kthschools[i].code}">${language == 'sv' ? kthschools[i].name : kthschools[i].name_en}</option>`
@@ -802,10 +818,11 @@
                     // Start timeout for thanks screen
                     //if (getQuerystringparam('kiosk') == 'true') {
                         //Använd timeoutfunktionen för session
-                        THANKS_TIMEOUT = window.setTimeout(function() { endSession(options); }, 10000)
+                        let sessiontimeout = JSON.parse('<%- JSON.stringify(choicedata.sessiontimeout) %>')
+                        THANKS_TIMEOUT = window.setTimeout(function() { endSession(options); }, sessiontimeout)
                         const body = document.querySelector("body");
                         var heartclass = ""
-                        var heartclassSelector = ".rain.fas";
+                        var heartclassSelector = ".rain.fa";
                         function createHeart() {
                             const heart = document.createElement("div");
                             if (options.broken) {
@@ -813,12 +830,12 @@
                             } else {
                                 var hearts = document.querySelectorAll(heartclassSelector)
                                 if ((hearts.length % 7) === 0) {
-                                    heartclass = "rain fas fa-kiss-wink-heart";
+                                    heartclass = "rain fas fa-heart blue";
                                 } else {
                                     if ((hearts.length % 5) === 0) {
-                                        heartclass = "rain fas fa-heart white";
+                                        heartclass = "rain fa fa-heart white";
                                     } else {
-                                        heartclass = "rain fas fa-heart";
+                                        heartclass = "rain fa fa-heart";
                                     }
                                      
                                 }
@@ -826,7 +843,7 @@
 
                             heart.className = heartclass
                             heart.style.left = (Math.random() * 95)+"vw";
-                            heart.style.animationDuration = (Math.random()*3)+6+"s"
+                            heart.style.animationDuration = (Math.random()*3)+10+"s"
                             body.appendChild(heart);
                         }
                         heartrain = window.setInterval(createHeart,100);
@@ -882,14 +899,8 @@
 
             //Om nuvarande språk är engelska --> byt till svenska
             if (lang_ == 'en') {
-                /*
-                history.replaceState({
-                    id: 'KTHB',
-                    source: 'web'
-                }, 'KTH Biblioteket', '/dialog/choice/1?language=sv');
-                */
                 $('html').attr('lang', 'sv')
-                $('#lang span').text('English')
+                $('#lang span').text(labels.englishText_en)
                 $('#maincaption').html(event.name)
                 $('#subcaption').html(event.description)
                 let circlelabels_html ='';
@@ -911,7 +922,7 @@
                 $('#confirmationEmailQuestion').html(labels.confirmationEmailQuestion_sv);
                 $('#emailPrompt').html(labels.emailPrompt_sv);
                 $('#confirmationEmailQuestionNoButton').html('<i class="pulse fas fa-heart-broken" aria-hidden="true"></i> ' + labels.breakuplines_sv[Math.floor(Math.random() * labels.breakuplines_sv.length)]);
-                $('#confirmationEmailQuestionYesButton').html('<i class="pulse fas fa-heart" aria-hidden="true"></i> ' + labels.confirmationEmailQuestionYesButton_sv[Math.floor(Math.random() * labels.confirmationEmailQuestionYesButton_sv.length)]);
+                $('#confirmationEmailQuestionYesButton').html('<i class="pulse fa fa-heart" aria-hidden="true"></i> ' + labels.confirmationEmailQuestionYesButton_sv[Math.floor(Math.random() * labels.confirmationEmailQuestionYesButton_sv.length)]);
                 $('#emailTextbox textarea').attr("placeholder", labels.confirmationEmailTextboxPlaceholder_sv);
                 $('#confirmationEmailPrivacyStatement').html(labels.confirmationEmailPrivacyStatement_sv);
                 $('#confirmationEmailQuestion').html(labels.confirmationEmailQuestion_sv);
@@ -919,14 +930,8 @@
             }
             //Om nuvarande språk är svenska --> byt till engelska
             if (lang_ == 'sv'){
-                /*
-                history.replaceState({
-                    id: 'KTHB',
-                    source: 'web'
-                }, 'KTH Library', '/dialog/choice/1?language=en');
-                */
                 $('html').attr('lang', 'en')
-                $('#lang span').text('Svenska')
+                $('#lang span').text(labels.swedishText_sv)
                 $('#maincaption').html(event.name_en)
                 $('#subcaption').html(event.description_en)
                 let circlelabels_html ='';
@@ -948,7 +953,7 @@
                 $('#confirmationEmailQuestion').html(labels.confirmationEmailQuestion_en);
                 $('#emailPrompt').html(labels.emailPrompt_en);
                 $('#confirmationEmailQuestionNoButton').html('<i class="pulse fas fa-heart-broken" aria-hidden="true"></i> ' + labels.breakuplines_en[Math.floor(Math.random() * labels.breakuplines_en.length)]);
-                $('#confirmationEmailQuestionYesButton').html('<i class="pulse fas fa-heart" aria-hidden="true"></i> ' + labels.confirmationEmailQuestionYesButton_en[Math.floor(Math.random() * labels.confirmationEmailQuestionYesButton_en.length)]);
+                $('#confirmationEmailQuestionYesButton').html('<i class="pulse fa fa-heart" aria-hidden="true"></i> ' + labels.confirmationEmailQuestionYesButton_en[Math.floor(Math.random() * labels.confirmationEmailQuestionYesButton_en.length)]);
                 $('#emailTextbox textarea').attr("placeholder", labels.confirmationEmailTextboxPlaceholder_en);
                 $('#confirmationEmailPrivacyStatement').html(labels.confirmationEmailPrivacyStatement_en);
                 $('#confirmationEmailQuestion').html(labels.confirmationEmailQuestion_en);
@@ -960,12 +965,7 @@
             $("#checklistlearnMoreText").html('<img src="' + actionObject.choices[index].fullpath + '" class="learnMoreImage"/>');
         }
 
-        var currentlanguage = 'sv';
-        $(document).ready(function() {
-            if(getcurrentlangfromHTML_Tag() == 'sv') {
-                currentlanguage = 'en';
-            }
-
+        $(document).ready(function() {            
             //Definiera javascriptobject med data från EJS
             actions = JSON.parse(`<%- JSON.stringify(choicedata.event.actions) %>`)
             var confirmationSynonyms;

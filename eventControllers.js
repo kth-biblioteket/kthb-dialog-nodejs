@@ -144,6 +144,8 @@ async function generateChoiceApp(req, res, next) {
 
         let labels = config_json.labels;
 
+        let sessiontimeout = config_json.sessiontimeout
+
         //Skapa dataobjekt att skicka till webbapp
         
         choicedata = {
@@ -152,8 +154,10 @@ async function generateChoiceApp(req, res, next) {
             "language": language,
             "event": data.event,
             "labels": labels,
+            "labeltype": process.env.LABELTYPE,
             "kthschools": kthschools,
-            "usertypes": usertypes
+            "usertypes": usertypes,
+            "sessiontimeout": sessiontimeout
         }
 
         res.render('pages/choice', choicedata);

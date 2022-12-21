@@ -1,5 +1,11 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:200,300,400,500,600);
 
+
+:root {
+  --toppositionhearts: 10px;
+  --leftpositionhearts: 10px;
+}
+
 *,:after,:before {
   box-sizing: border-box
 }
@@ -278,31 +284,39 @@ html, body {
   padding-top: 10px;
 }
 
+#circlelabels {
+  position: relative;
+}
 
 #circlelabels>div:nth-child(1) {
-  top: 25%;
-  left: 5%;
+  top: 0px;
+  left: 0px;
 }
 
 #circlelabels>div:nth-child(2) {
-  top: 50%;
-  left: 25%;
+  top: 350px;
+  left: 130px;
 }
 
 #circlelabels>div:nth-child(3) {
-  top: 15%;
-  left: 50%;
+  top: 50px;
+  left: 600px;
 }
 
 #circlelabels>div:nth-child(4) {
-  top: 55%;
-  left: 65%;
+  top: 400px;
+  left: 600px;
+}
+
+#circlelabels>div:nth-child(5) {
+  top: 200px;
+  left: 1000px;
 }
 
 .alert {
   position: absolute;
     z-index: 99;
-    bottom: 0;
+    bottom: 50%;
     right: 50% 
 }
 
@@ -795,6 +809,81 @@ label .info {
   line-height: 1.42857;
 }
 
+.heartcontainer {
+    position: absolute;
+    bottom: -40px;
+    right: -20px;
+    height: 340px;
+    width: 340px;
+    padding-top: 0px;
+    cursor: pointer;
+    font-size: 340px;
+    color: #c82727;
+  }
+
+  .heartcontainer .text {
+    position: relative;
+      width:200px;
+      left: 70px;
+      top: -230px;
+      font-size: 20px;
+      color: white;
+      font-family: 'Open Sans';
+      text-align: center;
+  }
+
+.heart {
+  width: 230px;
+  height: 230px;
+  position: absolute;
+  transform: rotate(-45deg);
+  border: 5px solid rgb(200, 39, 39);
+  border-radius: 5px;
+  border-top-color: transparent;
+  border-right-color: transparent;
+}
+
+.heart:before {
+  top: -115px;
+  left: -5px;
+  transform: rotate(45deg);
+}
+
+.heart:after {
+  top: -5px;
+  left: 105px;
+  transform: rotate(135deg);
+}
+
+.heart:before,
+.heart:after {
+    content: "";
+    width: 230px;
+    height: 230px;
+    border-radius: 50%;
+    position: absolute;
+    border: 5px solid rgb(200, 39, 39);
+    border-bottom-color: transparent;
+    border-right-color: transparent;
+}
+
+.heart .text {
+  position: absolute;
+  z-index: 99;
+  1top: 75%;
+  1left: 50%;
+  transform: translate(20%, 60%) rotate(45deg);
+  font-size: 1.2em;
+}
+
+.heart:hover,
+.heart:hover::before,
+.heart:hover::after {
+  background-color: rgb(150, 7, 7);
+  border-color: rgb(150, 7, 7);
+}
+
+/*
 .heart {
   position: absolute;
   width: 400px;
@@ -845,7 +934,6 @@ label .info {
   -ms-transform-origin: 100% 100%;
   -o-transform-origin: 100% 100%;
   transform-origin: 100% 100%;
-}
 
 .heart .text {
   position: absolute;
@@ -855,7 +943,7 @@ label .info {
   transform: translate(-50%, -50%);
   font-size: 1.2em;
 }
-
+*/
 .buttonheart {
   position: absolute;
   width: 200px;
@@ -932,6 +1020,10 @@ label .info {
   color: white;
 }
 
+.rain.fa-heart.blue {
+  color: rgb(38, 38, 207);
+}
+
 .rain.fa-heart-broken {
   /*color: rgba(67, 164, 249, 0.70);*/
   color: red;
@@ -968,11 +1060,12 @@ label .info {
   top: -90px;
 }
 
-.heartclosebutton .fa-xmark {
+.heartclosebutton .fa-xmark,
+.heartclosebutton .fa-times {
   color: #ffffff;
   position:relative;
   top:-96px;
-  left:25px;
+  left:21px;
   font-size: 48px
 
 }
@@ -1155,6 +1248,115 @@ label .info {
     height: 250px;
   }
 
+  body {
+    1overflow: hidden;
+  }
+
+  #circlelabels {
+    position: relative;
+    1top: -40px;
+    1left: 40px;
+  }
+
+  #circlelabels>div:nth-child(1) {
+    top: 0px;
+    left: 0px;
+  }
+  
+  #circlelabels>div:nth-child(2) {
+    top: 350px;
+    left: 130px;
+  }
+  
+  #circlelabels>div:nth-child(3) {
+    top: 50px;
+    left: 600px;
+  }
+  
+  #circlelabels>div:nth-child(4) {
+    top: 400px;
+    left: 600px;
+  }
+  
+  #circlelabels>div:nth-child(5) {
+    top: 200px;
+    left: 1000px;
+  }
+
+  .heartcontainer {
+    position: absolute;
+    bottom: -40px;
+    right: -20px;
+    height: 340px;
+    width: 340px;
+    padding-top: 0px;
+    cursor: pointer;
+    font-size: 340px;
+    color: #c82727;
+  }
+
+  .heartcontainer .text {
+    position: relative;
+      width:200px;
+      left: 70px;
+      top: -230px;
+      font-size: 20px;
+      color: white;
+      font-family: 'Open Sans';
+      text-align: center;
+  }
+
+  .heart {
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    transform: rotate(-45deg);
+    border: 5px solid rgb(200, 39, 39);
+    border-radius: 5px;
+    border-top-color: transparent;
+    border-right-color: transparent;
+  }
+  
+  .heart:before {
+    top: -100px;
+    left: -5px;
+    transform: rotate(45deg);
+  }
+  
+  .heart:after {
+    top: -5px;
+    left: 90px;
+    transform: rotate(135deg);
+  }
+  
+  .heart:before,
+  .heart:after {
+      content: "";
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      position: absolute;
+      border: 5px solid rgb(200, 39, 39);
+      border-bottom-color: transparent;
+      border-right-color: transparent;
+  }
+  
+  .heart .text {
+    position: absolute;
+    z-index: 99;
+    1top: 75%;
+    1left: 50%;
+    transform: translate(25%, 15%) rotate(45deg);
+    font-size: 1.2em;
+  }
+  
+  .heart:hover,
+  .heart:hover::before,
+  .heart:hover::after {
+    background-color: rgb(150, 7, 7);
+    border-color: rgb(150, 7, 7);
+  }
+  /*
   .heart {
     position: absolute;
     width: 300px;
@@ -1209,6 +1411,7 @@ label .info {
     transform: translate(-50%, -50%);
     font-size: 1em;
   }
+*/
 
   #keyboard {
     width: 80%;
@@ -1229,175 +1432,115 @@ label .info {
 }
 
 @media screen and (max-width: 1366px) and (min-width: 0px) {
-}
-
-@media screen and (max-width: 1280px) and (min-width: 0px) {
-  #map, #clickableOverlay {
-    position: absolute;
+  #circlelabels>div:nth-child(1) {
     top: 0px;
     left: 0px;
-    bottom: 0px;
-    right: 0px;
-    width: 1080px;
-    height: 810px;
-    max-width: 100%;
-    background-size: cover;
-    background-position: center;
+  }
+  
+  #circlelabels>div:nth-child(2) {
+    top: 350px;
+    left: 130px;
+  }
+  
+  #circlelabels>div:nth-child(3) {
+    top: 50px;
+    left: 400px;
+  }
+  
+  #circlelabels>div:nth-child(4) {
+    top: 400px;
+    left: 600px;
+  }
+  
+  #circlelabels>div:nth-child(5) {
+    top: 150px;
+    left: 900px;
   }
 
-  #keyboard {
-    width: 80%;
-  }
-  #keyboard li {
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    font-size: 20px;
+  .heartcontainer {
+    position: absolute;
+    bottom: -40px;
+    right: -20px;
+    height: 280px;
+    width: 280px;
+    padding-top: 0px;
+    cursor: pointer;
+    font-size: 280px;
+    color: #c82727;
   }
 
-  #keyboard .email, #keyboard .left-shift, #keyboard .capslock {
-    width: auto;
-    font-size: 15px;
-    padding-left: 15px;
-    padding-right: 15px;
-  }  
+  .heartcontainer .text {
+    position: relative;
+      width: 150px;
+      left: 70px;
+      top: -190px;
+      font-size: 16px;
+      color: white;
+      font-family: 'Open Sans';
+      text-align: center;
+  }
+
+  .heart,
+  .heart:before,
+  .heart:after {
+    width: 180px;
+    height: 180px;
+  }
+  
+  .heart:before {
+    top: -90px;
+    left: -5px;
+  }
+  
+  .heart:after {
+    top: -5px;
+    left: 80px;
+  }
+  
+  .heart .text {
+    transform: translate(25%, 0%) rotate(45deg);
+  }
+}
+
+@media screen and (max-width: 1220px) and (min-width: 0px) {
+  #circlelabels>div:nth-child(1) {
+    top: 0px;
+    left: 0px;
+  }
+  
+  #circlelabels>div:nth-child(2) {
+    top: 320px;
+    left: 130px;
+  }
+  
+  #circlelabels>div:nth-child(3) {
+    top: 20px;
+    left: 400px;
+  }
+  
+  #circlelabels>div:nth-child(4) {
+    top: 300px;
+    left: 500px;
+  }
+  
+  #circlelabels>div:nth-child(5) {
+    top: 150px;
+    left: 800px;
+  }
 
 }
 
 /* anpassa till KTH Bibliotekets iPad*/
 @media screen and (max-width: 1080px) and (min-width: 0px) {
-  #map, #clickableOverlay {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    bottom: 0px;
-    right: 0px;
-    background-size: cover;
-    background-position: center;
-  }
-
-  .clickable {
-    font-size: 20px;
-  }
-
-  .circle-text {
-    width: 250px;
-    height: 190px;
-  }
-
-  #checklistLogo {
-    height: 125px;
-    width: 125px;
-    margin-right: 20px;
-  }
-
-  .title {
-    font-size: 3vw 
-  }
-
-  .actionItemName, div#checklistlearnMoreText h2 {
-    font-size: 2vw;
-  }
-
-  #lang {
-    font-size: 16px;
-  }
-
-  label img {
-    width: 2vw;
-    height: 2vw;
-  }
-
-  .actionItemTextPadding {
-    width: 2vw;
-  }
-
-  .instruction {
-    font-size: 2vw;
-  }
-
-  #confirmationEmailQuestionYesButton {
-    height: 70px;
-  }
-
-  #confirmationEmailQuestionNoButton {
-    height: 70px;
-  }
-
-  #emailTextbox {
-    margin-top: 0px;
-    margin-bottom: 0px;
-  }
-
-  #submitEmail {
-    position: absolute;
-    bottom: -30px;
-    right: 30px;
-    height: 80px;
-    padding: 0px 40px;
-    border-radius: 40px;
-    line-height: 80px;
-    font-size: 40px;
-    color:#fff;
-  }
-
-  #emailModal #container {
-    width: 100%
-  }
-
-  #write {
-    vertical-align: top;
-    display: inline-block;
-    font-size: 32px;
-    line-height: 50px;
-    font-family: verdana;
-    padding: 10px;
-    width: 100%;
-    margin-right: 0px;
-    height: 70px;
-    background: #fff;
-    border-radius: 7px;
-    resize: none;
-    border: none;
-    }
-
-    #keyboard {
-      width: 100%;
-      display: none;
-    }
-
-    #keyboard li {
-      width: 55px;
-      height: 55px;
-      line-height: 55px;
-      font-size: 30px;
-    }
-  
-    #keyboard .email, #keyboard .left-shift, #keyboard .capslock {
-      width: auto;
-      font-size: 25px;
-      padding-left: 20px;
-      padding-right: 20px;
-    }
     
 }
 
 /* polopoly */
-@media screen and (max-width: 990px) and (min-width: 0px) {
-  #keyboard {
-    display: none;
-  }
-  
+@media screen and (max-width: 990px) and (min-width: 0px) {  
 }
 
 /* anpassa till mobil*/
 @media screen and (max-width: 600px) and (min-width: 0px) {
-  /*
-  body {
-    overflow: scroll !important;
-    position: relative !important;
-  }
-  */
 
   body {
     overflow: auto;
@@ -1449,6 +1592,11 @@ label .info {
   }
   
   #circlelabels>div:nth-child(4) {
+    top: 0;
+    left: 0;
+  }
+
+  #circlelabels>div:nth-child(5) {
     top: 0;
     left: 0;
   }
@@ -1547,9 +1695,10 @@ label .info {
     font-size: 50px;
   }
 
-  .heartclosebutton .fa-xmark {
+  .heartclosebutton .fa-xmark,
+  .heartclosebutton .fa-times {
     top: -60px;
-    left: 16px;
+    left: 14px;
     font-size: 28px;
   }
 
@@ -1631,6 +1780,59 @@ label .info {
   }
 
   .heart {
+    width: 180px;
+    height: 180px;
+    position: relative;
+    transform: rotate(-45deg);
+    border: 5px solid rgb(200, 39, 39);
+    border-radius: 5px;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    margin-top: 100px;
+  }
+  
+  .heart:before {
+    top: -90px;
+    left: -5px;
+    transform: rotate(45deg);
+  }
+  
+  .heart:after {
+    top: -5px;
+    left: 80px;
+    transform: rotate(135deg);
+  }
+  
+  .heart:before,
+  .heart:after {
+      content: "";
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      position: absolute;
+      border: 5px solid rgb(200, 39, 39);
+      border-bottom-color: transparent;
+      border-right-color: transparent;
+  }
+  
+  .heart .text {
+    position: absolute;
+    z-index: 99;
+    1top: 75%;
+    1left: 50%;
+    transform: translate(25%, 0%) rotate(45deg);
+    font-size: 1.2em;
+  }
+  
+  .heart:hover,
+  .heart:hover::before,
+  .heart:hover::after {
+    background-color: rgb(150, 7, 7);
+    border-color: rgb(150, 7, 7);
+  }
+
+  /*
+  .heart {
     position: relative;
     width: 300px;
     height: 240px;
@@ -1686,6 +1888,8 @@ label .info {
     transform: translate(-50%, -50%);
     font-size: 1em;
   }
+
+  */
 
   #yescontact {
     align-items: flex-start;;

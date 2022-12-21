@@ -1,5 +1,9 @@
 {
     "labels": {
+        "englishText_en": "English",
+        "englishText_sv": "Engelska",
+        "swedishText_en": "Swedish",
+        "swedishText_sv": "Svenska",
         "submitActionButtonText_en": "Continue",
         "submitActionButtonText_sv": "Fortsätt",
         "submitEmailButtonText_en": "Submit",
@@ -45,6 +49,11 @@
         ],
         "confirmationSynonyms_en": [
             "Thank you"
-        ]
-    }
+        ],
+        "requireselectionText_sv": "Vänligen gör ett val i listan",
+        "requireselectionText_en": "Please make a selection in the list",
+        "requireschoolText_sv": "Vänligen välj forskare/doktorand och skola ",
+        "requireschoolText_en": "Please select researcher/doctoral student and school "
+    },
+    "sessiontimeout": 30000
 }
