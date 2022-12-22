@@ -894,6 +894,7 @@
         function changelang() {
             let event = JSON.parse(`<%- JSON.stringify(choicedata.event) %>`)
             let labels = JSON.parse(`<%- JSON.stringify(choicedata.labels) %>`)
+            let labeltype = JSON.parse(`<%- JSON.stringify(choicedata.labeltype) %>`)
             let actions = event.actions
             lang_ = getcurrentlangfromHTML_Tag()
 
@@ -905,8 +906,10 @@
                 $('#subcaption').html(event.description)
                 let circlelabels_html ='';
                 for (i=0; i<actions.length; i++) {
-                    circlelabels_html += `<div class="heart" id="Label${actions[i].id}" name="${actions[i].id}" onclick="startSession('${actions[i].id}')">
-                        <span class="text">${actions[i].description}</span>
+                    circlelabels_html += `<div class="heartcontainer" id="Label${actions[i].id}" name="${actions[i].id}" onclick="startSession('${actions[i].id}')">
+                        <i class="fa ${labeltype}" aria-hidden="true">
+                            <div class="text">${actions[i].description}</div>
+                        </i>
                     </div>`
                 }
                 $('#circlelabels').html(circlelabels_html)
@@ -936,8 +939,10 @@
                 $('#subcaption').html(event.description_en)
                 let circlelabels_html ='';
                 for (i=0; i<actions.length; i++) {
-                    circlelabels_html += `<div class="heart" id="Label${actions[i].id}" name="${actions[i].id}" onclick="startSession('${actions[i].id}')">
-                        <span class="text">${actions[i].description_en}</span>
+                    circlelabels_html += `<div class="heartcontainer" id="Label${actions[i].id}" name="${actions[i].id}" onclick="startSession('${actions[i].id}')">
+                        <i class="fa ${labeltype}" aria-hidden="true">
+                            <div class="text">${actions[i].description_en}</div>
+                        </i>
                     </div>`
                 }
                 $('#circlelabels').html(circlelabels_html)
