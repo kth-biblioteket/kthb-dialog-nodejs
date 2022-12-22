@@ -822,7 +822,7 @@
                         THANKS_TIMEOUT = window.setTimeout(function() { endSession(options); }, sessiontimeout)
                         const body = document.querySelector("body");
                         var heartclass = ""
-                        var heartclassSelector = ".rain.fa";
+                        var heartclassSelector = ".rain.fas";
                         function createHeart() {
                             const heart = document.createElement("div");
                             if (options.broken) {
@@ -833,9 +833,9 @@
                                     heartclass = "rain fas fa-heart blue";
                                 } else {
                                     if ((hearts.length % 5) === 0) {
-                                        heartclass = "rain fa fa-heart white";
+                                        heartclass = "rain fas fa-heart white";
                                     } else {
-                                        heartclass = "rain fa fa-heart";
+                                        heartclass = "rain fas fa-heart";
                                     }
                                      
                                 }
