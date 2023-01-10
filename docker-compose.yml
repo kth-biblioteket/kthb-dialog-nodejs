@@ -1,25 +1,18 @@
 version: '3'
-
 services:
-  revproxy:
-     container_name: revproxy
-     image: nginx:alpine
-     restart: always
-     ports:
-       - 80:80
-     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-     networks:
-       - mynet
-  web:
+  kthb-dialog:
+    restart: always
     build:
-      context: ./
       dockerfile: Dockerfile
+      context: .
     env_file: .env
-    ports:
-      - 3014
-    networks:
-      - mynet
+    environment:
+      VIRTUAL_HOST: api.sites.lib.kth.se
+      LETSENCRYPT_HOST: api.sites.lib.kth.se
+      VIRTUAL_PATH: /dialog/
+      VIRTUAL_DEST: /dialog/
 
 networks:
-    mynet:
+  default:
+    external:
+      name: nginx-proxy

@@ -21,7 +21,7 @@ CREATE TABLE `actionchoices` (
   `name_en` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description_en` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `image` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image_id` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sortorder` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -39,7 +39,7 @@ CREATE TABLE `subactionchoices` (
   `name_en` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description_en` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `image` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image_id` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sortorder` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -58,15 +58,30 @@ CREATE TABLE `actionchoicetypes` (
 -- --------------------------------------------------------
 
 --
+-- Tabellstruktur `kthschools`
+--
+
+CREATE TABLE `kthschools` (
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `code` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name_en` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Tabellstruktur `actions`
 --
 
 CREATE TABLE `actions` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `event_id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `name_en` varchar(50) NOT NULL,
+  `description` varchar(200) NOT NULL,
   `description_en` varchar(200) NOT NULL,
-  `description_sv` varchar(200) NOT NULL,
-  `image` varchar(50) NOT NULL,
+  `image_id` varchar(50) NOT NULL,
   `rgbacolor` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -95,7 +110,11 @@ CREATE TABLE `events` (
   `description` varchar(200) NOT NULL,
   `description_en` varchar(200) NOT NULL,
   `startdate` date NOT NULL,
-  `enddate` date NOT NULL
+  `enddate` date NOT NULL,
+  `resultstitle` varchar(50) NOT NULL,
+  `resultstitle_en` varchar(50) NOT NULL,
+  `resultssubtitle` varchar(200) NOT NULL,
+  `resultssubtitle_en` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -173,7 +192,9 @@ CREATE TABLE `useractionmessages` (
 CREATE TABLE `usertypes` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `code` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name_en` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name_sv` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
+  `description` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description_en` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

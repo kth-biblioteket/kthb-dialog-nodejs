@@ -3,8 +3,8 @@ FROM node:16-alpine
 
 # environment variables
 ENV NODE_ENV=production
-ENV NODE_PORT=3014
-ENV HOME=/home/node/app
+ENV NODE_PORT=80
+ENV HOME=/app
 ENV PATH=${PATH}:${HOME}/node_modules/.bin
 
 # create application folder and assign rights to the node user
