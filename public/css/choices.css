@@ -11,10 +11,11 @@
 }
 
 #lang {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 24px;
+    padding: 10px;
 }
 
 #lang span {
@@ -106,8 +107,8 @@ a {
 #wrapper {
   display: flex;
   flex-flow: column;
-  height: 100%;
-  padding: 40px 40px 120px 40px
+  height: 90%;
+  padding: 0px 40px 40px 40px
 }
 
 .frame {
@@ -163,7 +164,7 @@ textarea {
 }
 
 #subcaption {
-  font-size: 24px;
+  font-size: 2vw;
   line-height: 1;
   color: #e9efe7; /* white */
   /*font-family1: 'EksellDisplayWebMedium';*/
@@ -232,6 +233,7 @@ html, body {
   padding: 10px;
   flex-grow: 1;
   width: 100%;
+  margin-top: 40px;
 }
 
 .smallModal {
@@ -286,31 +288,6 @@ html, body {
 
 #circlelabels {
   position: relative;
-}
-
-#circlelabels>div:nth-child(1) {
-  top: 0px;
-  left: 0px;
-}
-
-#circlelabels>div:nth-child(2) {
-  top: 350px;
-  left: 130px;
-}
-
-#circlelabels>div:nth-child(3) {
-  top: 50px;
-  left: 600px;
-}
-
-#circlelabels>div:nth-child(4) {
-  top: 400px;
-  left: 600px;
-}
-
-#circlelabels>div:nth-child(5) {
-  top: 200px;
-  left: 1000px;
 }
 
 .alert {
@@ -683,6 +660,13 @@ html, body {
 
 /* Thanks Modal Style */
 
+#thanksModal {
+  background: url(../images/bokhallen_1.png);
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 #thanksText {
   text-align: center;
   width: 100%;
@@ -809,28 +793,56 @@ label .info {
   line-height: 1.42857;
 }
 
-.heartcontainer {
-    position: absolute;
-    bottom: -40px;
-    right: -20px;
-    height: 340px;
-    width: 340px;
-    padding-top: 0px;
-    cursor: pointer;
-    font-size: 340px;
-    color: #c82727;
-  }
+#labelwrapper {
+  display: flex; 
+  justify-content: center;
+  height:800px
+}
 
-  .heartcontainer .text {
-    position: relative;
-      width:200px;
-      left: 70px;
-      top: -230px;
-      font-size: 20px;
-      color: white;
-      font-family: 'Open Sans';
-      text-align: center;
-  }
+#circlelabels>div:nth-child(1) {
+  top: 0px;
+  left: 0px;
+}
+
+#circlelabels>div:nth-child(2) {
+  top: -100px;
+  left: 210px;
+}
+
+#circlelabels>div:nth-child(3) {
+  top: -530px;
+  left: 470px;
+}
+
+#circlelabels>div:nth-child(4) {
+  top: -850px;
+  left: 817px
+}
+
+#circlelabels>div:nth-child(5) {
+  top: -920px;
+  left: 670px
+}
+
+.heartcontainer {
+  height: 280px;
+  width: 280px;
+  padding-top: 0px;
+  cursor: pointer;
+  font-size: 280px;
+  color: #c82727;
+  display: flex;
+}
+.heartcontainer .text {
+  position: relative;
+  width: 150px;
+  left: 70px;
+  top: -190px;
+  font-size: 16px;
+  color: white;
+  font-family: 'Open Sans';
+  text-align: center;
+}
 
 .heart {
   width: 230px;
@@ -870,8 +882,6 @@ label .info {
 .heart .text {
   position: absolute;
   z-index: 99;
-  1top: 75%;
-  1left: 50%;
   transform: translate(20%, 60%) rotate(45deg);
   font-size: 1.2em;
 }
@@ -1181,6 +1191,71 @@ label .info {
 
 
 @media screen and (max-width: 1920px) and (min-width: 0px){
+
+  #labelwrapper {
+    display: flex; 
+    justify-content: center;
+    height: 100%
+  }
+
+  #circlelabels {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  #circlelabels>div:nth-child(1) {
+    top: 0%;
+    left: 0%;
+    align-items: start;
+  }
+  
+  #circlelabels>div:nth-child(2) {
+    top: 60%;
+    left: 25%;
+    align-items: flex-end;
+  }
+  
+  #circlelabels>div:nth-child(3) {
+    top: 0%;
+    left: 50%;
+    align-items: start;
+  }
+  
+  #circlelabels>div:nth-child(4) {
+    top: 60%;
+    left: 75%;
+    align-items: flex-end;
+  }
+  
+  #circlelabels>div:nth-child(5) {
+    top: 0%;
+    left: 100%;
+    align-items: start;
+  }
+
+  .heartcontainer {
+    height: 510px;
+    width: 290px;
+    font-size: 290px;
+    line-height: 290px;
+  }
+
+  .heartcontainer .fa {
+    position: relative;
+  }
+
+  .heartcontainer .text {
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    top: 20%;
+    font-size: 18px;
+    padding: 10%;
+  }
+
   #keyboard {
     width: 80%;
   }
@@ -1199,348 +1274,144 @@ label .info {
   }  
 }
 
-@media screen and (max-width: 1600px) and (min-width: 0px) {
-  #write,
-  #contactName,
-  #contactOther {
-    vertical-align: top;
-    display: inline-block;
-    font-size: 40px;
-    line-height: 60px;
-    font-family: verdana;
-    padding: 10px;
-    padding-top: 0px;
-    width: 100%;
-    margin-right: 10px;
-    height: 70px;
-    background: #fff;
-    border-radius: 7px;
-    resize: none;
-    border: none;
-    }
+@media screen and (max-width: 1536px) and (min-width: 0px) {
 
-    #keyboard {
-      width: 80%;
-    }
-    #keyboard li {
-      width: 60px;
-      height: 60px;
-      line-height: 60px;
-      font-size: 30px;
-    }
-  
-    #keyboard .email, #keyboard .left-shift, #keyboard .capslock {
-      width: auto;
-      font-size: 15px;
-      padding-left: 15px;
-      padding-right: 15px;
-    }
-
-}
-
-@media screen and (max-width: 1440px) and (min-width: 0px){
-  .clickable {
-    font-size: 25px;
-  }
-
-  .circle-text {
-    width: 300px;
-    height: 250px;
-  }
-
-  body {
-    1overflow: hidden;
-  }
-
-  #circlelabels {
-    position: relative;
-    1top: -40px;
-    1left: 40px;
-  }
-
-  #circlelabels>div:nth-child(1) {
-    top: 0px;
-    left: 0px;
-  }
-  
-  #circlelabels>div:nth-child(2) {
-    top: 350px;
-    left: 130px;
-  }
-  
-  #circlelabels>div:nth-child(3) {
-    top: 50px;
-    left: 600px;
-  }
-  
-  #circlelabels>div:nth-child(4) {
-    top: 400px;
-    left: 600px;
-  }
-  
-  #circlelabels>div:nth-child(5) {
-    top: 200px;
-    left: 1000px;
+  #labelwrapper {
+    display: flex; 
+    justify-content: center;
   }
 
   .heartcontainer {
-    position: absolute;
-    bottom: -40px;
-    right: -20px;
-    height: 340px;
-    width: 340px;
-    padding-top: 0px;
-    cursor: pointer;
-    font-size: 340px;
-    color: #c82727;
+    height: 455px;
+    width: 260px;
+    font-size: 260px;
+    line-height: 260px;
+  }
+
+  .heartcontainer .fa {
+    position: relative;
   }
 
   .heartcontainer .text {
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    top: 20%;
+    font-size: 16px;
+    padding: 10%;
+  }
+}
+
+@media screen and (max-width: 1440px) and (min-width: 0px) {
+
+  #labelwrapper {
+    display: flex; 
+    justify-content: center;
+  }
+
+  .heartcontainer {
+    height: 438px;
+    width: 250px;
+    font-size: 250px;
+    line-height: 250px;
+  }
+
+  .heartcontainer .fa {
     position: relative;
-      width:200px;
-      left: 70px;
-      top: -230px;
-      font-size: 20px;
-      color: white;
-      font-family: 'Open Sans';
-      text-align: center;
   }
 
-  .heart {
-    width: 200px;
-    height: 200px;
+  .heartcontainer .text {
     position: absolute;
-    transform: rotate(-45deg);
-    border: 5px solid rgb(200, 39, 39);
-    border-radius: 5px;
-    border-top-color: transparent;
-    border-right-color: transparent;
-  }
-  
-  .heart:before {
-    top: -100px;
-    left: -5px;
-    transform: rotate(45deg);
-  }
-  
-  .heart:after {
-    top: -5px;
-    left: 90px;
-    transform: rotate(135deg);
-  }
-  
-  .heart:before,
-  .heart:after {
-      content: "";
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      position: absolute;
-      border: 5px solid rgb(200, 39, 39);
-      border-bottom-color: transparent;
-      border-right-color: transparent;
-  }
-  
-  .heart .text {
-    position: absolute;
-    z-index: 99;
-    1top: 75%;
-    1left: 50%;
-    transform: translate(25%, 15%) rotate(45deg);
-    font-size: 1.2em;
-  }
-  
-  .heart:hover,
-  .heart:hover::before,
-  .heart:hover::after {
-    background-color: rgb(150, 7, 7);
-    border-color: rgb(150, 7, 7);
-  }
-  /*
-  .heart {
-    position: absolute;
-    width: 300px;
-    height: 150px;
-    text-align: center;
-    font-weight: 700;
-    line-height: normal;
-  }
-  
-  .heart:before,
-  .heart:after {
-    position: absolute;
-    content: "";
-    left: 150px;
-    top: 0;
-    width: 150px;
-    height: 240px;
-    background: rgb(200, 39, 39);;
-    -moz-border-radius: 75px 75px 0 0;
-    border-radius: 75px 75px 0 0;
-    -webkit-transform: rotate(-45deg);
-    -moz-transform: rotate(-45deg);
-    -ms-transform: rotate(-45deg);
-    -o-transform: rotate(-45deg);
-    transform: rotate(-45deg);
-    -webkit-transform-origin: 0 100%;
-    -moz-transform-origin: 0 100%;
-    -ms-transform-origin: 0 100%;
-    -o-transform-origin: 0 100%;
-    transform-origin: 0 100%;
-  }
-  
-  .heart:after {
-    left: 0;
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
-    transform: rotate(45deg);
-    -webkit-transform-origin: 100% 100%;
-    -moz-transform-origin: 100% 100%;
-    -ms-transform-origin: 100% 100%;
-    -o-transform-origin: 100% 100%;
-    transform-origin: 100% 100%;
-  }
-  
-  .heart .text {
-    position: absolute;
-    z-index: 99;
-    top: 65%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1em;
-  }
-*/
-
-  #keyboard {
-    width: 80%;
-  }
-  #keyboard li {
-    width: 50px;
-    height: 50px;
-    line-height: 50px;
-    font-size: 25px;
-  }
-
-  #keyboard .email, #keyboard .left-shift, #keyboard .capslock {
-    width: auto;
-    font-size: 15px;
-    padding-left: 15px;
-    padding-right: 15px;
+    width: 100%;
+    left: 0px;
+    top: 20%;
+    font-size: 16px;
+    padding: 10%;
   }
 }
 
 @media screen and (max-width: 1366px) and (min-width: 0px) {
-  #circlelabels>div:nth-child(1) {
-    top: 0px;
-    left: 0px;
-  }
-  
-  #circlelabels>div:nth-child(2) {
-    top: 350px;
-    left: 130px;
-  }
-  
-  #circlelabels>div:nth-child(3) {
-    top: 50px;
-    left: 400px;
-  }
-  
-  #circlelabels>div:nth-child(4) {
-    top: 400px;
-    left: 600px;
-  }
-  
-  #circlelabels>div:nth-child(5) {
-    top: 150px;
-    left: 900px;
+
+  #labelwrapper {
+    display: flex; 
+    justify-content: center;
   }
 
   .heartcontainer {
-    position: absolute;
-    bottom: -40px;
-    right: -20px;
-    height: 280px;
-    width: 280px;
-    padding-top: 0px;
-    cursor: pointer;
-    font-size: 280px;
-    color: #c82727;
+    height: 438px;
+    width: 240px;
+    font-size: 240px;
+    line-height: 240px;
+  }
+
+  .heartcontainer .fa {
+    position: relative;
   }
 
   .heartcontainer .text {
-    position: relative;
-      width: 150px;
-      left: 70px;
-      top: -190px;
-      font-size: 16px;
-      color: white;
-      font-family: 'Open Sans';
-      text-align: center;
-  }
-
-  .heart,
-  .heart:before,
-  .heart:after {
-    width: 180px;
-    height: 180px;
-  }
-  
-  .heart:before {
-    top: -90px;
-    left: -5px;
-  }
-  
-  .heart:after {
-    top: -5px;
-    left: 80px;
-  }
-  
-  .heart .text {
-    transform: translate(25%, 0%) rotate(45deg);
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    top: 20%;
+    font-size: 14px;
+    padding: 10%;
   }
 }
 
-@media screen and (max-width: 1220px) and (min-width: 0px) {
-  #circlelabels>div:nth-child(1) {
-    top: 0px;
-    left: 0px;
-  }
-  
-  #circlelabels>div:nth-child(2) {
-    top: 320px;
-    left: 130px;
-  }
-  
-  #circlelabels>div:nth-child(3) {
-    top: 20px;
-    left: 400px;
-  }
-  
-  #circlelabels>div:nth-child(4) {
-    top: 300px;
-    left: 500px;
-  }
-  
-  #circlelabels>div:nth-child(5) {
-    top: 150px;
-    left: 800px;
+@media screen and (max-width: 1280px) and (min-width: 0px) {
+
+  #labelwrapper {
+    display: flex; 
+    justify-content: center;
   }
 
+  .heartcontainer {
+    height: 350px;
+    width: 200px;
+    font-size: 200px;
+    line-height: 200px;
+  }
+
+  .heartcontainer .fa {
+    position: relative;
+  }
+
+  .heartcontainer .text {
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    top: 20%;
+    font-size: 12px;
+    padding: 10%;
+  }
 }
 
 /* anpassa till KTH Bibliotekets iPad*/
 @media screen and (max-width: 1080px) and (min-width: 0px) {
-    
+  .heartcontainer {
+    height: 335px;
+    width: 185px;
+    font-size: 185px;
+    line-height: 185px;
+  }
+
+  .heartcontainer .text {
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    top: 20%;
+    font-size: 12px;
+    padding: 10%;
+  }
 }
 
 /* polopoly */
 @media screen and (max-width: 990px) and (min-width: 0px) {  
+
 }
 
 /* anpassa till mobil*/
-@media screen and (max-width: 600px) and (min-width: 0px) {
+@media screen and (max-width: 768px) and (min-width: 0px) {
 
   body {
     overflow: auto;
@@ -1550,7 +1421,7 @@ label .info {
     display:flex;
     flex-direction: column;
     align-items: center;
-    padding: 25px;
+    padding: 0 25px 25px 25px;
   }
 
   #caption {
@@ -1576,29 +1447,24 @@ label .info {
     padding: 20px;
   }
 
-  #circlelabels>div:nth-child(1) {
-    top: 0;
-    left: 0;
-  }
-  
-  #circlelabels>div:nth-child(2) {
-    top: 0;
-    left: 0;
-  }
-  
-  #circlelabels>div:nth-child(3) {
-    top: 0;
-    left: 0;
-  }
-  
-  #circlelabels>div:nth-child(4) {
-    top: 0;
-    left: 0;
+  #circlelabels {
+    display: block;
   }
 
-  #circlelabels>div:nth-child(5) {
-    top: 0;
-    left: 0;
+  .heartcontainer {
+    height: 250px;
+    width: 250px;
+    font-size: 250px;
+    line-height: 250px;
+  }
+
+  .heartcontainer .text {
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    top: 20%;
+    font-size: 14px;
+    padding: 10%;
   }
 
   .clickable {
@@ -1818,8 +1684,6 @@ label .info {
   .heart .text {
     position: absolute;
     z-index: 99;
-    1top: 75%;
-    1left: 50%;
     transform: translate(25%, 0%) rotate(45deg);
     font-size: 1.2em;
   }
