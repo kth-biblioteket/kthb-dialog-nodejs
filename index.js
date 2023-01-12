@@ -385,6 +385,10 @@ apiRoutes.get(process.env.API_PATH + "/event/subactions/:action_id", async funct
     eventController.readSubActions(data.event.actions[i].choices[j].id)
 });
 
+apiRoutes.get(process.env.API_PATH + "/", async function (req, res) {
+    res.json("Welcome to KTH Library dialog API")
+});
+
 
 // Hämta bilder från bildbank
 apiRoutes.get(process.env.API_PATH + "/images", async function (req, res) {
